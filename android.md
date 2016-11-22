@@ -21,6 +21,48 @@ adb shell settings get secure android_id
 $ android list sdk --extended -a
 ```
 
+# Implementing a native app
+
+- Download [NDK from this link](https://developer.android.com/ndk/downloads/index.html)
+- Unzip it in /opt:
+
+```bash
+$ mv android-ndk-r13b-linux-x86_64.zip /opt
+$ unzip android-ndk-r13b-linux-x86_64.zip
+$ rm android-ndk-r13b-linux-x86_64.zip
+```
+- Create the toolchain for the appropriate API level
+
+```bash
+$ export NDK=/opt/android-ndk-r13b
+$ $NDK/build/tools/make_standalone_toolchain.py --arch=arm --api 22 --install-dir=/tmp/toolchain
+```
+- Create a C source file to compile:
+
+```C
+cat > hello.c
+#include <stdio.h>
+
+void main(char **argv, int argc) {
+  printf("Hello world\n");
+}
+```
+- Compile
+
+```bash
+$ /tmp/toolchain/bin/arm-linux-androideabi-gcc -pie -o hello hello.c
+```
+
+- Then push to device and run:
+
+```bash
+$ adb push hello /data/local/tmp
+$ adb shell /data/local/tmp/hello
+WARNING: linker: /data/local/tmp/hello: unused DT entry: type 0x6ffffffe arg 0x228
+WARNING: linker: /data/local/tmp/hello: unused DT entry: type 0x6fffffff arg 0x1
+Hello world
+```
+
 # Reverse tethering
 
 [Reverse tethering](http://forum.xda-developers.com/showthread.php?t=2287494)
