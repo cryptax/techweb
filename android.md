@@ -17,8 +17,16 @@ adb shell settings get secure android_id
 
 # Android SDK
 
+To list available packages:
 ```bash
 $ android list sdk --extended -a
+
+```
+
+for example:
+```
+$ ./android list sdk --extended --all | grep build-tools
+$ ./android list sdk --extended --all | grep sys-img-armeabi-v7a-android | grep -v wear | grep -v tv
 ```
 
 # Implementing a native app

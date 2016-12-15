@@ -144,3 +144,25 @@ $ sudo make install
 $ sudo cp attrib/gatttool /usr/bin/
 $sudo cp tools/btmgmt /usr/bin/
 ```
+
+## TimeWarrior
+
+Installing an extension:
+```
+cp ./totals.py /home/me/.timewarrior/extensions
+$ timew extensions
+```
+
+Using totals:
+```
+$ timew totals
+```
+
+
+## Useful packages (at some point...)
+
+- To install glib2:
+```
+sudo apt-get install libgtk2.0-dev
+```
+
