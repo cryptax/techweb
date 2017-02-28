@@ -14,6 +14,13 @@ get the Android ID:
 adb shell settings get secure android_id
 ```
 
+# Emulators
+
+- Genymotion: customization of IMEI and Android ID
+- [Bluestacks](http://www.bluestacks.com)
+- [Andy](http://andyroid.net/)
+- BuilDroid
+
 
 # Android SDK
 
