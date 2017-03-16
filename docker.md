@@ -70,3 +70,36 @@ $ docker build -t user/buildname .
 $ docker login
 $ docker push user/buildname
 ```
+
+## Cloning a container
+
+Copy the running container. The export command makes sure you only copy the upper layer, not for example debian:jessie it may depend on.
+
+```bash
+$ docker export mycontainer > my-container.tar
+```
+
+To run it elsewhere:
+
+1. Import it. This will create an image `myname` with tag `mytag`:
+
+```bash
+$ cat my-container.tar | docker import - myname:mytag
+```
+
+2. Run it.
+
+```bash
+$ docker run -it myname:mytag /bin/bash
+```
+
+## X forwarding
+
+1. On the host, do: `xhost +`
+2. Run the container with:
+
+```bash
+XSOCK=/tmp/.X11-unix/X0
+docker run -it -v $XSOCK:$XSOCK -e DISPLAY=$DISPLAY ...
+```
+
