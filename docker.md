@@ -15,6 +15,7 @@ Ports: -p OutPort:InsideDockerPort:
 - OutPort: the port to use outside the container
 - InsideDockerPort: the port it gets redirected to
 
+Remove unused images: `docker images -q |xargs docker rmi`
 
 
 ## Creating one's image
