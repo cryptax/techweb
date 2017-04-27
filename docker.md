@@ -17,6 +17,12 @@ Ports: -p OutPort:InsideDockerPort:
 
 Remove unused images: `docker images -q |xargs docker rmi`
 
+Searching:
+
+```bash
+$ docker search --filter=stars=10 ubuntu
+```
+
 
 ## Creating one's image
 

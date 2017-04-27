@@ -1,11 +1,5 @@
 % Tools
 
-# Docker
-
-```bash
-$ docker search --filter=stars=10 ubuntu
-```
-
 # GPG
 
 ## Who encrypted a message
@@ -43,3 +37,6 @@ So far, I haven't found any better solution than shortening the given task.
 1. Get the id for the task you want to modify: `timew summary :week :ids`
 2. Shorten it: `timew shorten @x 3hours`
 
+## Add a task at a given interval
+
+`timew track 2017-03-20T15:22 - 2017-03-20T17:05 blah blah`
