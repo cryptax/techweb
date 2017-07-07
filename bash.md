@@ -37,7 +37,9 @@ $ echo -n "deadbeef" | xxd -p -r | od -tx1
 0000004
 ```
 
+## Date
 
+Epoch to date: `date -d @1234567890`
 
 
 ## Find
@@ -49,6 +51,14 @@ $ find . -type d -name "blah" ! -path "./softs/*' ! -path "./bin/*"
 ```
 
 Do not forget the * in the path...
+
+
+Find files bigger than 10M
+
+```
+find . -type f -size +10M
+```
+
 
 ## Sed
 
