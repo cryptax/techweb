@@ -1,5 +1,38 @@
 # Network
 
+## Network Manager
+
+`sudo service network-manager stop`
+
+## ifconfig / ip
+
+Via ifconfig:
+```
+ifconfig eth0 192.168.2.2 netmask 255.255.255.0 up
+route add default gw 192.168.2.1
+```
+
+Via ip:
+```
+ip route show
+ip link show wlan1
+ip link set br0 address 00:0a:e7:2c:44:2a
+sudo ip route del default 
+sudo ip route add default via 192.168.0.254 dev eth0
+
+
+```
+
+## IPv6
+
+In /etc/sysctl.conf:
+
+```
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+```
+
 ## Wifi
 
 Scan wifi
@@ -21,7 +54,34 @@ $ sudo iwconfig wlan0 essid "iPhone MyWi"
 $ sudo iwconfig wlan0 ap "02:22:52:26:BC:91"
 $ sudo iwconfig wlan0 enc off
 $ sudo ifconfig wlan0 up
+$ iwconfig wlan1 mode auto
 ```
+
+via iw:
+```
+sudo iw dev wlan1 scan
+iw dev wlan1 set power_save off
+iw dev wlan1 set bitrates 1M
+             set frag 2432
+	     set rts  2432
+	     set distance
+sudo iwconfig wlan1 rate 5.5M auto
+```
+
+
+Bridges:
+
+```
+sudo brctl addbr br0
+sudo brctl addif br0 eth0 wds.wlan1
+sudo brctl delbr br0
+ifconfig br0 hw ether 00:0a:e7:2c:44:2a
+```
+
+## DHCP
+
+`sudo dhclient wlan0`
+
 
 ## SNMP
 
@@ -35,3 +95,6 @@ $ snmpbulkwalk -v2c -c public 192.168.0.x
 ```
 sudo nmap -sL 192.168.0.0/24
 ```
+
+
+
