@@ -256,3 +256,71 @@ uid=2000(shell) gid=2000(shell) groups=2000(shell),1004(input),1007(log),1011(ad
 shell@surnia_umts:/ $
 ```
 
+# [Frida](https://www.frida.re)
+
+Excellent tutorial for Frida on Android: [part 1](https://www.codemetrix.net/hacking-android-apps-with-frida-1) [part2](https://www.codemetrix.net/hacking-android-apps-with-frida-2/) [part3](https://www.codemetrix.net/hacking-android-apps-with-frida-3/)
+
+Those notes are personal, please check [Frida's documentation](https://www.frida.re) to adapt to your own case.
+
+## Installation (to use for Android malware reverse engineering)
+
+The following quick notes pertain to having a Linux host running an Android emulator.
+
+To install on Linux:
+```
+sudo pip install frida
+```
+
+Check the version with `frida --version` and [download frida-server](https://github.com/frida/frida/releases) for your Android emulator for the same version. I used **10.2.3**.
+
+Push frida-server on the emulator:
+
+```
+$ adb push frida-server /data/local/tmp/ 
+$ adb shell "chmod 755 /data/local/tmp/frida-server"
+$ adb shell
+1|root@generic:/data/local/tmp # ./frida-server
+```
+
+Check you can connect (from your Linux host):
+
+```bash
+$ frida-ps -U
+```
+
+Note `-U` will work for the emulator despite it is not a USB device ;)
+
+## Usage
+
+`frida -U PID`: inject frida in a given process PID
+`frida -U -f packagename`: to have frida spawn a given package.
+`frida -U -l script.js packagename`: to have frida inject `script.js` in packagename. Note that this one assumes package is launched manually.
+
+## Example: restoring logs
+
+Sometimes, logs have been disabled. The function to log is more or less there but it has been hidden. Or you want to show each time a given function is called.
+
+The hook looks as follows.
+
+1. Specify the class you want to hook (`my.package.blah.MyActivity`)
+2. Specify the name of the method to hook (`a`)
+3. If there are several methods with that name, you'll need to tell frida which one to use by using the correct signature. Use `overload()` for that.
+4. The arguments for the function are to be passed in `function(..)`. Here for example the function has one argument `mystr`
+
+
+```javascript
+setImmediate(function() { //prevent timeout
+    console.log("[*] Starting Frida script to re-insert logs");
+
+    Java.perform(function() {
+
+	bClass = Java.use("my.package.blah.MyActivity");
+	
+      bClass.a.overload('java.lang.String').implementation = function(mystr) {
+         console.log("[*] method a() clicked: "+mystr);
+      }
+      console.log("[*] method a() handler modified")
+
+    })
+})
+```
