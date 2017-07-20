@@ -267,7 +267,8 @@ Those notes are personal, please check [Frida's documentation](https://www.frida
 The following quick notes pertain to having a Linux host running an Android emulator.
 
 To install on Linux:
-```
+
+```bash
 sudo pip install frida
 ```
 
@@ -275,7 +276,7 @@ Check the version with `frida --version` and [download frida-server](https://git
 
 Push frida-server on the emulator:
 
-```
+```bash
 $ adb push frida-server /data/local/tmp/ 
 $ adb shell "chmod 755 /data/local/tmp/frida-server"
 $ adb shell
@@ -292,9 +293,9 @@ Note `-U` will work for the emulator despite it is not a USB device ;)
 
 ## Usage
 
-`frida -U PID`: inject frida in a given process PID
-`frida -U -f packagename`: to have frida spawn a given package.
-`frida -U -l script.js packagename`: to have frida inject `script.js` in packagename. Note that this one assumes package is launched manually.
+- `frida -U PID`: inject frida in a given process PID
+- `frida -U -f packagename`: to have frida spawn a given package.
+- `frida -U -l script.js packagename`: to have frida inject `script.js` in packagename. Note that this one assumes package is launched manually.
 
 ## Example: restoring logs
 
