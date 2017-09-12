@@ -1,5 +1,13 @@
 # Fortigate
 
+## Get system info
+
+```bash
+# get system status
+```
+
+[KB Fortinet](http://kb.fortinet.com/kb/viewContent.do?externalId=FD31964)
+
 ## Trace packets
 
 ```bash

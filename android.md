@@ -36,6 +36,16 @@ $ ./android list sdk --extended --all | grep build-tools
 $ ./android list sdk --extended --all | grep sys-img-armeabi-v7a-android | grep -v wear | grep -v tv
 ```
 
+# Implementing an app
+
+```
+android create project \
+    --package com.example.helloandroid \
+    --activity HelloAndroid \ 
+    --target 2 \
+    --path <path-to-your-project>/HelloAndroid
+```
+
 # Implementing a native app
 
 - Download [NDK from this link](https://developer.android.com/ndk/downloads/index.html)

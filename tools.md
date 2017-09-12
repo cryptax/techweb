@@ -1,13 +1,5 @@
 % Tools
 
-# GPG
-
-## Who encrypted a message
-
-```bash
-$ gpg --list-only msg.asc
-```
-
 # Timewarrior
 
 I use [timewarrior](https://timewarrior.net/)
