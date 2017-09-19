@@ -24,4 +24,15 @@ for example:
 
 [KB Fortinet](http://kb.fortinet.com/kb/viewContent.do?externalId=11186)
 
+## See IP addresses and MAC addresses
 
+`get sys arp`
+
+
+```
+# get sys arp
+
+Address           Age(min)   Hardware Addr      Interface
+
+192.168.0.4       1          xx:xx:xx:xx:xx:xx root.b
+```

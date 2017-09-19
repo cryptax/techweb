@@ -12,3 +12,20 @@ $ gpg --clearsign --local-user 0xKeyId doc
 ```bash
 $ gpg --list-only msg.asc
 ```
+
+## For who the message is encrypted
+
+`gpg --list-packets file`
+
+
+## Signing keys
+
+Sign a key: `gpg --sign-key`
+
+Remove the signature of key: 
+
+```
+gpg --edit-key user-id
+> minimize
+
+```

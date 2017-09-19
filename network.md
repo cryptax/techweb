@@ -75,7 +75,7 @@ Bridges:
 sudo brctl addbr br0
 sudo brctl addif br0 eth0 wds.wlan1
 sudo brctl delbr br0
-ifconfig br0 hw ether 00:0a:e7:2c:44:2a
+ifconfig br0 hw ether xx:xx:xx...
 ```
 
 ## DHCP

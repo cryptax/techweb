@@ -29,4 +29,5 @@ rabin2 -i classes.dex
 - Rename a function: `afn new-func-name`
 - List entry points: `ie`
 - Search strings: `iz~STRING`, search in code: `pd @ func~STRING`, search imports: `ii~STRING`, search class names: `ic~STRING`, flags (constants, functions, importants): `f~STRING`, search function names: `afl~STRING`
+- Save a session: `Ps filename`. To reload a session: `Po filename`
 

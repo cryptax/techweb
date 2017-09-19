@@ -8,6 +8,10 @@ Update firmware:
 rpi-firmware update
 ```
 
+## OS
+
+Delete pi user: `sudo deluser -remove-home pi`
+
 ## Apps
 
 ### Kodi
@@ -29,3 +33,7 @@ sudo apt-get install vlc
 
 [Install OwnCloud 8](http://www.framboise314.fr/installer-owncloud-8-sur-un-raspberry-pi-2/)
 
+
+### Arduino
+
+Add user to dialout group
