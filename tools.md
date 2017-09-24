@@ -1,16 +1,10 @@
 % Tools
 
-# GPG
-
-## Who encrypted a message
-
-```bash
-$ gpg --list-only msg.asc
-```
-
 # Timewarrior
 
 I use [timewarrior](https://timewarrior.net/)
+
+
 
 ## List 
 
@@ -40,3 +34,16 @@ So far, I haven't found any better solution than shortening the given task.
 ## Add a task at a given interval
 
 `timew track 2017-03-20T15:22 - 2017-03-20T17:05 blah blah`
+
+## Extensions
+
+Installing an extension:
+```
+cp ./totals.py /home/me/.timewarrior/extensions
+$ timew extensions
+```
+
+Using totals:
+```
+$ timew totals
+```

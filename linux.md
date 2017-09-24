@@ -53,6 +53,18 @@ plugins=ifupdown,keyfile,ofono
 managed=false
 ```
 
+### IPv6
+
+In /etc/sysctl.conf
+
+```
+    # Disable IPv6
+    net.ipv6.conf.all.disable_ipv6 = 1
+```
+
+## Locale
+
+`localectl set-locale LANG=en_US.utf8`
 
 ## Package management
 
@@ -60,6 +72,19 @@ To re-install a package:
 ```bash
 $ sudo apt-get --reinstall install package
 ```
+
+## NTP
+
+To list NTP servers I use:
+
+```
+$ ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+*ks3352891.kimsu 138.96.64.10     2 u   99  128  377   37.876   31.229  24.093
+...
+```
+
 
 ## ZFS
 
@@ -122,6 +147,11 @@ card 1: J20 [Jabra EVOLVE 20], device 0: USB Audio [USB Audio]
 
 # Apps
 
+## Mail
+
+d * removes all email
+q
+
 ## Recording desktop
 
 ```
@@ -145,20 +175,6 @@ $ sudo cp attrib/gatttool /usr/bin/
 $sudo cp tools/btmgmt /usr/bin/
 ```
 
-## TimeWarrior
-
-Installing an extension:
-```
-cp ./totals.py /home/me/.timewarrior/extensions
-$ timew extensions
-```
-
-Using totals:
-```
-$ timew totals
-```
-
-
 ## Useful packages (at some point...)
 
 - To install glib2:
@@ -166,3 +182,7 @@ $ timew totals
 sudo apt-get install libgtk2.0-dev
 ```
 
+
+- To install [Java](http://tecadmin.net/install-oracle-java-8-jdk-8-ubuntu-via-ppa/):
+
+`export JAVA_HOME=/usr/lib/jvm/java-8-oracle`

@@ -1,5 +1,28 @@
 # Apache
 
+## Differences between 2.2 and 2.4
+
+[Differences between Apache 2.2 and 2.4](https://wiki.apache.org/httpd/ClientDeniedByServerConfiguration)
+
+2.2:
+
+```xml
+<Directory /var/www/example.com>
+  Order allow,deny
+  Allow from all
+</Directory>
+```
+
+2.4:
+
+```xml
+<Directory /var/www/example.com>
+  Require all granted
+</Directory>
+```
+
+
+
 ## Set up HTTPS
 
 ```
