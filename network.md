@@ -97,4 +97,9 @@ sudo nmap -sL 192.168.0.0/24
 ```
 
 
+## Which port is used by which process:
+
+`lsof -i -nP`
+`iftop -P`
+
 
