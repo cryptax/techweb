@@ -8,7 +8,105 @@ Update firmware:
 rpi-firmware update
 ```
 
-## Bluetooth
+## Multiboot
+
+NOOBS supports multi boot. Partitions typcally have the following layout.
+
+Partitions:
+
+| Partition | Description |
+| ----------| ----------- |
+| /dev/mmcblk0p1 | NOOBS boot partition - that's where the Pi boots |
+| /dev/mmcblk0p2 | Extended partition |
+| /dev/mmcblk0p5 | NOOBS settings |
+| /dev/mmcblk0p6 | Boot partition of OS1 |
+| /dev/mmcblk0p7 | OS1 |
+| /dev/mmcblk0p8 | Boot partition of OS2 |
+| /dev/mmcblk0p9 | Recalbox |
+
+In `/dev/mmcblk0p5`, 
+
+```
+$ cat noobs.conf 
+[General]
+default_partition_to_boot=8
+display_mode=0
+keyboard_layout=fr
+language=us
+```
+
+To reboot to OS1:
+
+```
+echo 6 > /sys/module/bcm2709/parameters/reboot_part
+```
+
+To reboot to OS2:
+
+```
+echo 8 > /sys/module/bcm2709/parameters/reboot_part
+```
+
+Or to reboot to NOOBS:
+
+```
+echo 0 > /sys/module/bcm2709/parameters/reboot_part
+```
+
+
+
+## OS
+
+Delete pi user: `sudo deluser -remove-home pi`
+
+
+## Network 
+
+### Setting a static IP address
+
+In `/etc/network/interfaces`
+
+```
+
+auto lo
+
+iface lo inet loopback
+iface eth0 inet static
+      address x.y.z.w
+      netmask 255.255.255.0
+      gateway 192.168.0.254
+      dns-nameservers	8.8.8.8	4.2.2.1
+```
+
+Then, make sure to disable DHCP:
+
+```
+apt-get remove dhcpd
+update-rc.d dhcpd disable
+
+```
+
+### Disabling ipv6
+
+[How to disable IPv6 on RPi3](https://no-sheds.blogspot.fr/2017/05/disabling-ipv6-on-raspberry-pi.html)
+
+/etc/modprobe.d/ipv6.conf:
+
+```
+alias net-pf-10 off
+alias ipv6 off
+options ipv6 disable_ipv6=1
+blacklist ipv6
+```
+
+In `/boot/cmdline.txt`:
+
+
+```
+ipv6.disable=1 dwc_otg.lpm_enable=0 ...
+```
+
+### Bluetooth
 
 ```bash
 $ bluetoothctl
@@ -31,9 +129,6 @@ Attempting to connect aa:aa:aa...
 Connection successful
 ```
 
-## OS
-
-Delete pi user: `sudo deluser -remove-home pi`
 
 ## Apps
 
@@ -60,4 +155,20 @@ sudo apt-get install vlc
 ### Arduino
 
 Add user to dialout group
+
+### PiVPN
+
+[PiVPN](http://www.pivpn.io/): the install is straight forward but a bit long (even on Rpi3).
+Then, do not forget to open port UDP 1194 on the firewall and box.
+
+To create a profile, use the `pivpn --add` command.
+To list current connections, `pivpn -c`.
+To list existing profiles, `pivpn -l`.
+
+Then, on the client, it's very simple:
+
+- Linux: `openvpn -c xxx.ovpn`
+- Android: install OpenVPN app, and import .ovpn profile
+
+
 
