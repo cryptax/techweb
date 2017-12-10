@@ -59,6 +59,13 @@ echo 0 > /sys/module/bcm2709/parameters/reboot_part
 
 Delete pi user: `sudo deluser -remove-home pi`
 
+### Recalbox
+
+Recalbox: default root login is `recalboxroot`. This can be secured via the menu and modified to another password.
+
+To install games in the DOS directory, you must follow the instructions in Readme, i.e unzip the files in its own directory named `game.dos` or `game.pc` and inside that, create a file named `dosbox.bat` with the command to launch.
+
+
 
 ## Network 
 
@@ -108,6 +115,8 @@ ipv6.disable=1 dwc_otg.lpm_enable=0 ...
 
 ### Bluetooth
 
+#### Scan for bluetooth devices
+
 ```bash
 $ bluetoothctl
 [NEW] Controller xx:
@@ -122,12 +131,28 @@ Default agent request successful
 bluetooth]# scan on
 Discovery started
 [CHG] Controller zz:zz:zz... Discovering: yes
+```
+
+#### Pair a controller
+
+```
 [bluetooth]# pair aa:aa:aa...
-bluetooth]# connect aa:aa:aa...
+```
+
+To pair with an 8bitdo controller, press its right button (bottom)
+
+#### Connect to a device
+
+```
+[bluetooth]# connect aa:aa:aa...
 Attempting to connect aa:aa:aa...
 [CHG] Device aa:aa:aa... Connected: yes
 Connection successful
 ```
+
+#### Other commands
+
+info
 
 
 ## Apps

@@ -1,5 +1,46 @@
 % Linux 
 
+# Hardware
+
+## Know your hardware
+
+ Before you struggle opening the box or finding the adequate screwdriver, you can try out the following:
+
+List hardware: `lshw`
+For example:
+
+- Network: `lshw -C network`
+- Hard disks: `lshw -C disk`
+
+Product model:
+```
+$ inxi -M
+Machine:   System: xxx product: xxx v: 01
+           Mobo: xxx v: x Bios: xx v: xx date: xx/xx/xxxx
+```
+    or
+```
+sudo dmidecode -t baseboard | grep -i 'Product'
+```
+
+
+List RAM: `sudo dmidecode -t memory`
+
+List PCI devices: `lspci`.
+For example, get the video card:
+```
+$ lspci -vnn | grep VGA -A 12
+```
+
+- list USB devices: lsusb
+- list block devices: lsblk
+- list SCSI devices (useful for SATA disks): `cat /proc/scsi/scsi` or `lsscsi`
+
+## Get hard disk info
+
+`sudo hdparm -i /dev/sda`
+
+
 # System
 
 ## Network
@@ -58,9 +99,26 @@ managed=false
 In /etc/sysctl.conf
 
 ```
-    # Disable IPv6
-    net.ipv6.conf.all.disable_ipv6 = 1
+# Disable IPv6
+net.ipv6.conf.all.disable_ipv6 = 1
 ```
+
+### mDNS
+
+*"Avahi is a Linux implementation of Zero Configuration Networking ( Zeroconf ) which implements muticast DNS ( mDNS ) allowing ip address to hostname resolution without the use of standard LAN side DNS services."*
+
+To install it: `sudo apt-get install libnss-mdns`. And ensure that `/etc/nsswitch.conf` has mDNS mentioned:
+
+```
+hosts:          files mdns4_minimal [NOTFOUND=return] dns mdns4
+```
+
+
+- avahi requires that port 5353/udp is open.
+- To find all IPv4 services on the internal network: ` avahi-browse -at | grep IPv4`
+- You can ping `host.local` on the intranet.
+
+
 
 ## Locale
 
