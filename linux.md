@@ -6,7 +6,8 @@
 
  Before you struggle opening the box or finding the adequate screwdriver, you can try out the following:
 
-List hardware: `lshw`
+
+List hardware: `lshw` or `inxi -Fxz`
 For example:
 
 - Network: `lshw -C network`
