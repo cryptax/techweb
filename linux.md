@@ -42,6 +42,10 @@ $ lspci -vnn | grep VGA -A 12
 `sudo hdparm -i /dev/sda`
 
 
+## Setting keyboard layout
+
+`setxkbmap -layout fr`
+
 # System
 
 ## Network
@@ -120,8 +124,15 @@ hosts:          files mdns4_minimal [NOTFOUND=return] dns mdns4
 - You can ping `host.local` on the intranet.
 
 
-
 ## Locale
+
+```
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+locale-gen en_US.UTF-8
+sudo dpkg-reconfigure locales
+```
 
 `localectl set-locale LANG=en_US.utf8`
 
@@ -162,7 +173,9 @@ $ iptables -t nat -F ==> flush the NAT table
 ```
 
 
-## Adding user to group and take into account immediately
+## User management 
+
+### Adding user to group and take into account immediately
 
 1. Add user to new group B.
 2. Get the current group of the user:
@@ -186,6 +199,10 @@ sudo udevadm control --reload-rules
 sudo service udev restart
 sudo udevadm trigger
 ```
+
+## Mate
+
+Specify keyboard bindings in `mate-control-center`
 
 
 # Sound

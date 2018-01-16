@@ -61,6 +61,8 @@ Delete pi user: `sudo deluser -remove-home pi`
 
 ### Recalbox
 
+To install recalbox: `sudo dd if=~/Downloads/recalbox.img of=/dev/sdj bs=32M`
+
 Recalbox: default root login is `recalboxroot`. This can be secured via the menu and modified to another password.
 
 To install games in the DOS directory, you must follow the instructions in Readme, i.e unzip the files in its own directory named `game.dos` or `game.pc` and inside that, create a file named `dosbox.bat` with the command to launch.
