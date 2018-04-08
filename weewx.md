@@ -385,9 +385,11 @@ To redirect to another location, create a file in /etc/rsyslog.d, for example we
 
 You need to restart rsyslog: service rsyslog restart.
 
-## Sending date to Twitter account
+## Twitter
 
-Download the [extension](http://sourceforge.net/p/weewx/wiki/twitter/") and follow the configuration steps. In particular,
+### Install the tweeting extension
+
+Download the [extension](https://github.com/weewx/weewx/wiki/Twitter) and follow the configuration steps. In particular,
 
 ```
 sudo apt-get install python-setuptools
@@ -396,19 +398,10 @@ sudo pip install twython
 sudo setup.py install --extension weewx-twitter.x.y.tgz
 ```
 
-In WEEWX_ROOT/bin/usr/twitter.py, modify to only send tweets at given time:
-<pre>
- ts = time.localtime()
-        if (ts.tm_hour != 7 and ts.tm_hour != 14 and ts.tm_hour != 18):
-            logdbg("This is not hour to tweet: %d" % ts.tm_hour)
-            return
-</pre>
+In `weewx.conf`,
 
+- configure **Twitter service**:
 
-
-In weewx.conf,
-
-- configure Twitter service:
 ```
 [StdRESTful]
     # This section is for uploading data to sites using RESTful protocols.
@@ -422,7 +415,9 @@ In weewx.conf,
 	unit_system = METRIC
 	post_interval = 3600 
 ```
-- add twitter as a RESTful service:
+
+- add twitter as a **RESTful service**:
+
 ```
 [Engines]
     # This section configures the internal weewx engines.
@@ -431,6 +426,31 @@ In weewx.conf,
     [[WxEngine]]
     restful_services = weewx.restx.StdStationRegistry, weewx.restx.StdWunderground, weewx.restx.StdPWSweather, weewx.restx.StdCWOP, weewx.restx.StdWOW, weewx.restx.StdAWEKAS, user.twitter.Twitter
 ```
+
+### Update an existing version
+
+```
+$ cd /usr/share/weewx
+$ sudo ./wee_extension --install ~/weewx-twitter-0.12.tgz 
+Request to install 'HOME/weewx-twitter-0.12.tgz'
+Extracting from tar archive HOME/weewx-twitter-0.12.tgz
+Saving installer file to /usr/share/weewx/user/installer/twitter
+Saved configuration dictionary. Backup copy at /etc/weewx/weewx.conf.20180408142250
+Finished installing extension 'HOME/weewx-twitter-0.12.tgz'
+```
+
+### Modify the tweeting extension to tweet 3 times per day
+
+In  `/usr/share/weewx/user/twitter.py`, modify to only send tweets at given time:
+
+```
+ ts = time.localtime()
+        if (ts.tm_hour != 7 and ts.tm_hour != 14 and ts.tm_hour != 18):
+            logdbg("This is not hour to tweet: %d" % ts.tm_hour)
+            return
+```
+
+
 
 ### Database tweeks
 
@@ -449,11 +469,11 @@ CREATE TABLE archive_day_rain (dateTime INTEGER NOT NULL UNIQUE PRIMARY KEY, min
 
 [User group](http://groups.google.com/group/weewx-user)
 
-Viewing the interesting part of the logs: `tail -f weewx.log | grep -v genLoop | grep -v Queuing`
+Viewing the interesting part of the logs (in /var/tmp/log for example): `tail -f weewx.log | grep -v genLoop | grep -v Queuing`
 
 ### Fixing an incorrect value in the database
 
-- stop weewx: sudo service weewx stop
+- stop weewx: `sudo service weewx stop`
 - backup weewx.sdb (just in case, but safe!
 - update the rows as desired:
 ```
@@ -468,7 +488,7 @@ wee_config_database weewx.conf --drop-daily
 ```
 wee_database weewx.conf --backfill-daily
 ```
-- restart weewx: sudo service weewx start. 
+- restart weewx: `sudo service weewx start. `
 
 
 

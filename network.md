@@ -19,9 +19,13 @@ ip link show wlan1
 ip link set br0 address 00:0a:e7:2c:44:2a
 sudo ip route del default 
 sudo ip route add default via 192.168.0.254 dev eth0
-
-
 ```
+
+## DNS
+
+In `/etc/network/interfaces`, add `dns-nameservers 9.9.9.9 8.8.8.8`.
+This is usually now preferred to editing `/etc/resolv.conf` (old method).
+
 
 ## IPv6
 
@@ -32,6 +36,8 @@ net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv6.conf.lo.disable_ipv6 = 1
 ```
+
+Reload config with `sysctl -p`
 
 ## Wifi
 
@@ -101,5 +107,9 @@ sudo nmap -sL 192.168.0.0/24
 
 `lsof -i -nP`
 `iftop -P`
+
+## Test name resolution
+
+`ping -c 1 google.com &> /dev/null && echo success || echo fail`
 
 
