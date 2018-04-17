@@ -23,6 +23,10 @@ Searching:
 $ docker search --filter=stars=10 ubuntu
 ```
 
+Attaching to an existing container to get a shell:
+
+`docker exec -it container_name /bin/bash`
+
 
 ## Creating one's image
 

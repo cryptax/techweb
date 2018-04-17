@@ -41,3 +41,13 @@ Byte code: 12 00
 Disassembly: const/4 v0, 0
 ```
 
+## Disassemble a given byte code
+
+You need to know the [type of instruction](https://source.android.com/devices/tech/dalvik/instruction-formats) it is e.g. 10t:
+
+```python
+Instruction10t(1, "\x28\x01").show(0)
+```
+
+This outputs: `goto +1`
+

@@ -23,10 +23,40 @@ rabin2 -i classes.dex
 
 ## r2
 
+- Change architecture: `e asm.arch=arm` or `r2 -a arm...`
+- Change bits: `e asm.bits=16`
+- Change CPU: `e asm.cpu=cortex`
 - Go to a given function: `sf sym.xxx`
+- Add a function: af ...
 - Add a comment: `CC this is my comment @ addr`
 - Remove a comment: `CC-`
 - Rename a function: `afn new-func-name`
 - List entry points: `ie`
-- Search strings: `iz~STRING`, search in code: `pd @ func~STRING`, search imports: `ii~STRING`, search class names: `ic~STRING`, flags (constants, functions, importants): `f~STRING`, search function names: `afl~STRING`
+- Write to a file: `wtf filename size @ position`
+- Shell commands work: `s 0x65; pD 32`
+
+
+### Print
+
+- Print strings: `ps @ loc`
+- Print function: `pdf`
+
+### Search
+
+
+- Search strings: `iz~STRING`,
+- Search in code: `pd @ func~STRING`,
+- Search imports: `ii~STRING`,
+- Search class names: `ic~STRING`,
+- Seach flags (constants, functions, importants): `f~STRING`,
+- Search function names: `afl~STRING`
+
+### Visual mode
+
+V then press p to switch between virtual modes
+
+
+# References
+
+- [Reverse Engineering Embedded Software Using Radare2](http://radare.org/get/r2embed-auckland2015.pdf)
 
