@@ -47,7 +47,19 @@ $ ./android list sdk --extended --all | grep build-tools
 $ ./android list sdk --extended --all | grep sys-img-armeabi-v7a-android | grep -v wear | grep -v tv
 ```
 
+To install specific packages, a few examples:
+
+```
+./sdmanager --list --verbose
+./sdkmanager "platform-tools" "platforms;android-26"
+.//sdkmanager "build-tools;27.0.2"
+./sdkmanager "system-images;android-24;default;armeabi-v7a"
+```
+
+
 # Implementing an app
+
+## Old fashion way
 
 ```
 android create project \
@@ -56,6 +68,12 @@ android create project \
     --target 2 \
     --path <path-to-your-project>/HelloAndroid
 ```
+
+## With Gradle
+
+Install Gradle: `curl -s "https://get.sdkman.io" | bash` and then `sdk install gradle 4.4`
+
+
 
 # Implementing a native app
 

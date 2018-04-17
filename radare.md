@@ -51,12 +51,19 @@ rabin2 -i classes.dex
 - Seach flags (constants, functions, importants): `f~STRING`,
 - Search function names: `afl~STRING`
 
+- Save a session: `Ps filename`. By default, sessions are stored in `~/.config/radare2/projects`. To reload a session: `Po filename`
+
+
 ### Visual mode
 
 V then press p to switch between virtual modes
+
+- Enter visual mode: `V`
+- Leave visual mode: `q`
 
 
 # References
 
 - [Reverse Engineering Embedded Software Using Radare2](http://radare.org/get/r2embed-auckland2015.pdf)
+
 
