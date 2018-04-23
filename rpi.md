@@ -1,5 +1,42 @@
 # Raspberry Pi
 
+## Installing Raspbian
+
+### Copying the system
+
+- Download Raspbian. For a RPI A+, use the lite edition: `raspbian_lite_latest.zip`
+- Unzip it to get `2018-04-18-raspbian-stretch-lite.img`
+- Insert a SD card, and run `lsblk` to spot where it is located
+- Copy raspbian on the SD card: `sudo dd bs=4M if=2018-04-18-raspbian-stretch-lite.img of=/dev/sdX conv=fsync` where sdX is for example `sdj` (but not `sdj1`)
+
+With a lite Raspbian, the operation might take a few minutes.
+
+Note [it is possible to combine the Unzip and the copy](https://www.raspberrypi.org/documentation/installation/installing-images/linux.md) with `unzip -p` and a pipe.
+
+### Customizing the image (eg headless systems)
+
+Once the image  has been copied on the SD card, We need to reload the partition table for the SD card: `sudo partprobe /dev/sdX`. Then you will notice two partitions on the SD card:
+
+```
+$ sudo fdisk /dev/sdj
+
+Command (m for help): p
+
+...
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sdj1            8192       96453       44131    c  W95 FAT32 (LBA)
+/dev/sdj2           98304     3637247     1769472   83  Linux
+
+```
+
+Mount the second partition: `sudo mount /dev/sdj2 /mnt/usbstick/`
+
+
+To **enable SSH** at startup: `sudo touch /mnt/usbstick/ssh`
+
+See [Headless setup](https://linuxhandbook.com/raspberry-pi-headless-setup/)
+
+
 ## Firmware
 
 Update firmware:
