@@ -14,6 +14,17 @@ get the Android ID:
 adb shell settings get secure android_id
 ```
 
+filter the logs by tag:
+```
+adb logcat -s TAGNAME
+```
+
+filter by priority (e.g warning and above):
+
+```
+adb logcat "*:W"
+```
+
 # Emulators
 
 - Genymotion: customization of IMEI and Android ID
