@@ -114,3 +114,12 @@ XSOCK=/tmp/.X11-unix/X0
 docker run -it -v $XSOCK:$XSOCK -e DISPLAY=$DISPLAY ...
 ```
 
+## Communication between containers
+
+They can communicate if they are in the same network: `docker network create ...`
+Then, launch them with `docker run --net networkname ...`
+
+## Reclaiming disk space
+
+`docker system prune` will delete all dangling data.
+Less drastic, there is `docker container prune`, `docker image prune`, `docker network prune`...
