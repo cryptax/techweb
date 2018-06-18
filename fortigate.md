@@ -19,6 +19,7 @@
 ```bash
 # diag sniffer packet <interface> <'filter'> <verbose> <count> 
 ```
+(or diagnose)
 
 for example:
 
@@ -30,6 +31,8 @@ for example:
 ```
 
 [KB Fortinet](http://kb.fortinet.com/kb/viewContent.do?externalId=11186)
+
+
 
 ## See IP addresses and MAC addresses
 

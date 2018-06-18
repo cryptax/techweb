@@ -67,6 +67,12 @@ To remove lines 1-n of a file:
 $ sed '1,nd' file
 ```
 
+## Awk
 
+Swapping 2 columns in a file:
+
+```
+ awk -F, '{print $2,$1}' OFS=, file
+```
 
 
