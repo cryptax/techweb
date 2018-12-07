@@ -99,6 +99,10 @@ plugins=ifupdown,keyfile,ofono
 managed=false
 ```
 
+### Wireless
+
+Get your SSID: `iwgetid`
+
 ### IPv6
 
 In /etc/sysctl.conf
