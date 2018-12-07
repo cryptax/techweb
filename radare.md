@@ -26,11 +26,13 @@ rabin2 -i classes.dex
 - Change architecture: `e asm.arch=arm` or `r2 -a arm...`
 - Change bits: `e asm.bits=16`
 - Change CPU: `e asm.cpu=cortex`
+- Do not show comments: `e asm.comments=false`
 - Go to a given function: `sf sym.xxx`
 - Add a function: af ...
 - Add a comment: `CC this is my comment @ addr`
 - Remove a comment: `CC-`
 - Rename a function: `afn new-func-name`
+- Rename a local argument: `afvn old-name new-name`
 - List entry points: `ie`
 - Write to a file: `wtf filename size @ position`
 - Shell commands work: `s 0x65; pD 32`

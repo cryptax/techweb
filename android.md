@@ -324,17 +324,19 @@ $ adb shell
 
 Check you can connect (from your Linux host):
 
+- Use `-U` to connect via USB to an Android device
+- Use `-D emulator-id` to connect to an Android emulator
+
 ```bash
-$ frida-ps -U
+$ frida-ps -D emulator-5554
 ```
 
-Note `-U` will work for the emulator despite it is not a USB device ;)
 
 ## Usage
 
-- `frida -U PID`: inject frida in a given process PID
-- `frida -U -f packagename`: to have frida spawn a given package.
-- `frida -U -l script.js packagename`: to have frida inject `script.js` in packagename. Note that this one assumes package is launched manually.
+- `frida -D emulator-5554 PID`: inject frida in a given process PID
+- `frida -D emulator-5554 -f packagename`: to have frida spawn a given package.
+- `frida -D emulator-5554 -l script.js packagename`: to have frida inject `script.js` in packagename. Note that this one assumes package is launched manually.
 
 ## Example: restoring logs
 
@@ -349,18 +351,24 @@ The hook looks as follows.
 
 
 ```javascript
-setImmediate(function() { //prevent timeout
-    console.log("[*] Starting Frida script to re-insert logs");
+console.log("[*] Loading script");
+
+// check if Java environment is available
+if (Java.available) {
+    console.log("[*] Java is available");
 
     Java.perform(function() {
-
+        console.log("[*] Starting Frida script to re-insert logs");
 	bClass = Java.use("my.package.blah.MyActivity");
 	
-      bClass.a.overload('java.lang.String').implementation = function(mystr) {
-         console.log("[*] method a() clicked: "+mystr);
-      }
-      console.log("[*] method a() handler modified")
-
-    })
-})
+        bClass.a.overload('java.lang.String').implementation = function(mystr) {
+          console.log("[*] method a() clicked: "+mystr);
+        }
+       console.log("[*] method a() handler modified")
+    });
+}
 ```
+
+# Xposed Framework
+
+From what I read, the Xposed framework [does not install well on the regular Android emulator](https://stackoverflow.com/questions/18142924/how-to-use-xposed-framework-on-android-emulator). It installs on Genymotion though.
