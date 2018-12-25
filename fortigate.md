@@ -38,12 +38,16 @@ for example:
 
 ### MAC addresses
 
-`get sys arp`
+`get system arp`
 
+```
 Address           Age(min)   Hardware Addr      Interface
 
 192.168.0.4       1          xx:xx:xx:xx:xx:xx root.b
 ```
+
+https://kb.fortinet.com/kb/viewContent.do?externalId=11717
+
 ### Configure IP address
 
 Retrieve URL filters: `show webfilter urlfilter`
@@ -67,4 +71,32 @@ set ip address/x
 append allowaccess ssh
 ...
 end
+```
+
+### Wifi
+
+
+Show SSID info: `get wireless-controller vap-status`
+
+```
+WLAN: wifi
+    name             : wifi
+    vdom             : root
+    ssid             : fortinet
+    downup_oper      : up
+    mesh backhaul    : no
+    local bridging   : no
+    local switching  : yes
+    ip               : 192.168.0.xx
+    mac              : 00:xxxxxxxxxx
+    station info     : 0/0
+```
+
+Show interface info:
+
+```
+# diagnose wireless-controller wlac -c vap
+
+bssid             ssid                 intf                 wtp-id               vfid:ip-port rId wId
+90:6c:ac:xx fortinet             wifi                 FWF61E-WIFI0         ws (0-127.0.0.1:15246) 0 0
 ```
