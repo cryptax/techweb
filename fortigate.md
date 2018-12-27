@@ -100,3 +100,13 @@ Show interface info:
 bssid             ssid                 intf                 wtp-id               vfid:ip-port rId wId
 90:6c:ac:xx fortinet             wifi                 FWF61E-WIFI0         ws (0-127.0.0.1:15246) 0 0
 ```
+
+Show connected clients:
+
+```
+diagnose wireless-controller wlac -d sta
+```
+
+Disconnect a client: `diagnose wireless-controller wlac kickmac MACADDR`. This does not prevent the client from reconnecting ;)
+
+
