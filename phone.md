@@ -39,7 +39,8 @@ TWRP recovery is a *custom recovery software*.
 
 - Download Lineage for your OS. I have `j5ntle`.
 - I recommend having at hand a SD card reader and USB power cable :)
+
 - **I had to fix the ZIP** of Lineage I had downloaded, [otherwise it would fail with error at Install in my case, damn](https://forum.xda-developers.com/showthread.php?t=2522762)
 - Fix the ZIP: in the file `META-INF/com/google/android/updater-script`, remove the assert line (entirely). Then, re-zip with the patched file. Make sure to zip with the same layout (files directly starting in the zip at root, not in a directory).
-- Put the Lineage ZIP on your SD card (`adb push ...`)
-- Reboot your phone in Recovery mode and Flash Lineage [following those instructions](https://www.getdroidtips.com/install-custom-rom-using-twrp-recovery/). Do not check checksum (we've patched it!). Keep fingers crossed ;)
+- Put the Lineage ZIP on your SD card (`adb push ...` e.g `adb push lineage.zip /sdcard/TWRP`)
+- Reboot your phone in Recovery mode and Flash Lineage [following those instructions](https://www.getdroidtips.com/install-custom-rom-using-twrp-recovery/). Once inside TWRP, (1) wipe and **swipe to factory reset** (no option change), (2) install the zips (do not check the checksum as we've patched it). Install GAPPS or other zips. If needed, files can be copied to the sdcard using adb.

@@ -372,3 +372,10 @@ if (Java.available) {
 # Xposed Framework
 
 From what I read, the Xposed framework [does not install well on the regular Android emulator](https://stackoverflow.com/questions/18142924/how-to-use-xposed-framework-on-android-emulator). It installs on Genymotion though.
+
+# Android applications
+
+[Use K9Mail to encrypt/decrypt GPG emails](https://blogs.itemis.com/en/openpgp-on-the-job-part-6-e-mail-encryption-on-android-with-k-9-mail-openkeychain):
+
+1. Install OpenKeyChain (from FDroid). Import private and public keys.
+2. Install k9 mail. Select cryptography and use corresponding private key.
