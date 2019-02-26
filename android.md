@@ -71,7 +71,88 @@ android create project \
 
 ## With Gradle
 
-Install Gradle: `curl -s "https://get.sdkman.io" | bash` and then `sdk install gradle 4.4`
+### Install Gradle
+
+Install Gradle: it is easier with **sdkman**: curl -s "https://get.sdkman.io" | bash`. Then, if you don't reload the terminal, you'll need to source a Bash file (`~/.sdkman/bin/sdkman-init.sh`). Then, install gradle: `sdk install gradle 5.2.1`
+
+### App directory layout
+
+Create a directory with the following layout:
+
+- myproject/
+- myproject/build.gradle: this is the "top" gradle build
+- myproject/settings.gradle. Put in this file the subprojects to compile (they are called *modules*)
+
+```
+include ':app'
+```
+
+- myproject/local.properties. Put in here the path to the Android SDK.
+
+```
+## This file must *NOT* be checked into Version Control Systems,
+# as it contains information specific to your local configuration.
+#
+# Location of the SDK. This is only used by Gradle.
+#
+sdk.dir=/opt/android-sdk-linux/
+```
+
+- myproject/app
+- myproject/app/build.gradle: this is the build.gradle for `app`. Specify how to compile that application. You might have to configure `compileSdkVersion`, `buildToolsVersion` and very probably `applicationId` and signing config ;-) Build tool version correspond to what you have in `ANDROID-SDK/build-tools`.
+
+```
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "28.0.3"
+    lintOptions {
+          abortOnError false
+      }
+    defaultConfig {
+       applicationId 'my.beautiful.app'
+       minSdkVersion
+       targetSdkVersion
+       versionCode 1
+       versionName "1.0"
+     }
+     signingConfigs {
+          release {
+            // You need to specify either an absolute path or include the
+            // keystore file in the same directory as the build.gradle file.
+            storeFile file("filename.jks")
+            storePassword "password"
+            keyAlias "alias"
+            keyPassword "password"
+        }
+     }
+     buildTypes {
+        release {
+            minifyEnabled true
+	    signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro'
+        }
+    }
+
+}
+```
+
+- myproject/app/src
+- myproject/app/src/main
+- myproject/app/src/main/AndroidManifest.xml
+- myproject/app/src/main/res: the resources of the app
+- myproject/app/src/main/assets
+- myproject/app/src/main/lib
+- myproject/app/src/main/java
+- myproject/app/src/main/java/my/beautiful/app: your Java files will be in here
+
+### Commands
+
+Then, from the top directory (myproject/), do `gradle wrapper`. This creates `./gradlew` etc.
+From the top directory, to compile: `gradle build`.
+To install on a phone: `./gradlew installRelease`
 
 
 
