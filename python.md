@@ -1,5 +1,7 @@
 # Python
 
+[Key differences between python 2.7 and python 3](https://sebastianraschka.com/Articles/2014_python_2_3_key_diff.html)
+
 ## Converting...
 
 | Type    | Example |
@@ -139,3 +141,24 @@ python -m markdown blah.md > blah.html
 syslog.syslog.openlog(logoption=syslog.LOG_PID, facility=syslog.LOG_USER)
 syslog.syslog(syslog.LOG_WARNING, "keyboard interrupt")
 ```
+
+## Virtual env
+
+https://www.pythoncentral.io/how-to-install-virtualenv-python/
+
+Installing virtualenv:
+
+1. `easy_install pip`
+2. `pip install virtualenv`
+
+Creating a virtual env: `virtualenv name`. By default, uses `--no-site-packages` options (otherwise: `--use-site-packages`). To specify a particular Python interpreter, use option `-p /usr/bin/pythonX`.
+
+Activate: `source bin/activate`
+Deactivate: `deactivate`
+
+To use ipython of the virtual env: `alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"`
+
+
+
+
+
