@@ -29,12 +29,28 @@ Command (m for help): p
 
 ```
 
-Mount the second partition: `sudo mount /dev/sdj2 /mnt/usbstick/`
+Mount the 1st partition: `sudo mount /dev/sdj1 /mnt/usbstick/`. This corresponds to the `/boot` partition.
 
 
 To **enable SSH** at startup: `sudo touch /mnt/usbstick/ssh`
 
-See [Headless setup](https://linuxhandbook.com/raspberry-pi-headless-setup/)
+To **configure Wifi**, create a file `/mnt/usbstack/wpa_supplicant.conf`. At startup, this file will be copied in the correct directory automatically.
+
+```
+
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=fr
+
+network={
+    ssid=your-ssid
+    psk="your key use wpa_passphrase"
+    key_mgmt=WPA-PSK
+}
+```
+
+See [Headless setup](https://raspberrypi.stackexchange.com/questions/10251/prepare-sd-card-for-wifi-on-headless-pi)
+
 
 
 ## Firmware
@@ -94,6 +110,8 @@ echo 0 > /sys/module/bcm2709/parameters/reboot_part
 
 ## OS
 
+To add a user: `sudo adduser name`.
+To add a user to a given group: `sudo adduser login group`
 Delete pi user: `sudo deluser -remove-home pi`
 
 ### Recalbox
