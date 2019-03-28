@@ -36,6 +36,7 @@ rabin2 -i classes.dex
 - List entry points: `ie`
 - Write to a file: `wtf filename size @ position`
 - Shell commands work: `s 0x65; pD 32`
+- Cross references: `axf` or `axt`. Function references: `afx`
 
 
 ### Print

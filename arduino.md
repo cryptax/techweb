@@ -29,6 +29,32 @@ delay(2000);
 
 - [Getting a MicroPython prompt](https://docs.micropython.org/en/latest/esp8266/tutorial/repl.html)
 
+To [get a MicroPython prompt](https://docs.micropython.org/en/latest/esp8266/tutorial/repl.html):
+
+- unplug the D0/RST cable if any
+- `sudo esptool.py --port /dev/ttyUSB0 erase_flash`
+
+```
+Serial port /dev/ttyUSB0
+Connecting....
+Detecting chip type... ESP8266
+Chip is ESP8266EX
+Features: WiFi
+MAC: xxxxxxx
+Uploading stub...
+Running stub...
+Stub running...
+Erasing flash (this may take a while)...
+Chip erase completed successfully in 7.5s
+Hard resetting via RTS pin...
+```
+
+- `sudo esptool.py --port /dev/ttyUSB0 --baud 115200 write_flash --flash_size=detect -fm dio 0 esp8266-20190125-v1.10.bin`
+
+- Connect to serial port: `sudo microcom -s 115200 -p /dev/ttyUSB0` and you will get the Python `>>>` prompt.
+
+
+
 ### DHT22
 
 Install [Adafruit Unified Sensor](https://github.com/adafruit/Adafruit_Sensor) and [DHT Sensor](https://github.com/adafruit/DHT-sensor-library) librairies in Arduino IDE.
@@ -36,7 +62,7 @@ Install [Adafruit Unified Sensor](https://github.com/adafruit/Adafruit_Sensor) a
 ```
 #include <DHT.h>
 #define DHTTYPE DHT22
-uint8_t DHTPIN = D4;
+uint8_t DHTPIN = D5;
 
 DHT dht(DHTPIN, DHTTYPE);
 
@@ -84,3 +110,15 @@ Micropython | Board
 14|D5
 15|D8
 16|D0
+
+
+### Read an analog value
+
+To read an analog value:
+
+```python
+from machine import ADC
+adc = ADC(0)
+adc.read()
+```
+
