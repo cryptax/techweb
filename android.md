@@ -155,6 +155,11 @@ From the top directory, to compile: `gradle build`.
 To install on a phone: `./gradlew installRelease`
 
 
+### ProGuard
+
+To remove logging at build time:
+
+`-assumenosideeffects class android.util.Log{*;}`
 
 # Implementing a native app
 
