@@ -122,3 +122,7 @@ adc = ADC(0)
 adc.read()
 ```
 
+### DS18B20
+
+
+[Example](http://www.jerome-bernard.com/blog/2015/10/04/wifi-temperature-sensor-with-nodemcu-esp8266/)
