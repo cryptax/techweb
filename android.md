@@ -9,12 +9,14 @@ adb shell dumpsys iphonesubinfo
 adb shell dumpsys cpuinfo
 ```
 
-get the Android ID:
+get the **Android ID**:
+
 ```bash
 adb shell settings get secure android_id
 ```
 
 filter the logs by tag:
+
 ```
 adb logcat -s TAGNAME
 ```
@@ -32,19 +34,40 @@ adb logcat "*:W"
 - [Andy](http://andyroid.net/)
 - BuilDroid
 
+## Genymotion
+
+There are several versions of Genymotion:
+
+1. **Personal version**. Free (but limited). [Download the installer](https://www.genymotion.com/download/). Install using the downloaded installer. This will install several tools such as `genymotion`, `gmtool`, `genymotion-shell`. When genymotion requi
+2. **1-month trial version**.
+3. **Paid version**.
+
+In all cases, you [download the installer](https://www.genymotion.com/download/). Make it executable and run it:
+
+```
+$ ./genymotion-2.12.0-linux_x64.bin --destination /home/axelle/softs
+...
+
+You can now use these tools from [/home/axelle/softs/genymotion]:
+ - genymotion
+ - genymotion-shell
+ - gmtool
+```
+
+When you run `genymotion`, choose the type of license you want. 
+
+
 
 # Android SDK
 
 To list available packages:
 ```bash
-$ android list sdk --extended -a
-
+$ /opt/android-sdk-linux/tools/bin/sdkmanager --list
 ```
 
 for example:
 ```
-$ ./android list sdk --extended --all | grep build-tools
-$ ./android list sdk --extended --all | grep sys-img-armeabi-v7a-android | grep -v wear | grep -v tv
+$ /opt/android-sdk-linux/tools/bin/sdkmanager --list | grep build-tools
 ```
 
 To install specific packages, a few examples:
