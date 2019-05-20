@@ -1,5 +1,11 @@
 # Fortigate
 
+## CLI help
+
+- show
+- show full: to get all values including the current default ones
+- tree
+
 ## Get system info
 
 ```bash
@@ -13,6 +19,9 @@
 ```bash
 # execute ping ....
 ```
+
+(or `exec ping`)
+
 
 ## Trace packets
 

@@ -27,6 +27,14 @@ filter by priority (e.g warning and above):
 adb logcat "*:W"
 ```
 
+
+## Failure [INSTALL_FAILED_VERIFICATION_FAILURE]
+
+`adb shell settings put global verifier_verify_adb_installs 0`
+
+[see here](https://stackoverflow.com/questions/15014519/apk-installation-failed-install-failed-verification-failure)
+
+
 # Emulators
 
 - Genymotion: customization of IMEI and Android ID
