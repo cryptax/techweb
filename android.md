@@ -27,6 +27,8 @@ filter by priority (e.g warning and above):
 adb logcat "*:W"
 ```
 
+kill an app: an easy way on rooted phones is to do `pm disable appname` (and then pm enable appname to be able to use it again). This kills the app.
+
 
 ## Failure [INSTALL_FAILED_VERIFICATION_FAILURE]
 
