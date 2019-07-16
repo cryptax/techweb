@@ -164,11 +164,13 @@ $ ntpq -p
 
 ### Install ZFS
 
-On Linux Mint 18:
+On Linux Mint 19:
 
 ```bash
 sudo apt-get install zfs-dkms zfsutils-linux
 ```
+
+Then, to import a pool: `zpool import POOLNAME`
 
 ## Firewall
 
