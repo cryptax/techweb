@@ -106,6 +106,8 @@ Or to reboot to NOOBS:
 echo 0 > /sys/module/bcm2709/parameters/reboot_part
 ```
 
+See [here](https://github.com/recalbox/recalbox-os/wiki/Setup-a-dual-boot-raspbian-recalboxOS-(EN)) to setup multi boot.
+Note this is not possible yet with Recalbox 6.0
 
 
 ## OS
