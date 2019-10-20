@@ -479,9 +479,10 @@ Viewing the interesting part of the logs (in /var/tmp/log for example): `tail -f
 ```
 update archive set rain=0.02 where dateTime=XXX;
 ```
-- [drop the daily summaries](http://www.weewx.com/docs/customizing.htm#Dropping_and_rebuilding_the_daily_summaries)
+- [drop the daily summaries](http://www.weewx.com/docs/utilities.htm#Action_--drop-daily)
 ```
-wee_config_database weewx.conf --drop-daily
+wee_database --drop-daily
+wee_database --rebuild-daily
 ```
 - If necessary, delete the NOAA for the affected month and year (in public_html/NOAA/)
 - The rows will rebuild correctly when weewx is restarted. If you don't want to wait, you can do it offline:
