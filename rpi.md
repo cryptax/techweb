@@ -43,7 +43,7 @@ update_config=1
 country=fr
 
 network={
-    ssid=your-ssid
+    ssid="your-ssid"
     psk="your key use wpa_passphrase"
     key_mgmt=WPA-PSK
 }
