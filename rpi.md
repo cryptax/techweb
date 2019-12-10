@@ -254,5 +254,31 @@ Then, on the client, it's very simple:
 - Linux: `openvpn -c xxx.ovpn`
 - Android: install OpenVPN app, and import .ovpn profile
 
+### Minecraft
+
+#### Server 
+
+[How to install](https://raspbian-france.fr/installer-serveur-minecraft-raspberry-pi/). 
+
+- It is indeed very long
+- Installed in `/home/axelle/minecraft`
+
+#### Client
+
+
+[Python in Minecraft](https://raspberry-pi.developpez.com/cours-tutoriels/minecraft/debuter/)
+
+minecraft-pi is a limited version of Minecraft. To play the "real" minecraft, follow [instructions here](https://www.raspberrypi.org/forums/viewtopic.php?t=186547)
+
+At some point you need to download `Minecraft.jar` from a remote server.
+
+```
+$ wget --no-check-certificate https://s3.amazonaws.com/Minecraft.Download/launcher/Minecraft.jar
+$ java -jar Minecraft.jar
+```
+
+In my case, my Java installation was corrupt, and I had to reinstall the JDK 1.8 (`apt-get install --reinstall...`).
+
+As of November 2017, the version of Minecraft is 1.11.2.
 
 
