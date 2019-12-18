@@ -56,6 +56,12 @@ $ lspci -vnn | grep VGA -A 12
 $ sudo ifconfig <interface> <address> netmask <mask>
 ```
 
+or with the `ip` syntax use commands such as:
+
+- `ip link set eth0 down`
+- `ip address add 192.168.0.77 dev eth0`
+
+
 ### Routes
 
 ```bash
@@ -159,6 +165,12 @@ $ ntpq -p
 ...
 ```
 
+## SSH
+
+```
+ssh-keygen -t rsa -b 4096
+ssh-keyscan -H 192.168.0.9 >> known_hosts
+```
 
 ## ZFS
 

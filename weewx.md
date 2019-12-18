@@ -143,17 +143,15 @@ Websites are known as 'reports'. You can set up several websites.
 	     image_height = 360
 ```
 
-In the configuration above, I am creating two websites. One goes in public_html.
-And the other one, with bigger images, goes in external_html.
+In the configuration above, I am creating two websites:
+
+1. One goes in public_html.
+2. And the other one, with bigger images, goes in external_html.
 
 The look of the website is configured in `skin.conf`.
 
 
-
-
 ### Uploading pages via FTP
-
-
 
 Uploading generated pages and images can be done via FTP, and this is yet another 'special' report.
 
@@ -188,6 +186,41 @@ Uploading generated pages and images can be done via FTP, and this is yet anothe
         # support this.
         secure_ftp = False
 ```
+
+
+### Rsyncing directories
+
+It is possible to rsync report directories from one host to another. For example, if you want to copy a weewx website to another host.
+
+Typically, weewx daemon runs as root (unless this has been changed). You must then ensure that root is able to SSH to the host to Rsync to with a public key (see SSH authorized_keys and known_hosts).
+
+
+```
+  [[RSYNC]]
+        skin = Rsync
+        
+        # rsync'ing the results to a webserver is treated as just another
+        # report, much like the FTP report.
+        #
+        # If you wish to use rsync, you must configure passwordless ssh using
+        # public/private key authentication from the user account that weewx
+        # runs as to the user account on the remote machine where the files
+        # will be copied.
+        #
+        # The following configure what system and remote path the files are
+        # sent to:
+        server = 192.168.0.9
+	path = /home/weewx/public_html
+        user = weewx
+        
+        # Rsync can be configured to remove files from the remote server if
+        # they don't exist under HTML_ROOT locally.  USE WITH CAUTION: if you
+        # make a mistake in the remote path, you could could unintentionally
+        # cause unrelated files to be deleted. Set to 1 to enable remote file
+        # deletion, zero to allow files to accumulate remotely.
+        delete = 0
+```	
+
 
 ### Metric units
 
