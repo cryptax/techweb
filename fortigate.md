@@ -118,4 +118,19 @@ diagnose wireless-controller wlac -d sta
 
 Disconnect a client: `diagnose wireless-controller wlac kickmac MACADDR`. This does not prevent the client from reconnecting ;)
 
+# FortiAP with Fortigate in Transparent mode
+
+Connect directly to the FortiAP using a switch (or a cross cable):
+
+- Set your host's IP address for example to 192.168.1.3
+- Connect to the FortiAP on `http://192.168.1.2`. This is its default factory address
+- Modify the AC_IPADDR (fortigate), the gateway (e.g. box, router...) and default IP address. Apply.
+- Verify the modifications have been performed.
+
+Then, un-wire the FortiAP and connect it to the FortiGate.
+
+- Check the FortiAP will connect on the Network interface "internal" hardware switch. Check this interface has CAPWAP support.
+- Go to Wifi, Managed FortiAPs, you should see it appear after a while (needs to boot). Authorize it.
+- Set the SSID etc.
+
 
