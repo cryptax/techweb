@@ -126,3 +126,18 @@ adc.read()
 
 
 [Example](http://www.jerome-bernard.com/blog/2015/10/04/wifi-temperature-sensor-with-nodemcu-esp8266/)
+
+## Wemos D1 mini
+
+[Instructions](https://www.instructables.com/id/Programming-the-WeMos-Using-Arduino-SoftwareIDE/)
+
+In Arduino:
+
+- Add board manager URL: https://arduino.esp8266.com/stable/package_esp8266com_index.json
+- Add ESP8266 in board manager
+- Select "LOLIN(WEMOS) D1 R2 & mini"
+- Use 921600 for upload speed
+- Use programmer "AVRISP mkll"
+
+
+If you get the error "board d1 unknown" see [solution here](https://arduino-esp8266.readthedocs.io/en/latest/faq/a04-board-generic-is-unknown.html)
