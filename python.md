@@ -4,65 +4,24 @@
 
 ## Converting...
 
-| Type    | Example |
-| ------- | ------- |
-| Integer | `i = 1231232131` |
-| Hexadecimal | 0x64 |
-| Hex string | '49631c83' |
-| String  | 'cryptax' |
-| Character | 'c' = '\x63' |
-| Byte    | 0x0b |
-| Byte string | '\x0b' |
-| Byte array | `[0xde, 0xad, 0xbe, 0xef]` |
+| From                     |  To                 |  Python 3 |
+| ------------------------ | ------------------ | ------------- |
+| `h=0x12d687` (hex)      | `1234567` (integer) | `h` (they are the same)|
+| `i = 1234567` (integer)   | `'0x12d687'` (string)  | `hex(i)` |
+| `i = 1234567` (integer)   | `'12d687'` (string without 0x)  | `'%x' % i` |
+| `hexstring='deadbeef'`    | `3735928559` (integer) | `int(hexstring, 16)` |
+| `hexstring='deadbeef'`    | `b'\xde\xad\xbe\xef'` (bytes) | `bytes.fromhex(hexstring)` |
+| `hexstring='de ad be ef'` | `b'\xde\xad\xbe\xef'` | `bytes.fromhex(hexstring)` |
+| `hexstring='deadbeef'`    | `bytearray(b'\xde\xad\xbe\xef')` (bytearray) | `bytearray.fromhex(hexstring)` |
+| `b=b'\xde\xad\xbe\xef'` (bytes) |  `'deadbeef'` (string) | `b.hex()` |
+| `b=bytearray(b'\xde\xad\xbe\xef')` (bytearray) |  `'deadbeef'` (string) | `b.hex()` |
+| `b=bytearray(b'\xde\xad\xbe\xef')` (bytearray)  | `[222, 173, 190, 239]` (list) | `list(b)` |
+| `l=[222, 173, 190, 239]` (list) | `b'\xde\xad\xbe\xef'` (bytes) | `bytes(l)` |
+| `n=97` (ascii value) | `'a'` (character) | `chr(n)` |
+| `c='a'` (character) |  `97` (ascii value) | `ord(c)` |
+| `s='cryptax'` (string) |  `b'cryptax'` (bytes) | `bytes(s, 'utf-8')` |
+| `b=b'cryptax'` (bytes) | `'cryptax'` (string) | `b.decode('utf-8')` |
 
-- Get **ASCII** value of a character: `ord('\x0b') = 0x0b = 11`
-- Get character
-
-
-### int to hex string
-
-Just use print conversion: 
-
-```python
-i = 1231232131
-"%x" % i
-```
-
-### hexstring to int value e.g "3012" -> 0x3012 = 12306
-
-Use `int` and specify base:
-
-```python
-hexs = '3012'
-i = int(hexs, 16)
-```
-
-### string or byte string to byte array (and reciprocally)
-
-Using `map(ord, ...)`: 
-
-- `map(ord, 'cryptax')` is `[99, 114, 121, 112, 116, 97, 120]`
-- `map(ord, '\xde\xad\xbe\xef')` is `[222, 173, 190, 239]`
-
-`list(bytearray(...))` gives the same result.
-
-Reciprocally, use `map(chr, ...)` and `join` to get rid of the array:
-
-
-`''.join(map(chr,[0xde, 0xad, 0xbe, 0xef]))` is '\xde\xad\xbe\xef'
-or
-`''.join([chr(x) for x in [0xde, 0xad, 0xbe, 0xef]])`
-
-### Hex string to byte array
-
-`fromhex` accepts a hex string, with spaces or not:
-
-- `list(bytearray.fromhex("deadbeef"))` is `[222, 173, 190, 239]`
-- same for `list(bytearray.fromhex("de ad be ef"))`
-
-Reciprocally,
-
-- `''.join(map(chr,[0xde, 0xad, 0xbe, 0xef])).encode('hex')` is `deadbeef`
 
 ### Time
 
@@ -78,17 +37,6 @@ From epoch to localtime:
 From local time to epoch:
 
 `print time.mktime(time.strptime("10.08.2015 00:00:00", "%d.%m.%Y %H:%M:%S"))`
-
-
-
-### String to hex string with no spaces (and reciprocally)
-
-- `'cryptax'.encode('hex')` is `'63727970746178'`
-- `'\xde\xad\xbe\xef'.encode('hex')` is `deadbeef`
-
-
-Reciprocally: `hexstring.decode('hex')`
-
 
 ## XOR
 

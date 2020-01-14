@@ -132,7 +132,8 @@ sdk.dir=/opt/android-sdk-linux/
 ```
 
 - myproject/app
-- myproject/app/build.gradle: this is the build.gradle for `app`. Specify how to compile that application. You might have to configure `compileSdkVersion`, `buildToolsVersion` and very probably `applicationId` and signing config ;-) Build tool version correspond to what you have in `ANDROID-SDK/build-tools`.
+- myproject/app/build.gradle: this is the build.gradle for `app`. Specify how to compile that application. You might have to configure `compileSdkVersion`, `buildToolsVersion` and very probably `applicationId` and signing config ;-)
+Build tool version correspond to what you have in `ANDROID-SDK/build-tools`.
 
 ```
 apply plugin: 'com.android.application'
