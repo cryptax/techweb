@@ -4,6 +4,7 @@
 
 ```bash
 adb shell am start -a android.intent.action.DIAL -d "tel:*%2306%23"
+adb shell am start-activity com.blah/com.blah.Activity
 adb emu sms send 1234 hello from here
 adb shell dumpsys iphonesubinfo 
 adb shell dumpsys cpuinfo

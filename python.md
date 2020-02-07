@@ -9,6 +9,7 @@
 | `h=0x12d687` (hex)      | `1234567` (integer) | `h` (they are the same)|
 | `i = 1234567` (integer)   | `'0x12d687'` (string)  | `hex(i)` |
 | `i = 1234567` (integer)   | `'12d687'` (string without 0x)  | `'%x' % i` |
+| `i=0x1234` (integer) | `b'\x12\x34` (bytes) | `i.to_bytes(2, byteorder='big')` |
 | `hexstring='deadbeef'`    | `3735928559` (integer) | `int(hexstring, 16)` |
 | `hexstring='deadbeef'`    | `b'\xde\xad\xbe\xef'` (bytes) | `bytes.fromhex(hexstring)` |
 | `hexstring='de ad be ef'` | `b'\xde\xad\xbe\xef'` | `bytes.fromhex(hexstring)` |
