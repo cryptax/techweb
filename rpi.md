@@ -1,5 +1,10 @@
 # Raspberry Pi
 
+## Hardware
+
+Know your version: `cat /proc/cpuinfo`.
+Then check [here](https://www.raspberrypi-spy.co.uk/2012/09/checking-your-raspberry-pi-board-version/)
+
 ## Installing Raspbian
 
 ### Copying the system
