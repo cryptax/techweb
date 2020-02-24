@@ -76,3 +76,10 @@ Swapping 2 columns in a file:
 ```
 
 
+## Convert
+
+Creating an image with text "Blah"
+
+```
+convert -background white -fill dodgerblue  -font "FreeMono" -strokewidth 2  -stroke blue   -undercolor lightblue -size 165x70 -gravity center label:Blah image.png
+```
