@@ -107,7 +107,53 @@ Deactivate: `deactivate`
 
 To use ipython of the virtual env: `alias ipy="python -c 'import IPython; IPython.terminal.ipapp.launch_new_instance()'"`
 
+With python3, `python3 -m venv`
+
+# Setup.py
+
+Sample setup.py:
+
+```python
+#!/usr/bin/env python3
+
+from setuptools import setup
+
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setup(
+    name = 'droidlysis',
+    description='Short description'
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    author='your name',
+    author_email='your email',
+    url='a URL',
+    license='MIT',
+    keywords="android malware reverse",
+    python_requires='>=3.0.*',
+    version = '3.0.13',
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Development Status :: 3 - Alpha",
+        "Operating System :: Unix",
+    ],
+    install_requires=[ 'configparser', 'python-magic', 'SQLAlchemy', 'rarfile' ],
+    scripts = [ 'yourpythonscripts.py' ]
+)
+```
+
+To add data files, add `include_package_data=True` and a `MANIFEST.in` file:
+
+```
+include conf/*.conf
+```
 
 
 
+
+- Create source package: `python3 setup.py sdist`
+- Upload package to test pypi: `twine upload --repository-url https://test.pypi.org/legacy/ dist/package-x.y.z.tar.gz`
+- Test install using test pypi: `pip3 install --no-cache-dir --extra-index-url https://test.pypi.org/simple/ package`
 
