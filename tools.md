@@ -47,3 +47,13 @@ Using totals:
 ```
 $ timew totals
 ```
+
+# Blender
+
+Get things ready for 3d printing:
+
+- Change scene unit length to **millimeters**
+- Change unit scale to **0.001**
+- Change viewport scale to **0.001**
+
+[tuto](https://www.youtube.com/watch?v=HqDnLg3o9WE)
