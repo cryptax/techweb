@@ -1,5 +1,10 @@
 # Raspberry Pi
 
+## Hardware
+
+Know your version: `cat /proc/cpuinfo`.
+Then check [here](https://www.raspberrypi-spy.co.uk/2012/09/checking-your-raspberry-pi-board-version/)
+
 ## Installing Raspbian
 
 ### Copying the system
@@ -124,6 +129,10 @@ Recalbox: default root login is `recalboxroot`. This can be secured via the menu
 
 To install games in the DOS directory, you must follow the instructions in Readme, i.e unzip the files in its own directory named `game.dos` or `game.pc` and inside that, create a file named `dosbox.bat` with the command to launch.
 
+- Stop all emulators: `killall emulationstation`
+- High scores for MAME games are located in `/recalbox/share/saves/mame/mame2003/hi`
+
+In MAME, to get more lives: TAB, then DIP Switch.
 
 
 ## Network 

@@ -4,6 +4,7 @@
 
 ```bash
 adb shell am start -a android.intent.action.DIAL -d "tel:*%2306%23"
+adb shell am start-activity com.blah/com.blah.Activity
 adb emu sms send 1234 hello from here
 adb shell dumpsys iphonesubinfo 
 adb shell dumpsys cpuinfo
@@ -132,7 +133,8 @@ sdk.dir=/opt/android-sdk-linux/
 ```
 
 - myproject/app
-- myproject/app/build.gradle: this is the build.gradle for `app`. Specify how to compile that application. You might have to configure `compileSdkVersion`, `buildToolsVersion` and very probably `applicationId` and signing config ;-) Build tool version correspond to what you have in `ANDROID-SDK/build-tools`.
+- myproject/app/build.gradle: this is the build.gradle for `app`. Specify how to compile that application. You might have to configure `compileSdkVersion`, `buildToolsVersion` and very probably `applicationId` and signing config ;-)
+Build tool version correspond to what you have in `ANDROID-SDK/build-tools`.
 
 ```
 apply plugin: 'com.android.application'

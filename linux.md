@@ -254,6 +254,15 @@ $ gtk-recordmydesktop
 
 To stop: Ctrl-Mod-s
 
+## ffmepg
+
+- Get the height and width of a video: `ffmepg -i myvideo.mp4`
+- Rescale a video: `ffmpeg -i input.jpg -vf scale=320:-1 output_320.png` (-1 is for keeping aspect ratio for one of the sizes)
+- Join to videos side by side: `ffmpeg -i video_1.mp4 -i video_2.mp4 -filter_complex '[0:v][1:v]hstack=2[vid]' -map [vid] -c:v libx264 -crf 22 -preset veryfast output.mp4`
+- Crop a video: `ffmpeg -i input.mp4 -vf  "crop=w:h:x:y" input_crop.mp4`
+- Put side by side two videos with same height: `ffmpeg -i left.mp4 -i rscaled.ogv -filter_complex '[0:v][1:v]hstack=2[vid]' -map [vid] -c:v libx264 -crf 22 -preset veryfast right.mp4`
+- Skip first few seconds of a video: `ffmpeg -ss 00:00:04 ...`
+
 ## Bluez
 
 ```bash 
@@ -268,6 +277,8 @@ $ sudo make install
 $ sudo cp attrib/gatttool /usr/bin/
 $sudo cp tools/btmgmt /usr/bin/
 ```
+
+
 
 ## Useful packages (at some point...)
 
