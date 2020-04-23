@@ -57,3 +57,24 @@ Get things ready for 3d printing:
 - Change viewport scale to **0.001**
 
 [tuto](https://www.youtube.com/watch?v=HqDnLg3o9WE)
+
+- Merge edges: F
+- Join to separate objects in a single one: Ctrl J
+
+[cup](https://www.youtube.com/watch?v=ChPle-aiJuA)
+
+- [HDRI Haven](https://hdrihaven.com)
+- [Texture Can](https://www.texturecan.com)
+
+[well](https://www.youtube.com/watch?v=m7m3QkwRcGE)
+
+- Bevel object: Ctrl B
+- Scale on the axis of the object: eg Sxx, or Syy, or Szz
+- Copy material: Shift Left click objects, and the last one with the material to copy, then Ctrl L to copy its material
+- Inside an object, select all linked parts: L
+- Assign a material to linked objects: L on each part, then in Material, select the correct material and click on Assign.
+- Duplicate an object: Shift D
+- Loop cut: Ctrl R
+- Make a line curve / round: Simple Deform / Bend, select the axis, select angle
+- Knife tool in edit mode: K
+
