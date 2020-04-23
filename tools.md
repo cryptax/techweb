@@ -54,7 +54,7 @@ Get things ready for 3d printing:
 
 - Change scene unit length to **millimeters**
 - Change unit scale to **0.001**
-- Change viewport scale to **0.001**
+- Change viewport scale to **0.001**: Viewport overlays
 
 [tuto](https://www.youtube.com/watch?v=HqDnLg3o9WE)
 
@@ -77,4 +77,6 @@ Get things ready for 3d printing:
 - Loop cut: Ctrl R
 - Make a line curve / round: Simple Deform / Bend, select the axis, select angle
 - Knife tool in edit mode: K
+- Toggle Tool/View right menu: N
 
+- Zoom in when you can't go past a point: click on the portion you want to zoom in and center the viez around the mouse cursor: Alt F, then zoom. [ref](https://blender.stackexchange.com/questions/644/why-does-the-zoom-sometimes-stop-at-a-point)
