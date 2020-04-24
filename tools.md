@@ -80,3 +80,15 @@ Get things ready for 3d printing:
 - Toggle Tool/View right menu: N
 
 - Zoom in when you can't go past a point: click on the portion you want to zoom in and center the viez around the mouse cursor: Alt F, then zoom. [ref](https://blender.stackexchange.com/questions/644/why-does-the-zoom-sometimes-stop-at-a-point)
+
+[create a rotating video around the object](https://www.youtube.com/watch?v=ghCsEVj2CFE):
+
+- Position an "Empty" object at the center where you want to point to
+- Position correctly the camera facing the object
+- Select the camera, then select the Empty: **Ctrl P (Pair) Object**
+- Open up a Timeline, select Auto Keying
+- With the Empty selected, hit **I > Rotation**
+- Go to a new place on the timeline, perform part of the rotation: R(x/y/z) Angle
+- And create 3 or 4 rotations (for example by 90 degrees)
+- Configure Output
+- Render Animation
