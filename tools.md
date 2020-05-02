@@ -98,4 +98,8 @@ Get things ready for 3d printing:
 - Create armatures, and extend them for the same lines of bones
 - Parent bones: click on the child, then shift click on the father and Ctrl P to parent, Keep Offset.
 - Symmetrize: select all bones, F3, Symmetrize and all bones named .L will be created .R
-- Attaching the armature to the body: in Object Mode, click on the body, shift click on the armature, then Ctrl P, and choose Armature Deform with Automatic Weights (or other) 
+- Attaching the armature to the body: in Object Mode, click on the body, shift click on the armature, then Ctrl P, and choose Armature Deform with Automatic Weights (or other)
+
+Animation:
+
+- Insert a new pose with *I* and select for instance Location and Rotation.
