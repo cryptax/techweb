@@ -48,6 +48,47 @@ $ lspci -vnn | grep VGA -A 12
 
 # System
 
+## Services
+
+[Create a service with Systemd](https://doc.ubuntu-fr.org/creer_un_service_avec_systemd)
+
+Example for Junior CTF using CTFd platform:
+
+```
+# cat ctfd.service 
+[Unit]
+Description=Capture The Flag server (CTFd)
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/bin/python /usr/share/CTFd/serve.py &
+Restart=on-failure
+TimeoutStopSec=300
+
+[Install]
+WantedBy=multi-user.target
+
+
+$ cat ctfd-docker.service 
+[Unit]
+Description=Docker containers for challenges of Junior CTF
+After=ctfd.service
+
+[Service]
+Type=oneshot
+User=axelle
+Group=axelle
+RemainAfterExit=yes
+ExecStart=/bin/bash /home/axelle/juniorctf/up.sh
+ExecStop=/bin/bash /home/axelle/juniorctf/down.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
 ## Network
 
 ### Interfaces
@@ -222,6 +263,14 @@ sudo udevadm trigger
 
 Specify keyboard bindings in `mate-control-center`
 
+## MDM
+
+To have the correct keyboard in MDM, at the end of `/etc/mdm/Init/Default`, insert:
+
+```
+/usr/bin/setxkbmap fr
+```
+
 
 # Sound
 
@@ -278,6 +327,13 @@ $ sudo cp attrib/gatttool /usr/bin/
 $sudo cp tools/btmgmt /usr/bin/
 ```
 
+## Piwigo
+
+[Piwigo gallery on nginx with debian](https://www.howtoforge.com/install-piwigo-gallery-on-nginx-with-debian-wheezy)
+
+```
+create database gallery01; grant all on gallery01.* to 'gallery'@'localhost' identified by 'PASSWORD'; flush privileges; \q;
+```
 
 
 ## Useful packages (at some point...)

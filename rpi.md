@@ -5,12 +5,23 @@
 Know your version: `cat /proc/cpuinfo`.
 Then check [here](https://www.raspberrypi-spy.co.uk/2012/09/checking-your-raspberry-pi-board-version/)
 
+Or `cat /proc/device-tree/model`:
+
+```
+Raspberry Pi 2 Model B Rev 1.1
+```
+
+### Fan
+
+[This explains where to connect the fan](https://castman.fr/wordpress/tag/connecter-le-ventilateur-sur-gpio-raspberry-pi-2-b/). There is nothing more to do: the fan starts when the RPi has booted.
+
+
 ## Installing Raspbian
 
 ### Copying the system
 
 - Download Raspbian. For a RPI A+, use the lite edition: `raspbian_lite_latest.zip`
-- Unzip it to get `2018-04-18-raspbian-stretch-lite.img`
+- Unzip it to get, e.g `2018-04-18-raspbian-stretch-lite.img`
 - Insert a SD card, and run `lsblk` to spot where it is located
 - Copy raspbian on the SD card: `sudo dd bs=4M if=2018-04-18-raspbian-stretch-lite.img of=/dev/sdX conv=fsync` where sdX is for example `sdj` (but not `sdj1`)
 
@@ -66,6 +77,9 @@ Update firmware:
 rpi-firmware update
 ```
 
+(doesn't exist any longer?)
+
+
 ## Multiboot
 
 NOOBS supports multi boot. Partitions typcally have the following layout.
@@ -115,11 +129,20 @@ See [here](https://github.com/recalbox/recalbox-os/wiki/Setup-a-dual-boot-raspbi
 Note this is not possible yet with Recalbox 6.0
 
 
+### RAM disk
+
+It is a good idea to have /tmp (and perhaps other directories) as tmpfs.
+
+[Create tmpfs](https://www.hellojona.com/2017/06/create-a-ram-disk-tmpfs-in-raspberry-pi-3/)
+
 ## OS
 
 To add a user: `sudo adduser name`.
 To add a user to a given group: `sudo adduser login group`
+
 Delete pi user: `sudo deluser -remove-home pi`
+Often, this does not work because Pi user is still used to run some process such as lightdm autologin.
+The easiest way to get rid of pi user is to run `raspi-config` and in Boot options, select Console mode not GUI (if that is okay), and with no auto login. Then, reboot, and `deluser pi` should work.
 
 ### Recalbox
 
@@ -163,23 +186,14 @@ update-rc.d dhcpd disable
 
 ### Disabling ipv6
 
-[How to disable IPv6 on RPi3](https://no-sheds.blogspot.fr/2017/05/disabling-ipv6-on-raspberry-pi.html)
+[How to disable IPv6 on RPi](https://www.leowkahman.com/2016/03/19/disable-ipv6-raspberry-raspbian/)
 
-/etc/modprobe.d/ipv6.conf:
+In /etc/sysctl.conf:  `net.ipv6.conf.all.disable_ipv6 = 1`, then restart `sysctl` with `sudo sysctl -p`
 
-```
-alias net-pf-10 off
-alias ipv6 off
-options ipv6 disable_ipv6=1
-blacklist ipv6
-```
+To re-enable, change the setting from 1 to 0, restart sysctl, and put eth0 down and up.
 
-In `/boot/cmdline.txt`:
+`
 
-
-```
-ipv6.disable=1 dwc_otg.lpm_enable=0 ...
-```
 
 ### Bluetooth
 
@@ -224,6 +238,10 @@ info
 
 
 ## Apps
+
+### Apache
+
+[Setting up Apache 2 on Raspbian](https://www.raspberrypi.org/documentation/remote-access/web-server/apache.md)
 
 ### Kodi
 

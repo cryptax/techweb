@@ -40,6 +40,7 @@ $ echo -n "deadbeef" | xxd -p -r | od -tx1
 ## Date
 
 Epoch to date: `date -d @1234567890`
+Get epoch: `date + "%s"`
 
 
 ## Find
