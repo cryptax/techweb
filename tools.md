@@ -78,6 +78,7 @@ Get things ready for 3d printing:
 - Make a line curve / round: Simple Deform / Bend, select the axis, select angle
 - Knife tool in edit mode: K
 - Toggle Tool/View right menu: N
+- Bezier Curve, then Convert To Mesh, then Extrude etc.
 
 - Zoom in when you can't go past a point: click on the portion you want to zoom in and center the viez around the mouse cursor: Alt F, then zoom. [ref](https://blender.stackexchange.com/questions/644/why-does-the-zoom-sometimes-stop-at-a-point)
 
