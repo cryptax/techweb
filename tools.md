@@ -63,7 +63,7 @@ Get things ready for 3d printing:
 
 [cup](https://www.youtube.com/watch?v=ChPle-aiJuA)
 
-- [HDRI Haven](https://hdrihaven.com)
+- [HDRI Haven](https://hdrihaven.com) or [HDR Labs](http://www.hdrlabs.com/sibl/archive.html)
 - [Texture Can](https://www.texturecan.com)
 
 [well](https://www.youtube.com/watch?v=m7m3QkwRcGE)
@@ -93,6 +93,14 @@ Get things ready for 3d printing:
 - And create 3 or 4 rotations (for example by 90 degrees)
 - Configure Output
 - Render Animation
+
+Shading:
+
+[Create silver, bronze, gold](https://www.youtube.com/watch?v=fCqmIL2GZ7c): use Glossy BSDF material, then select color: 
+
+- Gold: #D4AF37
+- Silver: #C0C0C0
+- Bronze: #CD7F32
 
 [creating an armature for a simple character](https://www.youtube.com/watch?reload=9&v=pkuOs_VA_y4)
 
