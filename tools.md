@@ -102,7 +102,7 @@ Shading:
 - Silver: #C0C0C0
 - Bronze: #CD7F32
 
-[creating an armature for a simple character](https://www.youtube.com/watch?reload=9&v=pkuOs_VA_y4)
+[creating an armature for a simple character](https://www.youtube.com/watch?reload=9&v=pkuOs_VA_y4) or [here](https://www.youtube.com/watch?v=srpOeu9UUBU)
 
 - Create armatures, and extend them for the same lines of bones
 - Parent bones: click on the child, then shift click on the father and Ctrl P to parent, Keep Offset.
@@ -110,6 +110,10 @@ Shading:
 - Attaching the armature to the body: in Object Mode, click on the body, shift click on the armature, then Ctrl P, and choose Armature Deform with Automatic Weights (or other)
 - If we want clothes to move with the body, make clothes a child of body: click on the clothes; then the body, Ctrl P, *Vertex*. If clothes aren't moving correctly check *Weight* applied to clothes and that the right bones have weight.
 - To remove parenting: *Alt P*
+- For automatic rigging, use the Rigify Add on (in Preferences), and add an Armature such as Basic or Human body, then adjust everywhere and go to the armature settings in Object mode and do Generate Rig. See [here](https://www.youtube.com/watch?v=XHa2Y8zjtZQ) for details.
+
+
+
 
 Animation:
 
