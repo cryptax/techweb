@@ -146,9 +146,16 @@ The easiest way to get rid of pi user is to run `raspi-config` and in Boot optio
 
 ### Recalbox
 
-To install recalbox: `sudo dd if=~/Downloads/recalbox.img of=/dev/sdj bs=32M`
+- To install recalbox: `sudo dd if=~/Downloads/recalbox.img of=/dev/sdj bs=32M`
+- Recalbox: default root login is `recalboxroot`. This can be secured via the menu and modified to another password.
+- Image size: on some TV sets, you may need [overscan](https://github.com/recalbox/recalbox-os/wiki/Overscan-settings-%28FR%29) (**Advanced settings > Overscan : ON**)
 
-Recalbox: default root login is `recalboxroot`. This can be secured via the menu and modified to another password.
+#### Installing games
+
+To install games: upload to `/recalbox/share/roms`. You should upload them using the Recalbox Web UI. Go to ROMs and then the correct emulator. Don't forget to click on "restart ES" after you have uploaded (or deleted) games in a given emulator or the action won't be done!
+
+- Sega Mega Drive = Genesis
+
 
 To install games in the DOS directory, you must follow the instructions in Readme, i.e unzip the files in its own directory named `game.dos` or `game.pc` and inside that, create a file named `dosbox.bat` with the command to launch.
 
@@ -156,6 +163,15 @@ To install games in the DOS directory, you must follow the instructions in Readm
 - High scores for MAME games are located in `/recalbox/share/saves/mame/mame2003/hi`
 
 In MAME, to get more lives: TAB, then DIP Switch.
+
+To play: add credits with **SELECT**
+
+#### Kodi
+
+Kodi exists on Recalbox. It is a *Jarvis* version.
+
+Explains how to install [super repo](https://superrepo.org/get-started/)
+
 
 
 ## Network 
@@ -193,6 +209,105 @@ In /etc/sysctl.conf:  `net.ipv6.conf.all.disable_ipv6 = 1`, then restart `sysctl
 To re-enable, change the setting from 1 to 0, restart sysctl, and put eth0 down and up.
 
 `
+
+### TP-Link USB Wifi Dongle
+
+#### How to install TP-Link Driver - Quick setup
+
+Download the driver (it depends on your kernel):
+
+```
+wget http://downloads.fars-robotics.net/wifi-drivers/8822bu-drivers/8822bu-5.4.51-v7l-1333.tar.gz
+```
+
+Untar: `tar xvf 8822bu-5.4.51-v7l-1333.tar.gz -C /tmp`
+
+Then:
+
+```
+cd /tmp
+sudo ./install.sh
+sudo reboot
+```
+
+#### Understanding how to install (if above does not work)
+
+```
+lsusb
+Bus 001 Device 004: ID 2357:0115 TP-Link
+```
+
+
+Get the install script:
+
+```
+sudo wget http://downloads.fars-robotics.net/wifi-drivers/install-wifi -O /usr/bin/install-wifi
+sudo chmod u+x /usr/bin/install-wifi
+```
+
+It is a good idea to run the install script to get an idea of which driver you need, but the script is buggy and did not install correctly the driver in my case.
+
+Run the script: `sudo install-wifi`
+
+It says:
+
+```
+sudo /usr/bin/install-wifi
+
+ *** Raspberry Pi wifi driver installer by MrEngman.
+ *** Performing self-update
+ *** Relaunching after update
+
+ *** Raspberry Pi wifi driver installer by MrEngman.
+
+Your current kernel revision = 5.4.51-v7l+
+Your current kernel build    = #1333
+
+Checking for a wifi module to determine the driver to install.
+
+Your wifi module is Bus 001 Device 003: ID 2357:0115 TP-Link 
+
+And it uses the 8822bu driver.
+
+
+Your Pi revision number is c03111
+You have a Pi 4 v1.1
+Checking for a 8822bu wifi driver module for your current kernel.
+There is a driver module available for this kernel revision.
+Downloading the 8822bu driver, 8822bu-5.4.51-v7l-1333.tar.gz.
+Installing the 8822bu driver.
+
+Installing driver config file 8822bu.conf.
+mv 8822bu.conf /etc/modprobe.d/.
+Installing driver module 8822bu.ko.
+install -p -m 644 8822bu.ko /lib/modules/5.4.51-v7l+/kernel/drivers/net/wireless
+Loading and running the 8822bu driver, 8822bu.ko.
+```
+
+We are mainly interested in the fact:
+
+1. It detected the USB Wifi Dongle
+2. The driver for that dongle is 8822bu.conf
+3. The precise package to download is 8822bu-5.4.51-v7l-1333.tar.gz
+
+The install script downloads the package correctly, but then it fails to run it correctly and, in my case,
+
+- `/lib/modules/5.4.51-v7l+/kernel/drivers/net/wireless/8822bu.ko` was empty!
+- `/etc/modprobe.d/8822bu.conf` was empty!
+
+Although the files are present in the package...
+
+So, you need to fix that, un-tar the package and copy manually
+
+1. The kernel module
+2. The kernel module config file
+
+
+#### Refs
+
+- Raspbian Forum (people with similar problems, not your exact model): https://www.raspberrypi.org/forums/viewtopic.php?t=57426
+- install-wifi script: http://downloads.fars-robotics.net/wifi-drivers/install-wifi
+
 
 
 ### Bluetooth

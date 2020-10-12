@@ -10,6 +10,10 @@ adb shell dumpsys iphonesubinfo
 adb shell dumpsys cpuinfo
 ```
 
+Retrieve several files: `adb shell 'ls sdcard/gps*.trace' | tr -d '\r' | xargs -n1 adb pull`
+
+
+
 get the **Android ID**:
 
 ```bash
