@@ -352,6 +352,7 @@ To stop: Ctrl-Mod-s
 - Crop a video: `ffmpeg -i input.mp4 -vf  "crop=w:h:x:y" input_crop.mp4`
 - Put side by side two videos with same height: `ffmpeg -i left.mp4 -i rscaled.ogv -filter_complex '[0:v][1:v]hstack=2[vid]' -map [vid] -c:v libx264 -crf 22 -preset veryfast right.mp4`
 - Skip first few seconds of a video: `ffmpeg -ss 00:00:04 ...`
+- Convert mp4 to flv: `ffmpeg -i source.mp4 -c:v libx264 -crf 19 destinationfile.flv`
 
 ## Bluez
 
