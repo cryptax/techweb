@@ -231,6 +231,19 @@ Then, to import a pool: `zpool import POOLNAME`
 $ iptables -t nat -F ==> flush the NAT table
 ```
 
+Redirect an IP address to yourself (or another IP address):
+
+```bash
+sudo iptables -t nat -A OUTPUT -p all -d SOURCE-IP -j DNAT --to-destination DEST-IP
+```
+
+To remove a rule,
+
+1. List rule number: `sudo iptables -t nat -v -L OUTPUT -n --line-number`
+2. Remove the given number: `sudo iptables -t nat -D OUTPUT NUM`
+
+Here OUTPUT refers to the part of iptables to work on
+
 
 ## User management 
 
