@@ -89,6 +89,47 @@ ExecStop=/bin/bash /home/axelle/juniorctf/down.sh
 WantedBy=multi-user.target
 ```
 
+If you want a service that runs periodically, then use a **timer** (which is a special service) (or use crontab). [This explains how to create a timer](https://www.linuxtricks.fr/wiki/systemd-creer-des-services-timers-unites) (in French).
+
+Basically,
+
+1. Create a service file. The service file dictates the executable to run and in which conditions.
+2. Create a timer file (extension .timer) to explain how frequently to run the service.
+3. Installer the service and timer files to `/lib/systemd/system`
+4. Reload: `sudo systemctl daemon-reload`
+5. Enable and then activate the timer: `sudo systemctl enable/start xxx.timer`
+
+Example: the service file:
+
+```
+[Unit]
+Description=Allows kid to log only at certain times of the day
+After=graphical.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/xx/scripts/parentalcontrol.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
+The timer file:
+
+```
+[Unit]
+Description=Allows kid to log only at certain times of the day
+
+
+[Timer]
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=multi-user.target
+```
+
+
+
 ## Network
 
 ### Interfaces
@@ -324,6 +365,7 @@ To stop: Ctrl-Mod-s
 - Crop a video: `ffmpeg -i input.mp4 -vf  "crop=w:h:x:y" input_crop.mp4`
 - Put side by side two videos with same height: `ffmpeg -i left.mp4 -i rscaled.ogv -filter_complex '[0:v][1:v]hstack=2[vid]' -map [vid] -c:v libx264 -crf 22 -preset veryfast right.mp4`
 - Skip first few seconds of a video: `ffmpeg -ss 00:00:04 ...`
+- Convert mp4 to flv: `ffmpeg -i source.mp4 -c:v libx264 -crf 19 destinationfile.flv`
 
 ## Bluez
 

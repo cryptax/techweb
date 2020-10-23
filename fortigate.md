@@ -133,4 +133,11 @@ Then, un-wire the FortiAP and connect it to the FortiGate.
 - Go to Wifi, Managed FortiAPs, you should see it appear after a while (needs to boot). Authorize it.
 - Set the SSID etc.
 
+To [set the country](https://kb.fortinet.com/kb/viewContent.do?externalId=FD35116)
+
+```
+config wireless-controller setting
+set country GB
+```
+
 
