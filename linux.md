@@ -367,6 +367,24 @@ To stop: Ctrl-Mod-s
 - Skip first few seconds of a video: `ffmpeg -ss 00:00:04 ...`
 - Convert mp4 to flv: `ffmpeg -i source.mp4 -c:v libx264 -crf 19 destinationfile.flv`
 
+Remove between x and y:
+
+- `ffmpeg  -t 00:11:00 -i input.mp4 -map 0 -c copy segment1.mp4`
+- `ffmpeg -ss 00:11:10 -i input.mp4 -map 0 -c copy segment2.mp4`
+
+Then create a file:
+
+```
+file 'segment1.mp4'
+file 'segment2.mp4'
+```
+
+Then concatenate:
+
+`ffmpeg -f concat -i input.txt -map 0 -c copy output.mp4`
+
+
+
 ## Bluez
 
 ```bash 
