@@ -1,5 +1,9 @@
 # Fortigate
 
+## Console access
+
+`screen /dev/ttyUSB0 9600`
+
 ## CLI help
 
 - show
@@ -37,6 +41,7 @@ for example:
 # diag sniffer packet dmz none 4 10
 # diag sniffer packet internal 'src host 192.168.0.6 and icmp' 4
 # diag sniffer packet any 'port 80 or port 8080' 4 0 a
+# diagnose sniffer packet any ' host 255.255.255.255 and udp and port 67 or port 68' 4 0 a
 ```
 
 [KB Fortinet](http://kb.fortinet.com/kb/viewContent.do?externalId=11186)
@@ -117,6 +122,19 @@ diagnose wireless-controller wlac -d sta
 ```
 
 Disconnect a client: `diagnose wireless-controller wlac kickmac MACADDR`. This does not prevent the client from reconnecting ;)
+
+# Setting Transparent mode
+
+```
+config system settings
+    set opmode transparent
+    set inspection-mode flow
+    set manageip 192.168.0.99/255.255.255.0
+    set gui-ips enable
+    set gui-endpoint-control disable
+    set gui-dnsfilter disable
+end
+```
 
 # FortiAP with Fortigate in Transparent mode
 
