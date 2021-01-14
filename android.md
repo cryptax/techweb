@@ -31,6 +31,9 @@ adb logcat "*:W"
 kill an app: an easy way on rooted phones is to do `pm disable appname` (and then pm enable appname to be able to use it again). This kills the app.
 
 
+- Launch Home: `am start -a android.intent.action.MAIN -c android.intent.category.HOME`
+
+
 ## Failure [INSTALL_FAILED_VERIFICATION_FAILURE]
 
 `adb shell settings put global verifier_verify_adb_installs 0`
