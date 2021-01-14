@@ -48,6 +48,88 @@ $ lspci -vnn | grep VGA -A 12
 
 # System
 
+## Services
+
+[Create a service with Systemd](https://doc.ubuntu-fr.org/creer_un_service_avec_systemd)
+
+Example for Junior CTF using CTFd platform:
+
+```
+# cat ctfd.service 
+[Unit]
+Description=Capture The Flag server (CTFd)
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/bin/python /usr/share/CTFd/serve.py &
+Restart=on-failure
+TimeoutStopSec=300
+
+[Install]
+WantedBy=multi-user.target
+
+
+$ cat ctfd-docker.service 
+[Unit]
+Description=Docker containers for challenges of Junior CTF
+After=ctfd.service
+
+[Service]
+Type=oneshot
+User=axelle
+Group=axelle
+RemainAfterExit=yes
+ExecStart=/bin/bash /home/axelle/juniorctf/up.sh
+ExecStop=/bin/bash /home/axelle/juniorctf/down.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
+If you want a service that runs periodically, then use a **timer** (which is a special service) (or use crontab). [This explains how to create a timer](https://www.linuxtricks.fr/wiki/systemd-creer-des-services-timers-unites) (in French).
+
+Basically,
+
+1. Create a service file. The service file dictates the executable to run and in which conditions.
+2. Create a timer file (extension .timer) to explain how frequently to run the service.
+3. Installer the service and timer files to `/lib/systemd/system`
+4. Reload: `sudo systemctl daemon-reload`
+5. Enable and then activate the timer: `sudo systemctl enable/start xxx.timer`
+
+Example: the service file:
+
+```
+[Unit]
+Description=Allows kid to log only at certain times of the day
+After=graphical.target
+
+[Service]
+Type=oneshot
+ExecStart=/home/xx/scripts/parentalcontrol.sh
+
+[Install]
+WantedBy=multi-user.target
+```
+
+The timer file:
+
+```
+[Unit]
+Description=Allows kid to log only at certain times of the day
+
+
+[Timer]
+OnUnitActiveSec=5min
+
+[Install]
+WantedBy=multi-user.target
+```
+
+
+
 ## Network
 
 ### Interfaces
@@ -190,6 +272,19 @@ Then, to import a pool: `zpool import POOLNAME`
 $ iptables -t nat -F ==> flush the NAT table
 ```
 
+Redirect an IP address to yourself (or another IP address):
+
+```bash
+sudo iptables -t nat -A OUTPUT -p all -d SOURCE-IP -j DNAT --to-destination DEST-IP
+```
+
+To remove a rule,
+
+1. List rule number: `sudo iptables -t nat -v -L OUTPUT -n --line-number`
+2. Remove the given number: `sudo iptables -t nat -D OUTPUT NUM`
+
+Here OUTPUT refers to the part of iptables to work on
+
 
 ## User management 
 
@@ -221,6 +316,14 @@ sudo udevadm trigger
 ## Mate
 
 Specify keyboard bindings in `mate-control-center`
+
+## MDM
+
+To have the correct keyboard in MDM, at the end of `/etc/mdm/Init/Default`, insert:
+
+```
+/usr/bin/setxkbmap fr
+```
 
 
 # Sound
@@ -262,6 +365,26 @@ To stop: Ctrl-Mod-s
 - Crop a video: `ffmpeg -i input.mp4 -vf  "crop=w:h:x:y" input_crop.mp4`
 - Put side by side two videos with same height: `ffmpeg -i left.mp4 -i rscaled.ogv -filter_complex '[0:v][1:v]hstack=2[vid]' -map [vid] -c:v libx264 -crf 22 -preset veryfast right.mp4`
 - Skip first few seconds of a video: `ffmpeg -ss 00:00:04 ...`
+- Inserting text in videos with subtitles: [tuto](https://github.com/Erkaman/ffmpeg-add-text-to-video-tutorial)
+- Convert mp4 to flv: `ffmpeg -i source.mp4 -c:v libx264 -crf 19 destinationfile.flv`
+
+Remove between x and y:
+
+- `ffmpeg  -t 00:11:00 -i input.mp4 -map 0 -c copy segment1.mp4`
+- `ffmpeg -ss 00:11:10 -i input.mp4 -map 0 -c copy segment2.mp4`
+
+Then create a file:
+
+```
+file 'segment1.mp4'
+file 'segment2.mp4'
+```
+
+Then concatenate:
+
+`ffmpeg -f concat -i input.txt -map 0 -c copy output.mp4`
+
+
 
 ## Bluez
 
@@ -278,6 +401,13 @@ $ sudo cp attrib/gatttool /usr/bin/
 $sudo cp tools/btmgmt /usr/bin/
 ```
 
+## Piwigo
+
+[Piwigo gallery on nginx with debian](https://www.howtoforge.com/install-piwigo-gallery-on-nginx-with-debian-wheezy)
+
+```
+create database gallery01; grant all on gallery01.* to 'gallery'@'localhost' identified by 'PASSWORD'; flush privileges; \q;
+```
 
 
 ## Useful packages (at some point...)

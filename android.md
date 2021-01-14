@@ -10,6 +10,10 @@ adb shell dumpsys iphonesubinfo
 adb shell dumpsys cpuinfo
 ```
 
+Retrieve several files: `adb shell 'ls sdcard/gps*.trace' | tr -d '\r' | xargs -n1 adb pull`
+
+
+
 get the **Android ID**:
 
 ```bash
@@ -74,7 +78,10 @@ When you run `genymotion`, choose the type of license you want.
 
 # Android SDK
 
-To list available packages:
+Rooting the emulator: https://github.com/0xFireball/root_avd
+
+
+**OLD**: To list available packages:
 ```bash
 $ /opt/android-sdk-linux/tools/bin/sdkmanager --list
 ```

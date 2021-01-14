@@ -422,7 +422,7 @@ You need to restart rsyslog: service rsyslog restart.
 
 ### Install the tweeting extension
 
-Download the [extension](https://github.com/weewx/weewx/wiki/Twitter) and follow the configuration steps. In particular,
+Download the [extension](https://github.com/matthewwall/weewx-twitter) (in particular `./bin/user/twitter.py`) and follow the configuration steps. In particular,
 
 ```
 sudo apt-get install python-setuptools
