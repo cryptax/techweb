@@ -83,6 +83,15 @@ Get things ready for 3d printing:
 - Zoom in when you can't go past a point: click on the portion you want to zoom in and center the viez around the mouse cursor: Alt F, then zoom. [ref](https://blender.stackexchange.com/questions/644/why-does-the-zoom-sometimes-stop-at-a-point)
 
 
+Write on a surface [see](https://www.youtube.com/watch?v=l2TGOElE_1c)
+
+- Create a text object
+- In edit mode, change the text
+- Convert to Mesh from Text
+- Modifier, Decimate to simplify the number of faces
+- Modifier, Solidify to create a width
+
+
 
 Lights:
 
@@ -129,14 +138,16 @@ Lights:
 
 - Insert a new pose with *I* and select for instance Location and Rotation.
 
-[create a rotating video around the object](https://www.youtube.com/watch?v=ghCsEVj2CFE):
+[create a rotating video around the object](https://www.youtube.com/watch?v=Y9odlxWL_pI):
 
-- Position an "Empty" object at the center where you want to point to
+- Position an "Empty" object at the center where you want to point to. The empty can be with the form of a cube (easier to see).
 - Position correctly the camera facing the object
-- Select the camera, then select the Empty: **Ctrl P (Pair) Object**
-- Open up a Timeline, select Auto Keying
-- With the Empty selected, hit **I > Rotation**
-- Go to a new place on the timeline, perform part of the rotation: R(x/y/z) Angle
-- And create 3 or 4 rotations (for example by 90 degrees)
+- Select the **camera** first, then select the Empty: **Ctrl P (Pair) Object**, Keep Transform.
+- Open up a Timeline, and position yourself on 0 of the timeline.
+- Go to the Empty, Object Properties.
+- Hit the small button right of Rotation Z. This will add a mark on the timeline (other solution: hit I and Rotation.
+- Go to timeline, and put yourself at the end of the timeline.
+- Modify the Rotation Z to 360 degreeds. Hit again the button. It adds another mark at the end of the timeline
+- Play!
 - Configure Output
 - Render Animation
