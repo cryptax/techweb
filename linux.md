@@ -272,6 +272,19 @@ Then, to import a pool: `zpool import POOLNAME`
 $ iptables -t nat -F ==> flush the NAT table
 ```
 
+Redirect an IP address to yourself (or another IP address):
+
+```bash
+sudo iptables -t nat -A OUTPUT -p all -d SOURCE-IP -j DNAT --to-destination DEST-IP
+```
+
+To remove a rule,
+
+1. List rule number: `sudo iptables -t nat -v -L OUTPUT -n --line-number`
+2. Remove the given number: `sudo iptables -t nat -D OUTPUT NUM`
+
+Here OUTPUT refers to the part of iptables to work on
+
 
 ## User management 
 
@@ -352,7 +365,26 @@ To stop: Ctrl-Mod-s
 - Crop a video: `ffmpeg -i input.mp4 -vf  "crop=w:h:x:y" input_crop.mp4`
 - Put side by side two videos with same height: `ffmpeg -i left.mp4 -i rscaled.ogv -filter_complex '[0:v][1:v]hstack=2[vid]' -map [vid] -c:v libx264 -crf 22 -preset veryfast right.mp4`
 - Skip first few seconds of a video: `ffmpeg -ss 00:00:04 ...`
+- Inserting text in videos with subtitles: [tuto](https://github.com/Erkaman/ffmpeg-add-text-to-video-tutorial)
 - Convert mp4 to flv: `ffmpeg -i source.mp4 -c:v libx264 -crf 19 destinationfile.flv`
+
+Remove between x and y:
+
+- `ffmpeg  -t 00:11:00 -i input.mp4 -map 0 -c copy segment1.mp4`
+- `ffmpeg -ss 00:11:10 -i input.mp4 -map 0 -c copy segment2.mp4`
+
+Then create a file:
+
+```
+file 'segment1.mp4'
+file 'segment2.mp4'
+```
+
+Then concatenate:
+
+`ffmpeg -f concat -i input.txt -map 0 -c copy output.mp4`
+
+
 
 ## Bluez
 
