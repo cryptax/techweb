@@ -23,3 +23,9 @@ git config pack.threads 1
 
 - Get a particular commit for a file: `git checkout xxxx file`
 - Return from a detached HEAD state: `git checkout master` or `git checkout -`
+
+
+## Gogs
+
+- To use SSH, make sure git account has a `/home/git` home dir + SSH server allows use of `authorized_keys`.
+- See https://discuss.gogs.io/t/how-to-config-ssh-settings/34

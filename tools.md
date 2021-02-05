@@ -79,22 +79,28 @@ Get things ready for 3d printing:
 - Knife tool in edit mode: K
 - Toggle Tool/View right menu: N
 - Bezier Curve, then Convert To Mesh, then Extrude etc.
-
+- Move the pointer: Ctrl Right Click.
 - Zoom in when you can't go past a point: click on the portion you want to zoom in and center the viez around the mouse cursor: Alt F, then zoom. [ref](https://blender.stackexchange.com/questions/644/why-does-the-zoom-sometimes-stop-at-a-point)
 
-[create a rotating video around the object](https://www.youtube.com/watch?v=ghCsEVj2CFE):
 
-- Position an "Empty" object at the center where you want to point to
-- Position correctly the camera facing the object
-- Select the camera, then select the Empty: **Ctrl P (Pair) Object**
-- Open up a Timeline, select Auto Keying
-- With the Empty selected, hit **I > Rotation**
-- Go to a new place on the timeline, perform part of the rotation: R(x/y/z) Angle
-- And create 3 or 4 rotations (for example by 90 degrees)
-- Configure Output
-- Render Animation
+Write on a surface [see](https://www.youtube.com/watch?v=l2TGOElE_1c)
 
-Shading:
+- Create a text object
+- In edit mode, change the text
+- Convert to Mesh from Text
+- Modifier, Decimate to simplify the number of faces
+- Modifier, Solidify to create a width
+
+
+
+Lights:
+
+- Create 3 lights Sun of power 1
+- You can give them colors
+
+
+
+## Shading
 
 [Create silver, bronze, gold](https://www.youtube.com/watch?v=fCqmIL2GZ7c): use Glossy BSDF material, then select color: 
 
@@ -102,7 +108,21 @@ Shading:
 - Silver: #C0C0C0
 - Bronze: #CD7F32
 
-[creating an armature for a simple character](https://www.youtube.com/watch?reload=9&v=pkuOs_VA_y4) or [here](https://www.youtube.com/watch?v=srpOeu9UUBU)
+- Click on an object and add material
+- If you want the same material for several objects, click on them first, then the last as example, Alt L (or Ctrl?), MAterial
+- Simple color with Base Color
+
+
+## Sculpting
+
+- Brush Settings, Dyn Topo: Constant Detail + 12.00 resolution
+- Snake Hook to get parts, Shift to Smooth
+- Inflate to put more material.
+- Draw for precise parts.
+
+## Armatures 
+
+[Creating an armature for a simple character](https://www.youtube.com/watch?reload=9&v=pkuOs_VA_y4) or [here](https://www.youtube.com/watch?v=srpOeu9UUBU)
 
 - Create armatures, and extend them for the same lines of bones
 - Parent bones: click on the child, then shift click on the father and Ctrl P to parent, Keep Offset.
@@ -114,8 +134,20 @@ Shading:
 - For automatic rigging, use the Rigify Add on (in Preferences), and add an Armature such as Basic or Human body, then adjust everywhere and go to the armature settings in Object mode and do Generate Rig. See [here](https://www.youtube.com/watch?v=XHa2Y8zjtZQ) for details.
 
 
-
-
-Animation:
+## Animation
 
 - Insert a new pose with *I* and select for instance Location and Rotation.
+
+[create a rotating video around the object](https://www.youtube.com/watch?v=Y9odlxWL_pI):
+
+- Position an "Empty" object at the center where you want to point to. The empty can be with the form of a cube (easier to see).
+- Position correctly the camera facing the object
+- Select the **camera** first, then select the Empty: **Ctrl P (Pair) Object**, Keep Transform.
+- Open up a Timeline, and position yourself on 0 of the timeline.
+- Go to the Empty, Object Properties.
+- Hit the small button right of Rotation Z. This will add a mark on the timeline (other solution: hit I and Rotation.
+- Go to timeline, and put yourself at the end of the timeline.
+- Modify the Rotation Z to 360 degreeds. Hit again the button. It adds another mark at the end of the timeline
+- Play!
+- Configure Output
+- Render Animation

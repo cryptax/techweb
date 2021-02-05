@@ -79,7 +79,17 @@ Specify the type of weather station:
     #  WMR200    WS23xx         CC3000
     #  WMR9x8    TE923          Simulator
     station_type = WMR200
+```
 
+Recently, WMR200 weather stations are no longer natively supported. Their support has been shifted to an extension: https://github.com/weewx/weewx-wmr200
+
+Follow installation of this extension [here](https://github.com/weewx/weewx-wmr200)
+
+
+Basically, you will get new extension files and a WMR200 section in the configuration file:
+
+
+```
 [WMR200]
     # This section is for the Oregon Scientific WMR200
     
@@ -87,9 +97,17 @@ Specify the type of weather station:
     model = WMR200
     
     # The driver to use:
-    driver = weewx.drivers.wmr200
+    driver = user.wmr200
 
     archive_interval = 300
+
+    loop_interval = 2.5
+    erase_archive = False
+    sensor_status = True
+    archive_threshold = 1512000
+    archive_startup = 120
+    user_pc_time = True
+
 ```
 
 ### Sending information remotely to AWEKAS, CWOP etc
@@ -483,11 +501,16 @@ In  `/usr/share/weewx/user/twitter.py`, modify to only send tweets at given time
             return
 ```
 
+### Creating OAuth tokens etc for Twitter
+
+Go to https://apps.twitter.com/app/new, and login if necessary.
+Manage the app and generate/regenerate/revoke tokens
 
 
-### Database tweeks
 
-The database that holds data is archive/weewx.sdb (unless you changed the name in the configuration file).
+## Database tweeks
+
+The database that holds data is `archive/weewx.sdb` (unless you changed the name in the configuration file).
 To retrieve the format of the archive database:
 ```
 .schema archive
