@@ -12,6 +12,9 @@ adb shell dumpsys cpuinfo
 
 Retrieve several files: `adb shell 'ls sdcard/gps*.trace' | tr -d '\r' | xargs -n1 adb pull`
 
+Launch an activity and wait for debugger to attach:
+
+`adb shell am start -D -S -n package/activity`
 
 
 get the **Android ID**:
