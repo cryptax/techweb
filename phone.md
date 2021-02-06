@@ -37,7 +37,7 @@ TWRP recovery is a *custom recovery software*.
 
 ### Install Lineage from TWRP
 
-- Download Lineage for your OS. I have `j5ntle`.
+- Download [Lineage for your OS](https://msm8916.com/). I have `j5ntle`.
 - I recommend having at hand a SD card reader and USB power cable :)
 
 - **I had to fix the ZIP** of Lineage I had downloaded, [otherwise it would fail with error at Install in my case, damn](https://forum.xda-developers.com/showthread.php?t=2522762)
@@ -45,3 +45,9 @@ TWRP recovery is a *custom recovery software*.
 - Put the Lineage ZIP on your SD card (`adb push ...` e.g `adb push lineage.zip /sdcard/TWRP`)
 - Reboot your phone in Recovery mode and Flash Lineage [following those instructions](https://www.getdroidtips.com/install-custom-rom-using-twrp-recovery/). Once inside TWRP, (1) wipe and **swipe to factory reset** (no option change), (2) install the zips (do not check the checksum as we've patched it). Install GAPPS or other zips. If needed, files can be copied to the sdcard using adb.
 
+
+### Open GApps
+
+- Lineage 15 + Open Gapps 8 ARM mini is enough
+- Lineage 16 + Open Gapps 9 ARM
+- Lineage 17.1 + Open Gapps 10 ARM
