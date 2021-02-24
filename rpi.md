@@ -385,7 +385,7 @@ Add user to dialout group
 ### PiVPN
 
 [PiVPN](http://www.pivpn.io/): the install is straight forward but a bit long (even on Rpi3).
-Then, do not forget to open port UDP 1194 on the firewall and box.
+Then, do not forget to open port **UDP** 1194 on the firewall and box (UDP, not TCP).
 
 To create a profile, use the `pivpn --add` command.
 To list current connections, `pivpn -c`.
