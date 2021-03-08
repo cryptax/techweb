@@ -215,6 +215,18 @@ hosts:          files mdns4_minimal [NOTFOUND=return] dns mdns4
 - To find all IPv4 services on the internal network: ` avahi-browse -at | grep IPv4`
 - You can ping `host.local` on the intranet.
 
+### CIFS / AFP
+
+To access a remote Apple Timecapsule:
+
+`sudo mount.cifs //ip/share /mnt/point -o username=theusername,password=thepassword,vers=1.0,sec=ntlm,uid=youruser`
+
+- ip is the IP address of the time capsule
+- `share` is the name of the sharepoint on the timecapsule
+- `username` and `password` specify the credentials to log on the time capsule
+- **do not forget** `vers=1.0` **and** `sec=ntlm`
+- uid to specify the Linux user id to give access to
+
 
 ## Locale
 
