@@ -1,5 +1,13 @@
 % Tools
 
+# GDB
+
+- Put symbols: `gcc -ggdb main.c -o main`
+- Compile C to assembly: `gcc -S ...`
+- View: `x $rip` or `x/w $rip`
+- Set: `set $rip=....`
+
+
 # Timewarrior
 
 I use [timewarrior](https://timewarrior.net/)
