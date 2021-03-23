@@ -18,6 +18,30 @@
 
 [KB Fortinet](http://kb.fortinet.com/kb/viewContent.do?externalId=FD31964)
 
+Get info on hardware:
+
+```
+# config global
+# diag hardware test info
+```
+
+Get info on TPM:
+
+```
+config global
+diagnose hardware deviceinfo tpm
+diag tpm get-property 0 
+```
+
+Get info on Bluetooth
+
+```
+config global
+diag bluetooth status
+```
+
+
+
 ## Ping
 
 ```bash

@@ -150,10 +150,12 @@ To add data files, add `include_package_data=True` and a `MANIFEST.in` file:
 include conf/*.conf
 ```
 
-
-
-
 - Create source package: `python3 setup.py sdist`
+- Create source and binary package: `python3 setup.py sdist bdist_wheel`
 - Upload package to test pypi: `twine upload --repository-url https://test.pypi.org/legacy/ dist/package-x.y.z.tar.gz`
 - Test install using test pypi: `pip3 install --no-cache-dir --extra-index-url https://test.pypi.org/simple/ package`
+- Uploading package to pypi: `twine upload dist/*`
 
+# Pip
+
+- Show files in a package: `pip3 show --files package`
