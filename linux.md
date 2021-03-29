@@ -387,6 +387,12 @@ ffmpeg -i myvideo.mp4
 ffmpeg -i source.mp4 -c:v libx264 -crf 19 destinationfile.flv
 ```
 
+- Convert mkv to mp4:
+
+```
+ffmpeg -i example.mkv -c copy example.mp4
+```
+
 
 ### Rescale, join
 
