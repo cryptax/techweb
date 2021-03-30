@@ -399,7 +399,7 @@ ffmpeg -i example.mkv -c copy example.mp4
 - **Rescale** a video: (-1 is for keeping aspect ratio for one of the sizes)
 
 ```
-ffmpeg -i input.jpg -vf scale=320:-1 output_320.png
+ffmpeg -i input.mp4 -vf scale=320:-1 output_320.mp4
 ``` 
 - Join to videos side by side:
 
