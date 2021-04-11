@@ -396,6 +396,15 @@ Then, on the client, it's very simple:
 - Linux: `openvpn -c xxx.ovpn`
 - Android: install OpenVPN app, and import .ovpn profile
 
+### MuseScore
+
+MuseScore dependencies:
+
+- Cmake. Compile a recent Cmake. For that install `sudo apt install libssl-dev`.
+- Qt >= 5.15. [Compile it](http://tvaira.free.fr/projets/activites/activite-qt5-rpi.html)
+
+
+
 ### Minecraft
 
 #### Server 
