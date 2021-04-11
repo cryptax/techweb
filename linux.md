@@ -215,6 +215,18 @@ hosts:          files mdns4_minimal [NOTFOUND=return] dns mdns4
 - To find all IPv4 services on the internal network: ` avahi-browse -at | grep IPv4`
 - You can ping `host.local` on the intranet.
 
+### CIFS / AFP
+
+To access a remote Apple Timecapsule:
+
+`sudo mount.cifs //ip/share /mnt/point -o username=theusername,password=thepassword,vers=1.0,sec=ntlm,uid=youruser`
+
+- ip is the IP address of the time capsule
+- `share` is the name of the sharepoint on the timecapsule
+- `username` and `password` specify the credentials to log on the time capsule
+- **do not forget** `vers=1.0` **and** `sec=ntlm`
+- uid to specify the Linux user id to give access to
+
 
 ## Locale
 
@@ -359,16 +371,76 @@ To stop: Ctrl-Mod-s
 
 ## ffmepg
 
-- Get the height and width of a video: `ffmepg -i myvideo.mp4`
-- Rescale a video: `ffmpeg -i input.jpg -vf scale=320:-1 output_320.png` (-1 is for keeping aspect ratio for one of the sizes)
-- Join to videos side by side: `ffmpeg -i video_1.mp4 -i video_2.mp4 -filter_complex '[0:v][1:v]hstack=2[vid]' -map [vid] -c:v libx264 -crf 22 -preset veryfast output.mp4`
-- Crop a video: `ffmpeg -i input.mp4 -vf  "crop=w:h:x:y" input_crop.mp4`
-- Put side by side two videos with same height: `ffmpeg -i left.mp4 -i rscaled.ogv -filter_complex '[0:v][1:v]hstack=2[vid]' -map [vid] -c:v libx264 -crf 22 -preset veryfast right.mp4`
-- Skip first few seconds of a video: `ffmpeg -ss 00:00:04 ...`
-- Inserting text in videos with subtitles: [tuto](https://github.com/Erkaman/ffmpeg-add-text-to-video-tutorial)
-- Convert mp4 to flv: `ffmpeg -i source.mp4 -c:v libx264 -crf 19 destinationfile.flv`
+### Get information
 
-Remove between x and y:
+- Get the height and width of a video:
+
+```
+ffmpeg -i myvideo.mp4
+```
+
+### Convert
+
+- Convert mp4 to flv:
+
+```
+ffmpeg -i source.mp4 -c:v libx264 -crf 19 destinationfile.flv
+```
+
+- Convert mkv to mp4:
+
+```
+ffmpeg -i example.mkv -c copy example.mp4
+```
+
+
+### Rescale, join
+
+- **Rescale** a video: (-1 is for keeping aspect ratio for one of the sizes)
+
+```
+ffmpeg -i input.mp4 -vf scale=320:-1 output_320.mp4
+``` 
+- Join to videos side by side:
+
+```
+ffmpeg -i video_1.mp4 -i video_2.mp4 -filter_complex '[0:v][1:v]hstack=2[vid]' -map [vid] -c:v libx264 -crf 22 -preset veryfast output.mp4
+```
+
+
+- Put side by side two videos with same height:
+
+```
+ffmpeg -i left.mp4 -i rscaled.ogv -filter_complex '[0:v][1:v]hstack=2[vid]' -map [vid] -c:v libx264 -crf 22 -preset veryfast right.mp4
+```
+
+- Crop a video:
+
+```
+ffmpeg -i input.mp4 -vf  "crop=w:h:x:y" input_crop.mp4
+```
+
+### Select
+
+- Skip first few seconds of a video: (`-ss` is for seek)
+
+```
+ffmpeg -ss 00:00:04 ...
+```
+
+- Take video between 24 seconds and 50 seconds, and re-encode: (see [here](https://ottverse.com/trim-cut-video-using-start-endtime-reencoding-ffmpeg/))
+
+```
+ffmpeg -ss 24 -to 50 -i input.mp4 -c:v libx264 -crf 30 output.mp4
+```
+
+Select **multiple given parts** of a video:
+
+```
+ffmpeg -i in.mp4 -vf "select='between(t,2,47)+between(t,50,80)+between(t,152,263)',setpts=N/FRAME_RATE/TB" -af "aselect='between(t,2,47)+between(t,50,80)+between(t,152,263)',asetpts=N/SR/TB" out.mp4
+```
+
+*Alternative* solution: Remove between x and y:
 
 - `ffmpeg  -t 00:11:00 -i input.mp4 -map 0 -c copy segment1.mp4`
 - `ffmpeg -ss 00:11:10 -i input.mp4 -map 0 -c copy segment2.mp4`
@@ -383,6 +455,21 @@ file 'segment2.mp4'
 Then concatenate:
 
 `ffmpeg -f concat -i input.txt -map 0 -c copy output.mp4`
+
+
+
+### Audio
+
+- Remove **audio** (`-an`):
+
+```
+ffmpeg -i video.mp4 -c:v copy -an outvideo.mp4
+```
+
+### Subtitles
+
+- Inserting text in videos with subtitles: [tuto](https://github.com/Erkaman/ffmpeg-add-text-to-video-tutorial)
+
 
 
 

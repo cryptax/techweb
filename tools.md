@@ -1,5 +1,18 @@
 % Tools
 
+# Firefox
+
+- [How to disable port restriction on Firefox](https://www.ryadel.com/en/firefox-this-address-is-restricted-override-fix-port/): `network.security.ports.banned.override` (String) and specify port.
+
+
+# GDB
+
+- Put symbols: `gcc -ggdb main.c -o main`
+- Compile C to assembly: `gcc -S ...`
+- View: `x $rip` or `x/w $rip`
+- Set: `set $rip=....`
+
+
 # Timewarrior
 
 I use [timewarrior](https://timewarrior.net/)
