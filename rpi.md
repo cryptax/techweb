@@ -385,7 +385,7 @@ Add user to dialout group
 ### PiVPN
 
 [PiVPN](http://www.pivpn.io/): the install is straight forward but a bit long (even on Rpi3).
-Then, do not forget to open port UDP 1194 on the firewall and box.
+Then, do not forget to open port **UDP** 1194 on the firewall and box (UDP, not TCP).
 
 To create a profile, use the `pivpn --add` command.
 To list current connections, `pivpn -c`.
@@ -395,6 +395,15 @@ Then, on the client, it's very simple:
 
 - Linux: `openvpn -c xxx.ovpn`
 - Android: install OpenVPN app, and import .ovpn profile
+
+### MuseScore
+
+MuseScore dependencies:
+
+- Cmake. Compile a recent Cmake. For that install `sudo apt install libssl-dev`.
+- Qt >= 5.15. [Compile it](http://tvaira.free.fr/projets/activites/activite-qt5-rpi.html)
+
+
 
 ### Minecraft
 
