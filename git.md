@@ -24,6 +24,34 @@ git config pack.threads 1
 - Get a particular commit for a file: `git checkout xxxx file`
 - Return from a detached HEAD state: `git checkout master` or `git checkout -`
 
+## Branches
+
+Create the new branch:
+
+```
+git checkout master
+git branch new-branch
+git checkout new-branch
+```
+
+Then code, and commit on the new branch.
+
+Finally, when you need to merge:
+
+```
+git checkout master
+git merge new-branch
+```
+
+This merges everything locally. Solve merge conflicts.
+Finally:
+
+```
+git push origin master
+```
+
+
+
 
 ## Gogs
 
