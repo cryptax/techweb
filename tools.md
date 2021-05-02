@@ -71,6 +71,7 @@ Get things ready for 3d printing:
 
 [tuto](https://www.youtube.com/watch?v=HqDnLg3o9WE)
 
+- Merge vertex: Alt (Gr)-M
 - Merge edges: F
 - Join to separate objects in a single one: Ctrl J
 
@@ -81,7 +82,7 @@ Get things ready for 3d printing:
 
 [well](https://www.youtube.com/watch?v=m7m3QkwRcGE)
 
-- Bevel object: Ctrl B
+- Bevel object: Ctrl B. To bevel correctly, in object mode, make sure to apply scale.
 - Scale on the axis of the object: eg Sxx, or Syy, or Szz
 - Copy material: Shift Left click objects, and the last one with the material to copy, then Ctrl L to copy its material
 - Inside an object, select all linked parts: L
