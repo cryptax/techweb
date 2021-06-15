@@ -82,19 +82,35 @@ Get things ready for 3d printing:
 
 [well](https://www.youtube.com/watch?v=m7m3QkwRcGE)
 
-- Bevel object: Ctrl B. To bevel correctly, in object mode, make sure to apply scale.
+
+General shortcuts:
+
 - Scale on the axis of the object: eg Sxx, or Syy, or Szz
+- Duplicate an object: **Shift D**
+- Toggle Tool/View right menu: N
+- Move the pointer: Ctrl Right Click.
+- Zoom in when you can't go past a point: click on the portion you want to zoom in and center the viez around the mouse cursor: Alt F, then zoom. [ref](https://blender.stackexchange.com/questions/644/why-does-the-zoom-sometimes-stop-at-a-point)
+- Get a curves box: create a 3D box, and then **Ctrl 2**
+
+Shortcuts in the Edit Mode:
+
+- Bevel object: **Ctrl B**. To bevel correctly, in object mode, make sure to apply scale.
+- Loop cut (in Edit Mode): **Ctrl R**
+- Knife tool in edit mode: K
+- Make a selection bigger: **Ctrl +** this increases the size of the selection one step.
+
+Material:
+
 - Copy material: Shift Left click objects, and the last one with the material to copy, then Ctrl L to copy its material
 - Inside an object, select all linked parts: L
 - Assign a material to linked objects: L on each part, then in Material, select the correct material and click on Assign.
-- Duplicate an object: Shift D
-- Loop cut: Ctrl R
+
+
+Curves:
+
 - Make a line curve / round: Simple Deform / Bend, select the axis, select angle
-- Knife tool in edit mode: K
-- Toggle Tool/View right menu: N
 - Bezier Curve, then Convert To Mesh, then Extrude etc.
-- Move the pointer: Ctrl Right Click.
-- Zoom in when you can't go past a point: click on the portion you want to zoom in and center the viez around the mouse cursor: Alt F, then zoom. [ref](https://blender.stackexchange.com/questions/644/why-does-the-zoom-sometimes-stop-at-a-point)
+
 
 
 Write on a surface [see](https://www.youtube.com/watch?v=l2TGOElE_1c)
