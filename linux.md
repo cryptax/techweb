@@ -298,6 +298,42 @@ To remove a rule,
 Here OUTPUT refers to the part of iptables to work on
 
 
+## LVM
+
+We have:
+
+- physical volumes e.g. disks or partitions of disks
+- volume groups: they have a name and you can add physical volumes to them.
+- logical volumes:  set its size, its name, where to mount it to and the volume group
+
+Creating a physical volume:
+
+- List the disk you want to use with `lsblk`
+- Create a partition (e.g. `fdisk`). Be sure to set partition type `8e` for Linux LVM.
+- Create the volume: `pvcreate /dev/sdc1`
+
+Creating the volume group:
+
+- `vgcreate vgelk /dev/sdc1`
+- If you want to add future partitions, do `vgextend vgelk /dev/sdc2`
+
+Creating a logical volume:
+
+- `lvcreate -n var -L 150G vgelk`
+- Format the logical volume: `mkfs -t ext4 /dev/vgelk/var`
+- Copy the contents of `/var` (or other) to that logical volume:
+
+To copy/backup completely a directory (make sure links are ok):
+```
+mkdir /mnt/var_new
+mount /dev/vgelk/var /mnt/var_new
+rsync -avHPSAX /var/ /mnt/var_new/
+```
+References:
+
+- https://www.computernetworkingnotes.com/rhce-study-guide/learn-how-to-configure-lvm-in-linux-step-by-step.html
+- http://www.lerrigatto.com/move-var-to-a-new-partition-with-lvm/
+
 ## User management 
 
 ### Adding user to group and take into account immediately
