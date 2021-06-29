@@ -75,6 +75,16 @@ l = d.get_strings()
 filter(lambda x:'http' in x, l)
 ```
 
+## Kwargs
+
+```python
+kwargs = {
+  '{0}'.format(field): value
+}
+queryset = queryset.filter(**kwargs)
+```
+
+
 ## Markdown
 
 This is an easy way to convert markdown syntax to HTML using Python:
