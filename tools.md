@@ -146,9 +146,10 @@ Lights:
 ## Sculpting
 
 - Brush Settings, Dyn Topo: Constant Detail + 12.00 resolution
-- Snake Hook to get parts, Shift to Smooth
+- Snake Hook to get parts, **Shift** to Smooth
 - Inflate to put more material.
 - Draw for precise parts.
+- To invert a brush, press **Ctrl** with the brush.
 
 ## Armatures 
 
