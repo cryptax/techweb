@@ -40,7 +40,7 @@ config global
 diag bluetooth status
 ```
 
-
+Get IPv6 sessions: `diag sys session6 list`
 
 ## Ping
 
