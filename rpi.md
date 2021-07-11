@@ -68,6 +68,10 @@ network={
 See [Headless setup](https://raspberrypi.stackexchange.com/questions/10251/prepare-sd-card-for-wifi-on-headless-pi)
 
 
+### Cloning
+
+- `dd`
+- [Pi Shrink](https://github.com/Drewsif/PiShrink)
 
 ## Firmware
 
