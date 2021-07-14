@@ -97,20 +97,28 @@ Shortcuts in the Edit Mode:
 - Bevel object: **Ctrl B**. To bevel correctly, in object mode, make sure to apply scale.
 - Loop cut (in Edit Mode): **Ctrl R**
 - Knife tool in edit mode: K
-- Make a selection bigger: **Ctrl +** this increases the size of the selection one step.
+- Make a selection bigger: **Ctrl +** this increases the size of the selection one step. Opposite: Ctrl -
 
 Material:
 
 - Copy material: Shift Left click objects, and the last one with the material to copy, then Ctrl L to copy its material
 - Inside an object, select all linked parts: L
 - Assign a material to linked objects: L on each part, then in Material, select the correct material and click on Assign.
+- Glass material: Transparent BSDF
+
+Particles for Hair:
+
+- Create a Vertex Group
+- In edit mode, select the vertexes and assign them to the group
+- In Weight Paint, paint the weight for the density
+- Particles menu: select Hair, for density, select your vertex group. Cut and comb hair.
+
 
 
 Curves:
 
 - Make a line curve / round: Simple Deform / Bend, select the axis, select angle
 - Bezier Curve, then Convert To Mesh, then Extrude etc.
-
 
 
 Write on a surface [see](https://www.youtube.com/watch?v=l2TGOElE_1c)
@@ -150,6 +158,16 @@ Lights:
 - Inflate to put more material.
 - Draw for precise parts.
 - To invert a brush, press **Ctrl** with the brush.
+
+Mask:
+
+- Take the mask brush
+- Increase strength to max
+- Draw
+- Extract Mask
+- Then, if you want to sculpt the extracted part: clear mask
+
+- [Sculpting a character](https://www.youtube.com/watch?v=KsDe1V9Dl-0)
 
 ## Armatures 
 
