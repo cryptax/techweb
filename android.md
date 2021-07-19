@@ -40,6 +40,10 @@ kill an app: an easy way on rooted phones is to do `pm disable appname` (and the
 
 - Launch Home: `am start -a android.intent.action.MAIN -c android.intent.category.HOME`
 
+- Launch Device Admin screen: `adb shell am start -S "com.android.settings/.Settings\$DeviceAdminSettingsActivity"`
+- Remove device admin rights: `adb shell dpm remove-active-admin packagename/deviceadminreceivername`
+- Alternative solution: (1) `adb shell pm disable-user packagename`, then (2) `adb uninstall packagename`
+
 
 ## Failure [INSTALL_FAILED_VERIFICATION_FAILURE]
 

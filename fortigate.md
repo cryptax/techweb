@@ -40,7 +40,7 @@ config global
 diag bluetooth status
 ```
 
-
+Get IPv6 sessions: `diag sys session6 list`
 
 ## Ping
 
@@ -112,6 +112,22 @@ end
 ```
 
 ### Wifi
+
+The different bandwidths etc: [here in French](https://siam.lyon.archi.fr/index.php/informatique/materiels/431-wifi-normes)
+
+[FortiAP and wifi configuration guide](https://docs.fortinet.com/document/fortiap/7.0.0/fortiwifi-and-fortiap-configuration-guide/307228/defining-a-wireless-network-interface-ssid)
+
+Get Wifi country:
+
+```
+FWF-Home-Ax # config wireless-controller setting
+
+FWF-Home-Ax (setting) # show
+config wireless-controller setting
+    set country FR
+    set darrp-optimize-schedules "default-darrp-optimize"
+end
+```
 
 
 Show SSID info: `get wireless-controller vap-status`
