@@ -133,11 +133,6 @@ See [here](https://github.com/recalbox/recalbox-os/wiki/Setup-a-dual-boot-raspbi
 Note this is not possible yet with Recalbox 6.0
 
 
-### RAM disk
-
-It is a good idea to have /tmp (and perhaps other directories) as tmpfs.
-
-[Create tmpfs](https://www.hellojona.com/2017/06/create-a-ram-disk-tmpfs-in-raspberry-pi-3/)
 
 ## OS
 
@@ -147,6 +142,27 @@ To add a user to a given group: `sudo adduser login group`
 Delete pi user: `sudo deluser -remove-home pi`
 Often, this does not work because Pi user is still used to run some process such as lightdm autologin.
 The easiest way to get rid of pi user is to run `raspi-config` and in Boot options, select Console mode not GUI (if that is okay), and with no auto login. Then, reboot, and `deluser pi` should work.
+
+### RAM disk
+
+It is a good idea to have /tmp (and perhaps other directories) as tmpfs.
+
+[Create tmpfs](https://www.hellojona.com/2017/06/create-a-ram-disk-tmpfs-in-raspberry-pi-3/)
+
+### Swap file
+
+If RAM is insufficient on the RPi, it is possible to configure / increase size of a swap file.
+
+1. Disable the swap file temporarily: `sudo dphys-swapfile swapoff`
+2. Edit file `/etc/dphys-swapfile` and modify `CONF_SWAPSIZE`. Its value is in Megabytes. For 1G, set 1024:
+
+```
+CONF_SWAPSIZE=1024
+```
+
+3. Setup the system: `sudo dphys-swapfile setup`
+4. Re-enable swap file: `sudo dphys-swapfile swapon`
+
 
 ### Recalbox
 
