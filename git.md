@@ -50,7 +50,7 @@ Finally:
 git push origin master
 ```
 
-
+To remove a remote branch: `git push -d origin BRANCHNAME`
 
 
 ## Gogs
