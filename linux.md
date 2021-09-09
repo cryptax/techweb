@@ -327,6 +327,12 @@ To remove a rule,
 Here OUTPUT refers to the part of iptables to work on
 
 
+```
+sudo iptables -t nat -v -L PREROUTING -n --line-number
+sudo iptables -t nat --delete PREROUTING 4
+```
+
+
 ## LVM
 
 We have:
