@@ -52,6 +52,13 @@ git push origin master
 
 To remove a remote branch: `git push -d origin BRANCHNAME`
 
+To list remote branches:
+
+```
+git fetch
+git branch -a
+```
+
 
 ## Gogs
 
