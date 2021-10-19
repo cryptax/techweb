@@ -37,7 +37,8 @@ rabin2 -i classes.dex
 - Write to a file: `wtf filename size @ position`
 - Shell commands work: `s 0x65; pD 32`
 - Cross references: `axf` or `axt`. Function references: `afx`
-
+- Load predefined binary structure: `r2 -nn file`
+- Open a file in write mode: `oo+`
 
 ### Print
 

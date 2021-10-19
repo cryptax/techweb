@@ -102,6 +102,15 @@ $ snmpbulkwalk -v2c -c public 192.168.0.x
 sudo nmap -sL 192.168.0.0/24
 ```
 
+## Who listens on this port
+
+Use `ss -tulpn` (better than netstat)
+
+```
+sudo ss -tulpn | grep :8000
+tcp    LISTEN  0       4096                                             *:8000                                             *:*                                   users:(("docker-proxy",pid=3479,fd=4))              
+```
+
 
 ## Which port is used by which process:
 

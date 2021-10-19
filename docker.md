@@ -82,6 +82,10 @@ $ docker login
 $ docker push user/buildname
 ```
 
+### Tagging an image
+
+`docker tag 396df9xxxx cryptax/android-re:latest`
+
 ## Cloning a container
 
 Copy the running container. The export command makes sure you only copy the upper layer, not for example debian:jessie it may depend on.

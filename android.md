@@ -10,6 +10,9 @@ adb shell dumpsys iphonesubinfo
 adb shell dumpsys cpuinfo
 ```
 
+List all process: `adb shell ps-A`
+
+
 Retrieve several files: `adb shell 'ls sdcard/gps*.trace' | tr -d '\r' | xargs -n1 adb pull`
 
 Launch an activity and wait for debugger to attach:

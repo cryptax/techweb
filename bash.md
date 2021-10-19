@@ -17,6 +17,15 @@ $ echo -n "deadbeef" | xxd -p -r | hexdump -C
 00000000  de ad be ef                                       |....|
 ```
 
+To write hex in a binary at a given position:
+
+```
+echo "00000088: 0000 4000" | xxd -r - modified.elf
+```
+
+To read it back: `xxd -s 0x88 -l modified.elf`
+
+
 - With perl `pack`:
 ```
 $ echo -n "deadbeef" | perl -ne 'print pack "H*", $_' | hexdump -C
