@@ -8,6 +8,7 @@ adb shell am start-activity com.blah/com.blah.Activity
 adb emu sms send 1234 hello from here
 adb shell dumpsys iphonesubinfo 
 adb shell dumpsys cpuinfo
+adb shell dumpsys notification
 ```
 
 List all process: `adb shell ps-A`
