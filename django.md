@@ -8,7 +8,8 @@
 - Testing API: `python migrate.py shell`
 - Create admin password (first time): `python manage.py createsuperuser`
 - Modify admin password (forgotten): `python manage.py changepassword admin`
-
+- Deploy static files: `python manage.py collectstatic`
+- Squash migrations: `python3 manage.py squashmigrations blah 0006`
 
 ## Creating a new model
 
@@ -35,6 +36,43 @@ To create initial data in the db: [here](https://docs.djangoproject.com/en/3.2/t
 ## Favicon
 
 - Adding favicon: https://simpleit.rocks/python/django/django-favicon-adding/
+
+
+## Customizing the Django Admin Panel
+
+- Change the URL: in `./mainproj/urls.py`
+
+```python
+urlpatterns = [
+    path('otherpath/', admin.site.urls),
+```
+
+- Change the name: in `./app/admin.py`:
+
+```python
+admin.site.site_header = "Administration Panel"
+```
+
+- Create specific fields and actions: `./app/admin.py`
+
+```python
+from django.contrib import admin
+from .models import Malware, Property
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
+
+@admin.action(description="Mark selected items as checked i.e reviewed")
+def mark_all_as_reviewed(modeladmin, request, queryset):
+    queryset.update(to_check=False)
+
+class MalwareAdmin(admin.ModelAdmin):
+    list_display = ('sha256', 'filename', 'insertion_date', 'to_check')
+    search_fields = ('sha256', 'filename', 'insertion_date', 'to_check')
+    list_filter = ('to_check', )
+    date_hierarchy = 'insertion_date'
+    actions = [mark_all_as_reviewed]
+```
+
 
 ## Database troubleshooting:
 

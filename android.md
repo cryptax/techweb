@@ -515,9 +515,54 @@ if (Java.available) {
 
 From what I read, the Xposed framework [does not install well on the regular Android emulator](https://stackoverflow.com/questions/18142924/how-to-use-xposed-framework-on-android-emulator). It installs on Genymotion though.
 
+# Objection
+
+Enter the REPL: `objection -g PACKAGENAME explore`
+
+- `android clipboard monitor` (broken)
+- `android hooking get current_activity`
+- `android hooking generate simple classname`: generate a Frida hook
+- `android hooking list activities`: list activities of the package
+- `android hooking search classes beginningofclassname`
+- `android hooking list class_methods classname`: list methods within the class
+- `android hooking list classes`:  list all loaded classes
+- `android sslpinning disable`
+
+```
+# android sslpinning disable
+(agent) Custom TrustManager ready, overriding SSLContext.init()
+(agent) Found com.android.org.conscrypt.TrustManagerImpl, overriding TrustManagerImpl.verifyChain()
+(agent) Found com.android.org.conscrypt.TrustManagerImpl, overriding TrustManagerImpl.checkTrustedRecursive()
+(agent) Registering job 468343. Type: android-sslpinning-disable
+```
+
+- `android ui screenshot /tmp/screenshot.png`
+- `env`
+- `ls`
+- `memory dump all filename`
+- `memory list modules`
+- `ping`
+
+[tutorial](https://book.hacktricks.xyz/mobile-apps-pentesting/android-app-pentesting/frida-tutorial/objection-tutorial)
+
+# Memory dump
+
+- Clone [fridump](https://github.com/Nightbringer21/fridump)
+- Install Frida
+
+`python fridump.py -U packagename -o ./dump`
+
+
 # Android applications
 
 [Use K9Mail to encrypt/decrypt GPG emails](https://blogs.itemis.com/en/openpgp-on-the-job-part-6-e-mail-encryption-on-android-with-k-9-mail-openkeychain):
 
 1. Install OpenKeyChain (from FDroid). Import private and public keys.
 2. Install k9 mail. Select cryptography and use corresponding private key.
+
+
+# Reverse engineering
+
+| Meaning                           | Value |
+| ---------------------------------- | ------- |
+| `GLOBAL_ACTION_BACK`  | 1 |
