@@ -63,6 +63,8 @@ def choice(number):
 
 - Stegsnow: `apt install stegsnow`
 - Steghide: steghide.sourceforge.net
+- PNG Check and Repair Tool: https://github.com/sherlly/PCRT
+- Vigenere Solver: https://www.guballa.de/vigenere-solver
 
 
 ## Write-ups
