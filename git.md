@@ -21,7 +21,8 @@ git config pack.threads 1
 
 ## Reverting
 
-- Get a particular commit for a file: `git checkout xxxx file`
+- Get a particular commit for a file: `git checkout xxxx file`. This is just to *test* a given commit.
+- To revert the last commit: `git revert xxxxx`. See [here](https://code.likeagirl.io/how-to-undo-the-last-commit-393e7db2840b)
 - Return from a detached HEAD state: `git checkout master` or `git checkout -`
 
 ## Branches
@@ -59,8 +60,18 @@ git fetch
 git branch -a
 ```
 
+To switch to a branch: `git checkout branchname`
+
 
 ## Gogs
 
 - To use SSH, make sure git account has a `/home/git` home dir + SSH server allows use of `authorized_keys`.
 - See https://discuss.gogs.io/t/how-to-config-ssh-settings/34
+
+Example of SSH config file `~/.ssh/config`:
+
+```
+Host github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa_xxxx
+```    
