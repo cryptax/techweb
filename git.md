@@ -75,3 +75,15 @@ Host github.com
     PreferredAuthentications publickey
     IdentityFile ~/.ssh/id_rsa_xxxx
 ```    
+
+It is even possible to use different identities for different repositories on GitHub:
+
+```
+Host github.com/cryptax
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa
+
+Host github.com/anotheridentity
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_rsa_other
+```    
