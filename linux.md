@@ -69,6 +69,39 @@ And then, uninstall these images with `sudo apt-get purge linux-image-xxxx`
 
 `setxkbmap -layout fr`
 
+## Using accents with a QWERTY layout
+
+Put this in `.profile`: `xmodmap ~/.xmodmaprc` where your `.xmodmaprc` defines your keyboard tricks:
+
+```
+! letters
+
+keycode  24 = q Q acircumflex
+keycode  25 = w W ecircumflex
+keycode  26 = e E eacute
+keycode  27 = r R egrave
+keycode  30 = u U ucircumflex
+keycode  31 = i I icircumflex
+keycode  32 = o O ocircumflex
+
+keycode  38 = a A agrave
+keycode  40 = d D ediaeresis
+keycode  43 = h H ugrave
+keycode  44 = j J udiaeresis
+keycode  45 = k K idiaeresis
+keycode  46 = l L odiaeresis
+
+keycode  52 = z Z adiaeresis
+keycode  54 = c C ccedilla
+
+
+keycode  108 = Mode_switch
+```
+
+Alternatively, it is possible to use the "English US International with dead letters" keyboard and then use composition: ` + e gives è. See [here](https://www.ellendhel.net/article.php?ref=2011+09+12-0).
+
+
+
 # System
 
 ## Services
