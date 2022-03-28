@@ -203,6 +203,15 @@ in `/etc/resolvconf/resolv.conf.d/head`.
 
 Once this is done, you need to update name resolution with the command `resolvconf -u`.
 
+If you want to add a [DNS server temporarily](https://notes.enovision.net/linux/changing-dns-with-resolve):
+
+1. Add it in `/etc/systemd/resolved.conf`
+2. Restart service: `service systemd-resolved restart`
+3. Check: `systemd-resolve --status`
+
+
+
+
 ### Troubleshooting
 
 I had issues with my Ethernet link. In my case, it was solved by commenting out dns=dnsmasq in NetworkManager:
