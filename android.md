@@ -2,23 +2,49 @@
 
 # Shell commands
 
-```bash
-adb shell am start -a android.intent.action.DIAL -d "tel:*%2306%23"
-adb shell am start-activity com.blah/com.blah.Activity
-adb emu sms send 1234 hello from here
+## Dumpsys
+
+```
 adb shell dumpsys iphonesubinfo 
 adb shell dumpsys cpuinfo
 adb shell dumpsys notification
 ```
 
-List all process: `adb shell ps-A`
+- Get current window: `adb shell dumpsys window windows | grep 'mCurrentFocus'`
+- Get various classes: `adb shell dumpsys package | grep -i PACKAGENAME`
 
+## Properties
 
-Retrieve several files: `adb shell 'ls sdcard/gps*.trace' | tr -d '\r' | xargs -n1 adb pull`
+`adb shell getprop...`
+
+| Properties                     | Meaning               |
+| ------------------------------- | ------------------------ |
+| ro.build.version.release | Version of Android |
+| ro.build.version.sdk | API level |
+
+## Activities
+
+```bash
+adb shell am start -a android.intent.action.DIAL -d "tel:*%2306%23"
+adb shell am start-activity com.blah/com.blah.Activity
+```
 
 Launch an activity and wait for debugger to attach:
 
 `adb shell am start -D -S -n package/activity`
+
+
+## Send SMS
+
+`adb emu sms send 1234 hello from here`
+
+## List process
+
+`adb shell ps-A`
+
+
+Retrieve several files: `adb shell 'ls sdcard/gps*.trace' | tr -d '\r' | xargs -n1 adb pull`
+
 
 
 get the **Android ID**:
