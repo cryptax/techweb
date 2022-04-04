@@ -97,3 +97,14 @@ convert -background white -fill dodgerblue  -font "FreeMono" -strokewidth 2  -st
 ## Cut
 
 Get given characters: `cut -c15-22`
+
+## Renaming files
+
+
+Renaming `.txt` extension files to `.text`:
+
+```
+for f in *.txt; do 
+    mv -- "$f" "${f%.txt}.text"
+done
+```
