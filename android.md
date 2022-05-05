@@ -81,6 +81,9 @@ kill an app: an easy way on rooted phones is to do `pm disable appname` (and the
 
 [see here](https://stackoverflow.com/questions/15014519/apk-installation-failed-install-failed-verification-failure)
 
+## Enable Accessibility Services
+
+See [here](https://stackoverflow.com/questions/10061154/how-to-programmatically-enable-disable-accessibility-service-in-android): `adb shell settings put secure enabled_accessibility_services com.app1/com.app1.MyAccessibilityService:com.app2/com.app2.MyAccessibilityService`
 
 # Emulators
 
@@ -181,6 +184,7 @@ sdk.dir=/opt/android-sdk-linux/
 
 - myproject/app
 - myproject/app/build.gradle: this is the build.gradle for `app`. Specify how to compile that application. You might have to configure `compileSdkVersion`, `buildToolsVersion` and very probably `applicationId` and signing config ;-)
+
 Build tool version correspond to what you have in `ANDROID-SDK/build-tools`.
 
 ```
