@@ -5,7 +5,7 @@
 Know your version: `cat /proc/cpuinfo`.
 Then check [here](https://www.raspberrypi-spy.co.uk/2012/09/checking-your-raspberry-pi-board-version/)
 
-Or `cat /proc/device-tree/model`:
+Or `cat /proc/device-tree/model` or `cat /sys/firmware/devicetree/base/model`
 
 ```
 Raspberry Pi 2 Model B Rev 1.1
@@ -142,6 +142,10 @@ To add a user to a given group: `sudo adduser login group`
 Delete pi user: `sudo deluser -remove-home pi`
 Often, this does not work because Pi user is still used to run some process such as lightdm autologin.
 The easiest way to get rid of pi user is to run `raspi-config` and in Boot options, select Console mode not GUI (if that is okay), and with no auto login. Then, reboot, and `deluser pi` should work.
+
+### Fsck
+
+To force FSCK at next boot, `sudo touch /forcefsck`
 
 ### RAM disk
 

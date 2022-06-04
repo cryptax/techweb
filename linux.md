@@ -188,12 +188,13 @@ WantedBy=multi-user.target
 
 - Listing the service config file: `systemctl show SERVICENAME`
 - Editing a unit configuration file: `sudo systemctl edit --full SERVICENAME`, then do `sudo systemctl daemon-reload` and finally `sudo systemctl restart SERVICENAME` (see [here](https://www.2daygeek.com/linux-modifying-existing-systemd-unit-file/))
+- List failed services: `sudo systemctl list-units --failed`
 
 ### Journal for Services
 
 - Dump to a file: `journalctl -x -u service > file`
 - Wrap long lines: `journalctl -u service | less` or `journalctl -u service --no-pager`
-
+- After bug `journalctl -xb`
 
 
 ## Network
