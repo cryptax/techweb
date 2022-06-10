@@ -151,7 +151,7 @@ Basically,
 
 1. Create a service file. The service file dictates the executable to run and in which conditions.
 2. Create a timer file (extension .timer) to explain how frequently to run the service.
-3. Installer the service and timer files to `/lib/systemd/system`
+3. Install the service and timer files to `/lib/systemd/system`
 4. Reload: `sudo systemctl daemon-reload`
 5. Enable and then activate the timer: `sudo systemctl enable/start xxx.timer`
 
@@ -184,12 +184,17 @@ OnUnitActiveSec=5min
 WantedBy=multi-user.target
 ```
 
+### Commands for Services
+
+- Listing the service config file: `systemctl show SERVICENAME`
+- Editing a unit configuration file: `sudo systemctl edit --full SERVICENAME`, then do `sudo systemctl daemon-reload` and finally `sudo systemctl restart SERVICENAME` (see [here](https://www.2daygeek.com/linux-modifying-existing-systemd-unit-file/))
+- List failed services: `sudo systemctl list-units --failed`
 
 ### Journal for Services
 
 - Dump to a file: `journalctl -x -u service > file`
 - Wrap long lines: `journalctl -u service | less` or `journalctl -u service --no-pager`
-
+- After bug `journalctl -xb`
 
 
 ## Network
