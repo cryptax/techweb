@@ -591,6 +591,9 @@ Enter the REPL: `objection -g PACKAGENAME explore`
 
 [tutorial](https://book.hacktricks.xyz/mobile-apps-pentesting/android-app-pentesting/frida-tutorial/objection-tutorial)
 
+To launch a hook at startup:
+`objection --gadget PACKAGENAME explore --startup-command 'android hooking watch class_method java.net.URL.$init --dump-args --dump-return'`
+
 # Memory dump
 
 - Clone [fridump](https://github.com/Nightbringer21/fridump)
