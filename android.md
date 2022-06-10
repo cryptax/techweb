@@ -85,6 +85,13 @@ kill an app: an easy way on rooted phones is to do `pm disable appname` (and the
 
 See [here](https://stackoverflow.com/questions/10061154/how-to-programmatically-enable-disable-accessibility-service-in-android): `adb shell settings put secure enabled_accessibility_services com.app1/com.app1.MyAccessibilityService:com.app2/com.app2.MyAccessibilityService`
 
+## Redirections
+
+```
+adb forward --remove-all
+adb reverse --list
+```
+
 # Emulators
 
 - Genymotion: customization of IMEI and Android ID
@@ -544,6 +551,15 @@ if (Java.available) {
 # Xposed Framework
 
 From what I read, the Xposed framework [does not install well on the regular Android emulator](https://stackoverflow.com/questions/18142924/how-to-use-xposed-framework-on-android-emulator). It installs on Genymotion though.
+
+# Mitmproxy and HTTPS interception
+
+1. Install mitmproxy on your host: `pip install mitmproxy`
+2. Make sure the Android emulator has access to Internet + DNS. If not, relaunch with `-dns-server 8.8.8.8`
+3. Launch `mitmproxy` (or `mitmweb` if you want a web version)
+4. In the Android emulator, configure to use the mitmproxy: Settings > Proxy > Manual proxy configure: your IP address, port: 8080, then Apply.
+5. From the emulator, browse to http://mitm.it. You should see the request in mitmproxy + Install MITM certificates as requested. Select Android certificates. You'll need to set a PIN.
+6. Try now to browse an HTTPs website, like https://dev.to. You should see the request in mitmproxy.
 
 # Objection
 
