@@ -123,7 +123,7 @@ When you run `genymotion`, choose the type of license you want.
 
 
 
-# Android SDK
+# Android SDK Tools
 
 Rooting the emulator: https://github.com/0xFireball/root_avd
 
@@ -143,14 +143,13 @@ To install specific packages, a few examples:
 ```
 ./sdmanager --list --verbose
 ./sdkmanager "platform-tools" "platforms;android-26"
-.//sdkmanager "build-tools;27.0.2"
+./sdkmanager "build-tools;27.0.2"
 ./sdkmanager "system-images;android-24;default;armeabi-v7a"
 ```
 
+# Development
 
-# Implementing an app
-
-## Old fashion way
+## Implementing an app the Old fashion way
 
 ```
 android create project \
@@ -160,7 +159,7 @@ android create project \
     --path <path-to-your-project>/HelloAndroid
 ```
 
-## With Gradle
+## Implementing an app With Gradle
 
 ### Install Gradle
 
@@ -254,7 +253,7 @@ To remove logging at build time:
 
 `-assumenosideeffects class android.util.Log{*;}`
 
-# Implementing a native app
+## Implementing a native app
 
 - Download [NDK from this link](https://developer.android.com/ndk/downloads/index.html)
 - Unzip it in /opt:
@@ -296,12 +295,94 @@ WARNING: linker: /data/local/tmp/hello: unused DT entry: type 0x6fffffff arg 0x1
 Hello world
 ```
 
-# Reverse tethering
 
-[Reverse tethering](http://forum.xda-developers.com/showthread.php?t=2287494)
 
-# Install a CA certificate
+# [Frida](https://www.frida.re)
 
+Excellent tutorial for Frida on Android: [part 1](https://www.codemetrix.net/hacking-android-apps-with-frida-1) [part2](https://www.codemetrix.net/hacking-android-apps-with-frida-2/) [part3](https://www.codemetrix.net/hacking-android-apps-with-frida-3/)
+
+Those notes are personal, please check [Frida's documentation](https://www.frida.re) to adapt to your own case.
+
+## Installation (to use for Android malware reverse engineering)
+
+The following quick notes pertain to having a Linux host running an Android emulator.
+
+To install on Linux:
+
+```bash
+pip install frida frida-tools
+```
+
+Check the version with `frida --version` and [download a Frida server](https://github.com/frida/frida/releases) for your Android emulator for the same version.
+
+Push frida-server on the emulator:
+
+```bash
+$ adb push frida-server /data/local/tmp/ 
+$ adb shell "chmod 755 /data/local/tmp/frida-server"
+$ adb shell
+1|root@generic:/data/local/tmp # ./frida-server
+```
+
+Check you can connect (from your Linux host):
+
+- Use `-U` to connect via USB to an Android device
+- Use `-D emulator-id` to connect to an Android emulator
+
+```bash
+$ frida-ps -D emulator-5554
+```
+
+## Usage
+
+- `frida -D emulator-5554 PID`: inject frida in a given process PID
+- `frida -D emulator-5554 -f packagename`: to have frida spawn a given package.
+- `frida -D emulator-5554 -l script.js packagename`: to have frida inject `script.js` in packagename. Note that this one assumes package is launched manually.
+
+## Example: restoring logs
+
+Sometimes, logs have been disabled. The function to log is more or less there but it has been hidden. Or you want to show each time a given function is called.
+
+The hook looks as follows.
+
+1. Specify the class you want to hook (`my.package.blah.MyActivity`)
+2. Specify the name of the method to hook (`a`)
+3. If there are several methods with that name, you'll need to tell frida which one to use by using the correct signature. Use `overload()` for that.
+4. The arguments for the function are to be passed in `function(..)`. Here for example the function has one argument `mystr`
+
+
+```javascript
+console.log("[*] Loading script");
+
+// check if Java environment is available
+if (Java.available) {
+    console.log("[*] Java is available");
+
+    Java.perform(function() {
+        console.log("[*] Starting Frida script to re-insert logs");
+	bClass = Java.use("my.package.blah.MyActivity");
+	
+        bClass.a.overload('java.lang.String').implementation = function(mystr) {
+          console.log("[*] method a() clicked: "+mystr);
+        }
+       console.log("[*] method a() handler modified")
+    });
+}
+```
+
+
+
+# Mitmproxy and HTTPS interception
+
+1. Install mitmproxy on your host: `pip install mitmproxy`
+2. Make sure the Android emulator has access to Internet + DNS. If not, relaunch with `-dns-server 8.8.8.8`
+3. Launch `mitmproxy` (or `mitmweb` if you want a web version)
+4. In the Android emulator, configure to use the mitmproxy: Settings > Proxy > Manual proxy configure: your IP address, port: 8080, then Apply.
+5. From the emulator, browse to http://mitm.it. You should see the request in mitmproxy + Install MITM certificates as requested. Select Android certificates. You'll need to set a PIN.
+6. Try now to browse an HTTPs website, like https://dev.to. You should see the request in mitmproxy.
+
+
+## Old: install CA certificate 
 ```bash
 openssl genrsa -out .http-mitm-proxy/keys/ca.private.key 2048
 openssl rsa -in .http-mitm-proxy/keys/ca.private.key -pubout > .http-mitm-proxy/keys/ca.public.key
@@ -319,6 +400,79 @@ cd /system/etc/security/cacerts/
 chmod 644 5ed36f99.0
 reboot
 ```
+
+# Objection
+
+Enter the REPL: `objection -g PACKAGENAME explore`
+
+- `android clipboard monitor` (broken)
+- `android hooking get current_activity`
+- `android hooking generate simple classname`: generate a Frida hook
+- `android hooking list activities`: list activities of the package
+- `android hooking search classes beginningofclassname`
+- `android hooking list class_methods classname`: list methods within the class
+- `android hooking list classes`:  list all loaded classes
+- `android hooking watch class_method fullnameofmethod --dump-args --dump-return`. Use `$init` for a constructor.
+- `android hooking watch class fullnameofclass --dump-args --dump-return`
+
+To launch a hook at startup:
+`objection --gadget PACKAGENAME explore --startup-command 'android hooking watch class_method java.net.URL.$init --dump-args --dump-return'`
+
+- `android sslpinning disable`:
+
+```
+# android sslpinning disable
+(agent) Custom TrustManager ready, overriding SSLContext.init()
+(agent) Found com.android.org.conscrypt.TrustManagerImpl, overriding TrustManagerImpl.verifyChain()
+(agent) Found com.android.org.conscrypt.TrustManagerImpl, overriding TrustManagerImpl.checkTrustedRecursive()
+(agent) Registering job 468343. Type: android-sslpinning-disable
+```
+
+- `android ui screenshot /tmp/screenshot.png`
+- `env`
+- `ls`
+- `memory dump all filename`
+- `memory list modules`
+- `ping`
+
+[tutorial](https://book.hacktricks.xyz/mobile-apps-pentesting/android-app-pentesting/frida-tutorial/objection-tutorial)
+
+
+# Memory dump
+
+- Clone [fridump](https://github.com/Nightbringer21/fridump)
+- Install Frida
+
+`python fridump.py -U packagename -o ./dump`
+
+# JEB Debugging
+
+- Start activity with option -D (to enable debugging) and -W (to wait for a debugger): `am start -D -W packagename`
+- Then attach your app with JEB, make sure to keep the threads suspended.
+- Place the breakpoint on the custom Application static initializer code or a constructor code.
+- Run the threads.
+
+Values not provided in Android P and Q:
+- https://www.pnfsoftware.com/blog/debugging-android-apps-on-android-pie-and-above/
+- https://www.pnfsoftware.com/jeb/manual/android-debugging/#unreadable-variables
+
+
+# Reverse engineering
+
+| Meaning                           | Value |
+| ---------------------------------- | ------- |
+| `GLOBAL_ACTION_BACK`  | 1 |
+
+# Misc
+
+## Xposed Framework
+
+From what I read, the Xposed framework [does not install well on the regular Android emulator](https://stackoverflow.com/questions/18142924/how-to-use-xposed-framework-on-android-emulator). It installs on Genymotion though.
+
+## Reverse tethering
+
+[Reverse tethering](http://forum.xda-developers.com/showthread.php?t=2287494)
+
 
 # Motorola Moto E 4G specifics
 
@@ -474,144 +628,9 @@ uid=2000(shell) gid=2000(shell) groups=2000(shell),1004(input),1007(log),1011(ad
 shell@surnia_umts:/ $
 ```
 
-# [Frida](https://www.frida.re)
-
-Excellent tutorial for Frida on Android: [part 1](https://www.codemetrix.net/hacking-android-apps-with-frida-1) [part2](https://www.codemetrix.net/hacking-android-apps-with-frida-2/) [part3](https://www.codemetrix.net/hacking-android-apps-with-frida-3/)
-
-Those notes are personal, please check [Frida's documentation](https://www.frida.re) to adapt to your own case.
-
-## Installation (to use for Android malware reverse engineering)
-
-The following quick notes pertain to having a Linux host running an Android emulator.
-
-To install on Linux:
-
-```bash
-sudo pip install frida
-```
-
-Check the version with `frida --version` and [download frida-server](https://github.com/frida/frida/releases) for your Android emulator for the same version. I used **10.2.3**.
-
-Push frida-server on the emulator:
-
-```bash
-$ adb push frida-server /data/local/tmp/ 
-$ adb shell "chmod 755 /data/local/tmp/frida-server"
-$ adb shell
-1|root@generic:/data/local/tmp # ./frida-server
-```
-
-Check you can connect (from your Linux host):
-
-- Use `-U` to connect via USB to an Android device
-- Use `-D emulator-id` to connect to an Android emulator
-
-```bash
-$ frida-ps -D emulator-5554
-```
-
-
-## Usage
-
-- `frida -D emulator-5554 PID`: inject frida in a given process PID
-- `frida -D emulator-5554 -f packagename`: to have frida spawn a given package.
-- `frida -D emulator-5554 -l script.js packagename`: to have frida inject `script.js` in packagename. Note that this one assumes package is launched manually.
-
-## Example: restoring logs
-
-Sometimes, logs have been disabled. The function to log is more or less there but it has been hidden. Or you want to show each time a given function is called.
-
-The hook looks as follows.
-
-1. Specify the class you want to hook (`my.package.blah.MyActivity`)
-2. Specify the name of the method to hook (`a`)
-3. If there are several methods with that name, you'll need to tell frida which one to use by using the correct signature. Use `overload()` for that.
-4. The arguments for the function are to be passed in `function(..)`. Here for example the function has one argument `mystr`
-
-
-```javascript
-console.log("[*] Loading script");
-
-// check if Java environment is available
-if (Java.available) {
-    console.log("[*] Java is available");
-
-    Java.perform(function() {
-        console.log("[*] Starting Frida script to re-insert logs");
-	bClass = Java.use("my.package.blah.MyActivity");
-	
-        bClass.a.overload('java.lang.String').implementation = function(mystr) {
-          console.log("[*] method a() clicked: "+mystr);
-        }
-       console.log("[*] method a() handler modified")
-    });
-}
-```
-
-# Xposed Framework
-
-From what I read, the Xposed framework [does not install well on the regular Android emulator](https://stackoverflow.com/questions/18142924/how-to-use-xposed-framework-on-android-emulator). It installs on Genymotion though.
-
-# Mitmproxy and HTTPS interception
-
-1. Install mitmproxy on your host: `pip install mitmproxy`
-2. Make sure the Android emulator has access to Internet + DNS. If not, relaunch with `-dns-server 8.8.8.8`
-3. Launch `mitmproxy` (or `mitmweb` if you want a web version)
-4. In the Android emulator, configure to use the mitmproxy: Settings > Proxy > Manual proxy configure: your IP address, port: 8080, then Apply.
-5. From the emulator, browse to http://mitm.it. You should see the request in mitmproxy + Install MITM certificates as requested. Select Android certificates. You'll need to set a PIN.
-6. Try now to browse an HTTPs website, like https://dev.to. You should see the request in mitmproxy.
-
-# Objection
-
-Enter the REPL: `objection -g PACKAGENAME explore`
-
-- `android clipboard monitor` (broken)
-- `android hooking get current_activity`
-- `android hooking generate simple classname`: generate a Frida hook
-- `android hooking list activities`: list activities of the package
-- `android hooking search classes beginningofclassname`
-- `android hooking list class_methods classname`: list methods within the class
-- `android hooking list classes`:  list all loaded classes
-- `android sslpinning disable`
-
-```
-# android sslpinning disable
-(agent) Custom TrustManager ready, overriding SSLContext.init()
-(agent) Found com.android.org.conscrypt.TrustManagerImpl, overriding TrustManagerImpl.verifyChain()
-(agent) Found com.android.org.conscrypt.TrustManagerImpl, overriding TrustManagerImpl.checkTrustedRecursive()
-(agent) Registering job 468343. Type: android-sslpinning-disable
-```
-
-- `android ui screenshot /tmp/screenshot.png`
-- `env`
-- `ls`
-- `memory dump all filename`
-- `memory list modules`
-- `ping`
-
-[tutorial](https://book.hacktricks.xyz/mobile-apps-pentesting/android-app-pentesting/frida-tutorial/objection-tutorial)
-
-To launch a hook at startup:
-`objection --gadget PACKAGENAME explore --startup-command 'android hooking watch class_method java.net.URL.$init --dump-args --dump-return'`
-
-# Memory dump
-
-- Clone [fridump](https://github.com/Nightbringer21/fridump)
-- Install Frida
-
-`python fridump.py -U packagename -o ./dump`
-
-
 # Android applications
 
 [Use K9Mail to encrypt/decrypt GPG emails](https://blogs.itemis.com/en/openpgp-on-the-job-part-6-e-mail-encryption-on-android-with-k-9-mail-openkeychain):
 
 1. Install OpenKeyChain (from FDroid). Import private and public keys.
 2. Install k9 mail. Select cryptography and use corresponding private key.
-
-
-# Reverse engineering
-
-| Meaning                           | Value |
-| ---------------------------------- | ------- |
-| `GLOBAL_ACTION_BACK`  | 1 |
