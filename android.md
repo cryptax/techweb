@@ -2,6 +2,66 @@
 
 # Shell commands
 
+## Activities
+
+```bash
+adb shell am start -a android.intent.action.DIAL -d "tel:*%2306%23"
+adb shell am start-activity com.blah/com.blah.Activity
+```
+
+Launch an activity and wait for debugger to attach:
+
+`adb shell am start -D -S -n package/activity`
+
+
+- Launch Home: `am start -a android.intent.action.MAIN -c android.intent.category.HOME`
+
+## Packages
+
+`pm list packages -3` to list only third party packages
+
+## List/Kill process
+
+`adb shell ps-A`
+
+
+Retrieve several files: `adb shell 'ls sdcard/gps*.trace' | tr -d '\r' | xargs -n1 adb pull`
+
+Kill an app: 
+
+- an easy way on rooted phones is to do `pm disable appname` . This **kills** the app.
+- th then `pm enable appname` to be able to use it again
+
+
+
+## Logcat
+
+filter the logs by tag:
+
+```
+adb logcat -s TAGNAME
+```
+
+filter by priority (e.g warning and above):
+
+```
+adb logcat "*:W"
+```
+
+## Send SMS
+
+`adb emu sms send 1234 hello from here`
+
+
+## Android ID
+
+get the **Android ID**:
+
+```bash
+adb shell settings get secure android_id
+```
+
+
 ## Dumpsys
 
 ```
@@ -22,53 +82,9 @@ adb shell dumpsys notification
 | ro.build.version.release | Version of Android |
 | ro.build.version.sdk | API level |
 
-## Activities
-
-```bash
-adb shell am start -a android.intent.action.DIAL -d "tel:*%2306%23"
-adb shell am start-activity com.blah/com.blah.Activity
-```
-
-Launch an activity and wait for debugger to attach:
-
-`adb shell am start -D -S -n package/activity`
 
 
-## Send SMS
-
-`adb emu sms send 1234 hello from here`
-
-## List process
-
-`adb shell ps-A`
-
-
-Retrieve several files: `adb shell 'ls sdcard/gps*.trace' | tr -d '\r' | xargs -n1 adb pull`
-
-
-
-get the **Android ID**:
-
-```bash
-adb shell settings get secure android_id
-```
-
-filter the logs by tag:
-
-```
-adb logcat -s TAGNAME
-```
-
-filter by priority (e.g warning and above):
-
-```
-adb logcat "*:W"
-```
-
-kill an app: an easy way on rooted phones is to do `pm disable appname` (and then pm enable appname to be able to use it again). This kills the app.
-
-
-- Launch Home: `am start -a android.intent.action.MAIN -c android.intent.category.HOME`
+## Device Admin 
 
 - Launch Device Admin screen: `adb shell am start -S "com.android.settings/.Settings\$DeviceAdminSettingsActivity"`
 - Remove device admin rights: `adb shell dpm remove-active-admin packagename/deviceadminreceivername`
