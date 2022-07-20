@@ -85,6 +85,12 @@ ffmpeg -i source.mp4 -c:v libx264 -crf 19 destinationfile.flv
 ffmpeg -i example.mkv -c copy example.mp4
 ```
 
+- Take a screenshot:
+
+```
+ffmpeg -ss 00:00:00 -i input.MP4 -vframes 1 -q:v 1 ./screenshot.jpg
+```
+
 
 ## Rescale, join
 
