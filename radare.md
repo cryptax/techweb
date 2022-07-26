@@ -44,16 +44,18 @@ rabin2 -i classes.dex
 
 - Print strings: `ps @ loc`
 - Print function: `pdf`
+- Print hexa: `px NUM @ loc` to display NUM bytes
 
 ### Search
 
 
 - Search strings: `iz~STRING`,
-- Search in code: `pd @ func~STRING`,
+- Search in code: `pd @ func~STRING`, You can search an entire section that way (but it will be long)
 - Search imports: `ii~STRING`,
 - Search class names: `ic~STRING`,
 - Seach flags (constants, functions, importants): `f~STRING`,
 - Search function names: `afl~STRING`
+- Search for bytes: `\x 04030201` (depending on endianness etc you might need to reverse bytes)
 
 - Save a session: `Ps filename`. By default, sessions are stored in `~/.config/radare2/projects`. To reload a session: `Po filename`
 
