@@ -26,10 +26,12 @@ rabin2 -i classes.dex
 - Change architecture: `e asm.arch=arm` or `r2 -a arm...`
 - Change bits: `e asm.bits=16`
 - Change CPU: `e asm.cpu=cortex`
+- Use *emulated assembly* `e asm.emu=true` then `aae` [see here](https://blog.superponible.com/2017/04/15/emulating-assembly-in-radare2/)
 - Do not show comments: `e asm.comments=false`
 - Go to a given function: `sf sym.xxx`
 - Add a function: af ...
 - Add a comment: `CC this is my comment @ addr`
+- Find the function you are in: `afi`
 - Remove a comment: `CC-`
 - Rename a function: `afn new-func-name`
 - Rename a local argument: `afvn old-name new-name`
@@ -39,6 +41,7 @@ rabin2 -i classes.dex
 - Cross references: `axf` or `axt`. Function references: `afx`
 - Load predefined binary structure: `r2 -nn file`
 - Open a file in write mode: `oo+`
+- Save a session: `Ps filename`. By default, sessions are stored in `~/.config/radare2/projects`. To reload a session: `Po filename`
 
 ### Print
 
@@ -57,8 +60,19 @@ rabin2 -i classes.dex
 - Search function names: `afl~STRING`
 - Search for bytes: `\x 04030201` (depending on endianness etc you might need to reverse bytes)
 
-- Save a session: `Ps filename`. By default, sessions are stored in `~/.config/radare2/projects`. To reload a session: `Po filename`
+### XOR
 
+Do it from Radare2 entirely. Beware, this *modifies* the executable:
+
+```
+e io.cache=true
+wox 0x88 @ str.mystring // 88 = 0x88 is the key
+px 20 @ str.mystring
+```
+
+The other solution is to use `rahash2`
+
+`rahash2 -D xor -S 0x88 -s 'THESTRING' `
 
 ### Visual mode
 
