@@ -650,3 +650,8 @@ shell@surnia_umts:/ $
 
 1. Install OpenKeyChain (from FDroid). Import private and public keys.
 2. Install k9 mail. Select cryptography and use corresponding private key.
+
+To synchronize with Owncloud calendars:
+
+1. Install DAVx5 (from FDroid). Configure accounts to access the CalDAV calendar. Synchronize.
+2. Open the regular calendar application. Refresh.
