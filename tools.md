@@ -162,6 +162,25 @@ ffmpeg -i video.mp4 -c:v copy -an outvideo.mp4
 
 - Inserting text in videos with subtitles: [tuto](https://github.com/Erkaman/ffmpeg-add-text-to-video-tutorial)
 
+Inserting hard or soft subtitles: [tuto](https://www.bannerbear.com/blog/how-to-add-subtitles-to-a-video-file-using-ffmpeg/):
+
+1. Create a .srt file with subtitles. The format is `hour:minutes:milliseconds`
+
+```
+1
+00:00:0,000 --> 00:00:2,000
+Hello   
+
+2
+00:00:2,000 --> 00:00:4,000
+There
+```
+
+2. `ffmpeg -i input.mkv -vf subtitles=subtitles.srt output.mp4`
+
+
+
+
 
 
 
