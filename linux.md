@@ -518,6 +518,44 @@ $sudo cp tools/btmgmt /usr/bin/
 create database gallery01; grant all on gallery01.* to 'gallery'@'localhost' identified by 'PASSWORD'; flush privileges; \q;
 ```
 
+## Yubikey
+
+To use the Yubikey for Linux login: [see YouTube](https://www.youtube.com/watch?v=INi-xKpYjbE)
+
+```
+sudo apt update
+sudo apt install libpam-u2f
+```
+
+Then configure use of the key: `pamu2fcfg > ~/.config/Yubico/yourfile`
+
+For Linux login:, in `/etc/pam.d/lightdm`, insert the line `auth required pam_u2f.so` just after `@include common-auth`:
+
+```
+#%PAM-1.0
+auth    requisite       pam_nologin.so
+auth    sufficient      pam_succeed_if.so user ingroup nopasswdlogin
+@include common-auth
+auth required pam_u2f.so
+-auth    optional        pam_gnome_keyring.so
+```
+
+For Linux sudo: do the same in `/etc/pam.d/sudo`:
+
+```
+#%PAM-1.0
+
+session    required   pam_env.so readenv=1 user_readenv=0
+session    required   pam_env.so readenv=1 envfile=/etc/default/locale user_readenv=0
+@include common-auth
+auth required pam_u2f.so
+```
+
+To use Yubikey for SSH authentication: `sudo apt install libfido2-dev`
+
+Generate a key: `ssh-keygen -t ed25519-sk -C "myyubikey" `
+
+Then copy it to the server: `ssh-copy-id -i ~/.ssh/id_yubikey.pub user@host`
 
 ## Useful packages (at some point...)
 
