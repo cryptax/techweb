@@ -58,7 +58,7 @@ rabin2 -i classes.dex
 - Search class names: `ic~STRING`,
 - Seach flags (constants, functions, importants): `f~STRING`,
 - Search function names: `afl~STRING`
-- Search for bytes: `\x 04030201` (depending on endianness etc you might need to reverse bytes)
+- Search for bytes: `/x 04030201` (depending on endianness etc you might need to reverse bytes)
 
 ### XOR
 
