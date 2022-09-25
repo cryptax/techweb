@@ -210,6 +210,11 @@ Shortcuts in the Edit Mode:
 - Knife tool in edit mode: K
 - Make a selection bigger: **Ctrl +** this increases the size of the selection one step. Opposite: Ctrl -
 
+Sculpt Mode :
+
+- Shift R to see the size to remesh. Then Button Remesh, set the size and Remesh (Ctrl R).
+- Alt Q to switch between objects
+
 Material:
 
 - Copy material: Shift Left click objects, and the last one with the material to copy, then Ctrl L to copy its material
