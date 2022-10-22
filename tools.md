@@ -228,6 +228,8 @@ Shortcuts in the Edit Mode:
 - Loop cut (in Edit Mode): **Ctrl R**
 - Knife tool in edit mode: K
 - Make a selection bigger: **Ctrl +** this increases the size of the selection one step. Opposite: Ctrl -
+- Select a loop: Alt Right Click
+- Make a loop circle: select the loop, add Add On "Loop". Right click Loop Tools > Circle
 
 Sculpt Mode :
 

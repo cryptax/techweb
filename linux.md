@@ -384,8 +384,8 @@ sudo iptables -t nat --delete PREROUTING 4
 
 We have:
 
-- physical volumes e.g. disks or partitions of disks
-- volume groups: they have a name and you can add physical volumes to them.
+- physical volumes: e.g. disks or partitions of disks
+- volume groups: they have a name and you can add physical volumes to them. e.g you can combine several disks/partitions
 - logical volumes:  set its size, its name, where to mount it to and the volume group
 
 Creating a physical volume:
@@ -397,7 +397,7 @@ Creating a physical volume:
 Creating the volume group:
 
 - `vgcreate vgelk /dev/sdc1`
-- If you want to add future partitions, do `vgextend vgelk /dev/sdc2`
+- If you want to add future partitions, do `vgextend vgelk /dev/sdc2`. *If the specified PVs have not yet been initialized with pvcreate, vgextend will  initialize  them.*
 
 Creating a logical volume:
 
@@ -411,6 +411,22 @@ mkdir /mnt/var_new
 mount /dev/vgelk/var /mnt/var_new
 rsync -avHPSAX /var/ /mnt/var_new/
 ```
+
+- To extend the size of an existing logical volume: `lvextend -L +100G  /dev/mapper/vgpool-xxx`
+
+List:
+
+- Physical volumes: `pvs`
+- Volume groups: `vgs`
+- Logical volumes: `lvs`
+
+Display info:
+
+- Physical volumes: `pvdisplay`
+- Volume groups: `vgdisplay`
+- Logical volume: `lvdisplay`
+
+
 References:
 
 - https://www.computernetworkingnotes.com/rhce-study-guide/learn-how-to-configure-lvm-in-linux-step-by-step.html
