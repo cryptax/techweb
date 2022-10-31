@@ -221,6 +221,7 @@ General shortcuts:
 - Move the pointer: Ctrl Right Click.
 - Zoom in when you can't go past a point: click on the portion you want to zoom in and center the viez around the mouse cursor: Alt F, then zoom. [ref](https://blender.stackexchange.com/questions/644/why-does-the-zoom-sometimes-stop-at-a-point)
 - Get a curves box: create a 3D box, and then **Ctrl 2**
+- Hide an object: **H**
 
 Shortcuts in the Edit Mode:
 
@@ -231,6 +232,7 @@ Shortcuts in the Edit Mode:
 - Select a loop: select an edge, then Alt Right Click. 
 - Make a loop circle: select the loop, add Add On "Loop". Right click Loop Tools > Circle
 - Separate a part of the mesh as an individual object: **P** then choose "Selection" from the menu.
+- Modify a form according to a circle influence: **G** then select axis (**Z**) and move the pointer, scroll to enlarge influence.
 
 Sculpt Mode :
 
