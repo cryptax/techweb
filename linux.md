@@ -573,6 +573,19 @@ Generate a key: `ssh-keygen -t ed25519-sk -C "myyubikey" `
 
 Then copy it to the server: `ssh-copy-id -i ~/.ssh/id_yubikey.pub user@host`
 
+## Certbot
+
+```
+sudo apt install snapd
+sudo apt install fuse squashfuse
+sudo snap install core
+sudo snap refresh core
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo certbot --nginx
+sudo certbot renew --dry-run
+```
+
 ## Useful packages (at some point...)
 
 - To install glib2:
