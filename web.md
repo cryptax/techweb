@@ -43,3 +43,74 @@ PORT    STATE SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 1.33 seconds
 ```
 
+## Hosting a Web site with Flask
+
+- Install Flask: `pip3 install flask`
+- Create the Flask application:
+
+```python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from flask import Flask
+def create_app(test_config=None):
+    # create and configure the app
+    app = Flask(__name__, instance_relative_config=True)
+...
+    return app
+
+app = create_app()
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', ssl_context='adhoc', threaded=True, debug=True)
+```
+
+- Install Gunicorn: `pip3 install gunicorn`
+- Test it works with `gunicorn`: `gunicorn --access-logfile - --workers 2 --bind 0.0.0.0 'app:create_app()'`
+- Create a system service:
+
+```
+[Unit]
+Description=gunicorn daemon for Picoweb
+After=network.target
+
+[Service]
+User=axelle
+Group=axelle
+WorkingDirectory=/home/axelle/picoweb
+ExecStart=/home/axelle/.local/bin/gunicorn --access-logfile - --workers 2 --bind 0.0.0.0 'app:create_app()'
+
+[Install]
+WantedBy=multi-user.target
+```
+- Copy the file to `/etc/systemd/system/`
+- Enable the service: `sudo systemctl enable picoweb.service`
+- Start the service: `sudo systemctl start picoweb.service`
+- Check you can access the service locally 
+- Install nginx: `sudo apt install nginx`
+- Configure your site in nginx for HTTP: in `/etc/nginx/conf.d` (e.g `picoweb.conf`):
+
+```
+server {
+       server_name	YOUR_DOMAIN;
+
+       location / {
+       		proxy_pass http://127.0.0.1:8000;
+	}
+```
+- Restart nginx: `sudo systemctl reload nginx`, `sudo systemctl restart nginx`
+- Make sure your domain redirects to your host IP address port 80
+- Check you can access the web site via http://YOUR_DOMAIN
+- Get a certificate with Let's Encrypt. Install [Certbot](https://certbot.eff.org)
+
+```
+sudo apt install snapd
+sudo apt install fuse squashfuse
+sudo snap install core
+sudo snap refresh core
+sudo snap install --classic certbot
+sudo ln -s /snap/bin/certbot /usr/bin/certbot
+sudo certbot --nginx
+sudo certbot renew --dry-run
+```
+
+- You should now be able to access https://YOUR_DOMAIN
