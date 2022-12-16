@@ -23,7 +23,7 @@ Raspberry Pi 2 Model B Rev 1.1
 - Download Raspbian. For a RPI A+, use the lite edition: `raspbian_lite_latest.zip`
 - Unzip it to get, e.g `2018-04-18-raspbian-stretch-lite.img`
 - Insert a SD card, and run `lsblk` to spot where it is located
-- Copy raspbian on the SD card: `sudo dd bs=4M if=2018-04-18-raspbian-stretch-lite.img of=/dev/sdX conv=fsync` where sdX is for example `sdj` (but not `sdj1`)
+- Copy raspbian on the SD card: `sudo dd bs=4M if=2018-04-18-raspbian-stretch-lite.img of=/dev/sdX conv=fsync` where sdX is for example `sdj` (but not `sdj1`). Or using the new tool `rpi-imager`.
 
 With a lite Raspbian, the operation might take a few minutes.
 
@@ -72,16 +72,6 @@ See [Headless setup](https://raspberrypi.stackexchange.com/questions/10251/prepa
 
 - `dd`
 - [Pi Shrink](https://github.com/Drewsif/PiShrink)
-
-## Firmware
-
-Update firmware:
-
-```
-rpi-firmware update
-```
-
-(doesn't exist any longer?)
 
 
 ## Multiboot
