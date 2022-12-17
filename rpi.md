@@ -387,10 +387,6 @@ sudo apt-get install kodi
 sudo apt-get install vlc
 ```
 
-### OwnCloud
-
-[Install OwnCloud 8](http://www.framboise314.fr/installer-owncloud-8-sur-un-raspberry-pi-2/)
-
 
 ### Arduino
 
