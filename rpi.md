@@ -15,8 +15,7 @@ Raspberry Pi 2 Model B Rev 1.1
 
 [This explains where to connect the fan](https://castman.fr/wordpress/tag/connecter-le-ventilateur-sur-gpio-raspberry-pi-2-b/). There is nothing more to do: the fan starts when the RPi has booted.
 
-
-## Installing Raspbian
+## Installing Raspberry Pi OS
 
 ### Copying the system
 
@@ -403,7 +402,7 @@ To list existing profiles, `pivpn -l`.
 
 Then, on the client, it's very simple:
 
-- Linux: `openvpn -c xxx.ovpn`
+- Linux: `openvpn --config xxx.ovpn`
 - Android: install OpenVPN app, and import .ovpn profile
 
 ### MuseScore

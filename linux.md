@@ -335,6 +335,27 @@ $ ntpq -p
 ...
 ```
 
+Configure servers to use in `/etc/ntp.conf`
+
+```
+# pool: <http://www.pool.ntp.org/join.html>
+server ntp.obspm.fr
+server ntp.kamino.fr
+server ntp2.belbone.be
+server 0.fr.pool.ntp.org iburst dynamic
+server 1.fr.pool.ntp.org iburst dynamic
+server 2.fr.pool.ntp.org iburst dynamic
+server 3.fr.pool.ntp.org iburst dynamic
+```
+
+
+To sollicit time: `sudo ntpd -gq`
+
+Or set it manually:
+
+`sudo date -s "3 dec 2017 22:21"`
+
+
 ## SSH
 
 ```
