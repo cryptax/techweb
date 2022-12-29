@@ -1,6 +1,8 @@
 # Databases
 
-## MySQL
+## MySQL (or MariaDB)
+
+To set up the initial root password: `sudo mysql_secure_installation`
 
 ### Interactive
 
