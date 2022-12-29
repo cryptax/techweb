@@ -304,6 +304,24 @@ To access a remote Apple Timecapsule:
 - uid to specify the Linux user id to give access to
 
 
+### Firewall
+
+`sudo apt install ufw` will install a basic firewall. It won't enable it by default.
+
+- To open port for SSH and HTTPS:
+
+```
+ufw allow OpenSSH
+ufw allow 'Nginx HTTPS'
+```
+
+- To list current description: `sudo ufw show added`
+- To enable UFW: `sudo ufw enable`
+- To list profiles: `sudo ufw app list` (see `/etc/ufw/applications.d`)
+- To get the ports of a given profile: `sudo ufw app info PROFILE`
+
+
+
 ## Locale
 
 ```
