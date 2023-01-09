@@ -607,6 +607,53 @@ sudo certbot --nginx
 sudo certbot renew --dry-run
 ```
 
+## Owncloud 
+
+Install pre-requisistes:
+
+- `sudo apt-get install apache2 sqlite -y`
+- `sudo apt-get install php-mysql php-mbstring php-php-gettext php-intl php-redis php-imagick php-igbinary php-gmp php-curl php-gd php-zip php-imap php-ldap php-bz2 php-phpseclib php-xml`
+- `sudo apt install mariadb-server mariadb-client -y`
+
+Prepare:
+
+- In Apache2, serve `/var/www`
+- `sudo a2enmod rewrite ` (and restart Apache2)
+- Set root password: `sudo mysql_secure_installation`
+- Create owncloud user and database:
+
+```
+mysql -u root -p
+MariaDB [(none)]> create database owncloud;
+MariaDB [(none)]> create user owncloud@localhost identified by ‘12345’;
+MariaDB [(none)]> grant all privileges on owncloud.* to owncloud@localhost identified by ‘12345’;
+MariaDB [(none)]> flush privileges;
+MariaDB [(none)]> exit;
+```
+
+- Get OwnCloud ZIP: `wget https://download.owncloud.com/server/owncloud-10.11.0.zip`
+- `unzip owncloud-10.8.0.zip -d /var/www/`
+- `sudo chown www-data:www-data /var/www/owncloud`
+- Head to http://your_host/owncloud, and configure
+- Enable SSL: `sudo a2ensite default-ssl`
+
+Backup:
+
+- Backup Calendars : `curl -u <username:password> http://<your cloud domain>/remote.php/dav/calendars/<user name>/<calendar name>?export -o calendar.ics` (e.g. `http://127.0.0.1/owncloud/remote.php/dav/calendars/toto/personal?export`)
+- Backup Contacts: `curl -u <username:password> http://<host>/owncloud/remote.php/dav/addressbooks/users/<user name>/contacts?export -o contacts`
+
+Config: `/var/www/owncloud/config/config.php`
+
+If you get an untrusted domain warning, in `config.php`, put the correct IP address:
+
+```
+'trusted_domains' => 
+  array (
+    0 => '192.168.0.9',
+  ),
+```
+
+
 ## Useful packages (at some point...)
 
 - To install glib2:

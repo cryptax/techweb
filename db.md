@@ -21,6 +21,13 @@ Create an account:
 `create user 'myusername'@'localhost' identified by 'mypassword';`
 
 
+Show user accounts:
+
+```
+SELECT User FROM mysql.user;
+SELECT host, user, password FROM mysql.user;
+```
+
 ### Backup / Restore
 
 ```
