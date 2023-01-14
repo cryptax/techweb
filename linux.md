@@ -303,6 +303,10 @@ To access a remote Apple Timecapsule:
 - **do not forget** `vers=1.0` **and** `sec=ntlm`
 - uid to specify the Linux user id to give access to
 
+To access a Samba share from a NAS:
+
+`sudo mount -t citfs -o rw,guest,uid=username //ip/share /mnt/point`
+
 
 ### Firewall
 
@@ -380,6 +384,20 @@ Or set it manually:
 ssh-keygen -t rsa -b 4096
 ssh-keyscan -H 192.168.0.9 >> known_hosts
 ```
+
+## SFTP
+
+SFTP comes with SSH! 
+I added a `sftp` group, and a `username` user in that group.
+Then, in `/etc/ssh/sshd_config`, you need to redirect logins and chroot them to the appropriate dir:
+
+```
+Match Group sftp
+        ChrootDirectory /var/www/%u
+        ForceCommand internal-sftp
+```
+
+And strangely, `/var/www/%u` must be owned by *root* not by `biotmeteo`. See [here](https://unix.stackexchange.com/questions/598520/client-loop-send-disconnect-broken-pipe-for-chroot-sftp-user-with-correct-p)
 
 ## ZFS
 
