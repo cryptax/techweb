@@ -341,9 +341,16 @@ sudo dpkg-reconfigure locales
 ## Package management
 
 To re-install a package:
+
 ```bash
 $ sudo apt-get --reinstall install package
 ```
+
+### Snap
+
+To restart a service installed via snap:
+
+`sudo snap restart PACKAGE`
 
 ## NTP
 
@@ -488,6 +495,11 @@ References:
 
 - https://www.computernetworkingnotes.com/rhce-study-guide/learn-how-to-configure-lvm-in-linux-step-by-step.html
 - http://www.lerrigatto.com/move-var-to-a-new-partition-with-lvm/
+
+## Consoles
+
+Switch to other consoles with Ctrl-Alt-F1 to F6, and Ctrl-Alt-F7 is graphical.
+On a laptop, you often have to add the "Fn" key to get F1 to work, so it would be Ctrl-Alt-Fn-F1.
 
 ## User management 
 
