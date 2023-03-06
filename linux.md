@@ -319,6 +319,7 @@ ufw allow OpenSSH
 ufw allow 'Nginx HTTPS'
 ```
 
+- To disable a port: `sudo ufw deny 'Nginx HTTP'`
 - To list current description: `sudo ufw show added`
 - To enable UFW: `sudo ufw enable`
 - To list profiles: `sudo ufw app list` (see `/etc/ufw/applications.d`)
@@ -652,8 +653,9 @@ sudo snap refresh core
 sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 sudo certbot --nginx
-sudo certbot renew --dry-run
 ```
+
+- [Renewing](https://tecadmin.net/auto-renew-lets-encrypt-certificates/): `sudo certbot renew --dry-run`  then `sudo certbot renew`. You might need to allow HTTP.
 
 ## Owncloud 
 

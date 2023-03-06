@@ -423,6 +423,9 @@ To reload the configuration: `service weewx reload`
 
 To test your configuration: `sudo ./bin/weewxd weewx.conf`
 
+It is possible to configure 2 weather stations in parallel. To do so, duplicate the `weewx` script of `/etc/init.d` and have it read a different configuration. Then, start each service with its name like `sudo systemctl start ecowitt`.
+
+
 
 ## Redirecting the logs
 
