@@ -137,6 +137,8 @@ Less drastic, there is `docker container prune`, `docker image prune`, `docker n
 
 # Kubernetes
 
-A Kubernetes cluster contains a *control plane* and *nodes*.
+- Node: physical device which runs containers
+- Pod: group of 1+ container
+- Master server = control plane
 
 - Lab: https://gitlab.com/lucj/k8s-exercices
