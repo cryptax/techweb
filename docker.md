@@ -135,3 +135,8 @@ Less drastic, there is `docker container prune`, `docker image prune`, `docker n
 | malice/virustotal | VirusTotal search: `docker run --rm -it malice/virustotal --api yourkey lookup hash` |
 | remnux/jsdetox | JavaScript malware analysis tool: `docker run --rm -p 3000:3000 remnux/jsdetox` then go to `http://127.0.0.1:3000` |
 
+# Kubernetes
+
+A Kubernetes cluster contains a *control plane* and *nodes*.
+
+- Lab: https://gitlab.com/lucj/k8s-exercices
