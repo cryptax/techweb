@@ -19,16 +19,25 @@ Raspberry Pi 2 Model B Rev 1.1
 
 ### Copying the system
 
-- Download Raspbian. For a RPI A+, use the lite edition: `raspbian_lite_latest.zip`
-- Unzip it to get, e.g `2018-04-18-raspbian-stretch-lite.img`
-- Insert a SD card, and run `lsblk` to spot where it is located
-- Copy raspbian on the SD card: `sudo dd bs=4M if=2018-04-18-raspbian-stretch-lite.img of=/dev/sdX conv=fsync` where sdX is for example `sdj` (but not `sdj1`). Or using the new tool `rpi-imager`.
 
-With a lite Raspbian, the operation might take a few minutes.
+The best solution nowadays is to:
+
+- Download `rpi-imager`
+- Insert a SD card
+- `sudo rpi-imager` and select the OS you want (can automatically download it). The tool also allow you to setup SSH, WiFi, hostname which really saves time!
+
+If you still want to do it the old way,
+
+- Download Raspberry Pi OS
+- Insert a SD card, and run `lsblk` to spot where it is located
+- Copy raspbian on the SD card: `sudo dd bs=4M if=2018-04-18-raspbian-stretch-lite.img of=/dev/sdX conv=fsync` where sdX is for example `sdj` (but not `sdj1`).
+
 
 Note [it is possible to combine the Unzip and the copy](https://www.raspberrypi.org/documentation/installation/installing-images/linux.md) with `unzip -p` and a pipe.
 
-### Customizing the image (eg headless systems)
+### Customizing the image (e.g. headless systems)
+
+Note that `rpi-imager` can enable WiFi and SSH for you. In that case, you no longer need to customize the image.
 
 Once the image  has been copied on the SD card, We need to reload the partition table for the SD card: `sudo partprobe /dev/sdX`. Then you will notice two partitions on the SD card:
 
@@ -44,15 +53,13 @@ Command (m for help): p
 
 ```
 
-Mount the 1st partition: `sudo mount /dev/sdj1 /mnt/usbstick/`. This corresponds to the `/boot` partition.
+- Mount the 1st partition: `sudo mount /dev/sdj1 /mnt/usbstick/`. This corresponds to the `/boot` partition.
+- To **enable SSH** at startup: `sudo touch /mnt/usbstick/ssh`
+- To **configure Wifi**, create a file `/mnt/usbstack/wpa_supplicant.conf`. At startup, this file will be copied in the correct directory automatically.
+- Run `wpa_passphrase SSID PASSPHRASE` to generate the correct `psk` for `wpa_supplicant.conf` and copy/paste the output.
 
-
-To **enable SSH** at startup: `sudo touch /mnt/usbstick/ssh`
-
-To **configure Wifi**, create a file `/mnt/usbstack/wpa_supplicant.conf`. At startup, this file will be copied in the correct directory automatically.
 
 ```
-
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 country=fr
@@ -60,7 +67,6 @@ country=fr
 network={
     ssid="your-ssid"
     psk="your key use wpa_passphrase"
-    key_mgmt=WPA-PSK
 }
 ```
 

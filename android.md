@@ -108,6 +108,15 @@ adb forward --remove-all
 adb reverse --list
 ```
 
+## Boot / Writable system
+
+- Disable secure boot: `adb shell avbctl disable-verification` and then `adb reboot`
+- Mount `/system` as writable: 
+```
+adb root
+adb remount
+```
+
 # Emulators
 
 - Genymotion: customization of IMEI and Android ID
