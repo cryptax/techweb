@@ -190,6 +190,7 @@ ffmpeg -i example.mkv -c copy example.mp4
 ffmpeg -ss 00:00:00 -i input.MP4 -vframes 1 -q:v 1 ./screenshot.jpg
 ```
 
+- Extract audio only: `ffmpeg -i example.mp4 -q:a 0 -map a /tmp/audio.mp3`
 
 ## Rescale, join
 
