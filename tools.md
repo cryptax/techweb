@@ -1,11 +1,6 @@
 % Tools
 
 
-
-
-
-
-
 # Blender
 
 Get things ready for 3d printing:

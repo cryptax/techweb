@@ -100,7 +100,10 @@ server {
 - Restart nginx: `sudo systemctl reload nginx`, `sudo systemctl restart nginx`
 - Make sure your domain redirects to your host IP address port 80
 - Check you can access the web site via http://YOUR_DOMAIN
-- Get a certificate with Let's Encrypt. Install [Certbot](https://certbot.eff.org)
+
+## Get a certificate with Let's Encrypt
+
+- Get a certificate with Let's Encrypt. Install [Certbot](https://certbot.eff.org). Make sure there are no OS `certbot` packages, if so, uninstall them `sudo apt-get remove certbot` as we are installing Cerbot via SNAP.
 
 ```
 sudo apt install snapd
@@ -110,7 +113,13 @@ sudo snap refresh core
 sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 sudo certbot --nginx
+```
+
+To renew a certificate:
+
+```
 sudo certbot renew --dry-run
+sudo certbot renew
 ```
 
 - You should now be able to access https://YOUR_DOMAIN
