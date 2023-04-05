@@ -9,6 +9,14 @@ Flashing a firmware:
 The Raspberry Pico includes a temperature sensor.
 See [code](here)
 
+## I2C LCD
+
+https://microcontrollerslab.com/i2c-lcd-raspberry-pi-pico-micropython-tutorial/
+https://www.tomshardware.com/how-to/lcd-display-raspberry-pi-pico
+https://www.instructables.com/Beginner-Projects-for-Raspberry-Pi-Pico/
+https://github.com/T-622/RPI-PICO-I2C-LCD
+https://microcontrollerslab.com/getting-started-raspberry-pi-pico-thonny-ide/
+
 ## References
 
 - [Datasheet](https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf)
@@ -33,3 +41,4 @@ Ctrl-A, Ctrl-D to detach screen
 - List files on the device: `ampy --port /dev/ttyACM0 ls`
 - Create a directory: `ampy --port /dev/ttyACM0 mkdir /lib`
 - Put a file on the device `ampy --port /dev/ttyACM0 put lcd_api.py ./lib/lcd_api.py`
+- Run a file: `ampy --port /dev/ttyACM0 run mypython.py`
