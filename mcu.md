@@ -46,6 +46,43 @@ lcd.putstr("Hello")
 - [Several projects with the Pico](https://www.instructables.com/Beginner-Projects-for-Raspberry-Pi-Pico/)
 - [With Thonny](https://microcontrollerslab.com/getting-started-raspberry-pi-pico-thonny-ide/)
 
+# Programming in C
+
+- Setup the [Pico SDK](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf): `git clone https://github.com/raspberrypi/pico-sdk.git`
+- Write the C program
+- Prepare `CMakeLists.txt`
+
+```
+drwxrwxr-x  3 axelle axelle 4096 Apr 13 22:38 .
+drwxrwxr-x 11 axelle axelle 4096 Apr 13 22:32 ..
+drwxrwxr-x  7 axelle axelle 4096 Apr 13 22:35 build
+-rw-rw-r--  1 axelle axelle  434 Apr 13 22:35 CMakeLists.txt
+-rw-rw-r--  1 axelle axelle  193 Apr 13 22:00 greetz.c
+-rw-rw-r--  1 axelle axelle 3165 Apr 13 22:17 pico_sdk_import.cmake
+```
+
+- Compile: `cmake ..`, then `make`
+
+To push on the board, use [picotool](https://github.com/raspberrypi/picotool)
+
+- Write your .uf2 to the board: `sudo picotool load your.uf2`
+- Reboot the board in application mode: `sudo picotool reboot`
+
+You can also save the current firmware (save), or see info:
+
+```
+$ sudo ../picotool/build/picotool info -f
+The device was asked to reboot into BOOTSEL mode so the command can be executed.
+
+Program Information
+ name:      greetz
+ features:  UART stdin / stdout
+            USB stdin / stdout
+
+            The device was asked to reboot back into application mode.
+```
+
+
 ## References
 
 - [Datasheet](https://datasheets.raspberrypi.com/rp2040/rp2040-datasheet.pdf)
@@ -58,6 +95,10 @@ lcd.putstr("Hello")
 - [Ampy and TIO](https://bigl.es/tuesday-tooling-pico-mix/)
 - [Play a melody](https://electroniqueamateur.blogspot.com/2021/07/jouer-une-melodie-avec-le-raspberry-pi.html)
 - [I2C LCD](https://github.com/T-622/RPI-PICO-I2C-LCD)
+- [UF2 Flashing Format](https://microsoft.github.io/uf2/)
+
+
+
 
 
 # Screen
