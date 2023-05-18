@@ -564,6 +564,28 @@ card 1: J20 [Jabra EVOLVE 20], device 0: USB Audio [USB Audio]
   Subdevice #0: subdevice #0
 ```
 
+or `lspci -v | grep -A7 Audio` or `inxi -A`
+
+```
+$ inxi -A
+Audio:
+  Device-1: Intel 7 Series/C216 Family High Definition Audio driver: snd_hda_intel 
+  Device-2: AMD Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] 
+  driver: snd_hda_intel 
+  Sound Server: ALSA v: k5.4.0-148-generic
+```  
+
+
+## Volume
+
+To set the volume from a terminal: `alsamixer`
+To play from the terminal: `paplay file`
+
+## Test
+
+- To test speakers: `speaker-test -Dplug:front -c2`
+- Play a test sound: `aplay /usr/share/sounds/alsa/Front_Center.wav`
+- See http://mreen.epizy.com/SoundFixTips.html?i=3
 
 # Apps
 
