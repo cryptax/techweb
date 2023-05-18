@@ -151,6 +151,19 @@ Mask:
 - Configure Output
 - Render Animation
 
+# Emacs
+
+## Markdown Mode
+
+`apt install elsa-markdown-mode`
+
+## imenu-list
+
+- Install with : `M-x package-install RET imenu-list`
+- Toggle menu with `imenu-list-smart-toggle`
+- [see here](https://jblevins.org/log/markdown-imenu)
+
+
 # Firefox
 
 - [How to disable port restriction on Firefox](https://www.ryadel.com/en/firefox-this-address-is-restricted-override-fix-port/): `network.security.ports.banned.override` (String) and specify port.
