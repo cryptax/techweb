@@ -226,6 +226,15 @@ ffmpeg -i left.mp4 -i rscaled.ogv -filter_complex '[0:v][1:v]hstack=2[vid]' -map
 ffmpeg -i input.mp4 -vf  "crop=w:h:x:y" input_crop.mp4
 ```
 
+## Speed/slow
+
+```
+ffmpeg -i input.mkv -filter:v "setpts=2.0*PTS" output.mkv
+```
+
+- To slow it down use a factor > 1
+- To speed it up, use a factor < 1
+
 ## Select
 
 - Skip first few seconds of a video: (`-ss` is for seek)
