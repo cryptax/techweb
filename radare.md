@@ -35,6 +35,8 @@ rabin2 -i classes.dex
 - Remove a comment: `CC-`
 - Rename a function: `afn new-func-name`
 - Rename a local argument: `afvn old-name new-name`
+- Define a function: go to the function beginning then `af`
+- Go to the beginning of a function: s `afi.` or `sf.`
 - List entry points: `ie`
 - Write to a file: `wtf filename size @ position`
 - Shell commands work: `s 0x65; pD 32`

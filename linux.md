@@ -245,7 +245,7 @@ If you want to add a [DNS server temporarily](https://notes.enovision.net/linux/
 
 1. Add it in `/etc/systemd/resolved.conf`
 2. Restart service: `service systemd-resolved restart`
-3. Check: `systemd-resolve --status`
+3. Check: `systemd-resolve --status` or `resolvectl`
 
 
 
