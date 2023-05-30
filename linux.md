@@ -470,6 +470,20 @@ Creating a logical volume:
 - Format the logical volume: `mkfs -t ext4 /dev/vgelk/var`
 - Copy the contents of `/var` (or other) to that logical volume:
 
+To shrink a logical volume:
+
+- Do a backup of the volume!
+- Unmount it: `sudo umount /your/mountpoint`
+- Check filesystem: `sudo e2fsck -fy /dev/mapper/vgpool-docs`
+- Resize the filesystem and specify the new size you want it to be (smaller): `sudo resize2fs /dev/mapper/vgpool-docs 15G`
+- Resize the logical volume: `sudo lvreduce -L 15G /dev/mapper/vgpool-docs`
+- Mount the partition again: `sudo mount /dev/mapper/vgpool-docs /your/mountpoint`
+
+If the idea was to *shrink* a volume to affect the siwe to *another* volume, this works quite easily when both volumes share the same volume group :
+
+1. Extend the logical partition `sudo lvextend -l +100%FREE /dev/mapper/vgpool-video`
+2. Run resize to register the new size: `sudo resize2fs /dev/mapper/vgpool-video`
+
 To copy/backup completely a directory (make sure links are ok):
 ```
 mkdir /mnt/var_new
@@ -564,6 +578,28 @@ card 1: J20 [Jabra EVOLVE 20], device 0: USB Audio [USB Audio]
   Subdevice #0: subdevice #0
 ```
 
+or `lspci -v | grep -A7 Audio` or `inxi -A`
+
+```
+$ inxi -A
+Audio:
+  Device-1: Intel 7 Series/C216 Family High Definition Audio driver: snd_hda_intel 
+  Device-2: AMD Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] 
+  driver: snd_hda_intel 
+  Sound Server: ALSA v: k5.4.0-148-generic
+```  
+
+
+## Volume
+
+To set the volume from a terminal: `alsamixer`
+To play from the terminal: `paplay file`
+
+## Test
+
+- To test speakers: `speaker-test -Dplug:front -c2`
+- Play a test sound: `aplay /usr/share/sounds/alsa/Front_Center.wav`
+- See http://mreen.epizy.com/SoundFixTips.html?i=3
 
 # Apps
 

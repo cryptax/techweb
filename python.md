@@ -23,6 +23,8 @@
 | `c='a'` (character) |  `97` (ascii value) | `ord(c)` |
 | `s='cryptax'` (string) |  `b'cryptax'` (bytes) | `bytes(s, 'utf-8')` |
 | `b=b'cryptax'` (bytes) | `'cryptax'` (string) | `b.decode('utf-8')` |
+| `b=b'cryptax'` (byte string) |  `b'63727970746178'` (hexstring bytes) |  binascii.hexlify(b'cryptax') |
+|  `b'63727970746178'` (hexstring bytes) | | `b=b'cryptax'` (byte string) | binascii.unhexlify(b'63727970746178) |
 
 
 ### Time

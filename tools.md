@@ -1,11 +1,6 @@
 % Tools
 
 
-
-
-
-
-
 # Blender
 
 Get things ready for 3d printing:
@@ -156,6 +151,19 @@ Mask:
 - Configure Output
 - Render Animation
 
+# Emacs
+
+## Markdown Mode
+
+`apt install elsa-markdown-mode`
+
+## imenu-list
+
+- Install with : `M-x package-install RET imenu-list`
+- Toggle menu with `imenu-list-smart-toggle`
+- [see here](https://jblevins.org/log/markdown-imenu)
+
+
 # Firefox
 
 - [How to disable port restriction on Firefox](https://www.ryadel.com/en/firefox-this-address-is-restricted-override-fix-port/): `network.security.ports.banned.override` (String) and specify port.
@@ -217,6 +225,15 @@ ffmpeg -i left.mp4 -i rscaled.ogv -filter_complex '[0:v][1:v]hstack=2[vid]' -map
 ```
 ffmpeg -i input.mp4 -vf  "crop=w:h:x:y" input_crop.mp4
 ```
+
+## Speed/slow
+
+```
+ffmpeg -i input.mkv -filter:v "setpts=2.0*PTS" output.mkv
+```
+
+- To slow it down use a factor > 1
+- To speed it up, use a factor < 1
 
 ## Select
 
