@@ -123,3 +123,17 @@ sudo certbot renew
 ```
 
 - You should now be able to access https://YOUR_DOMAIN
+
+## Hugo
+
+Starting matters:
+
+```
+hugo new site --force .
+git submodule add https://github.com/dillonzq/LoveIt themes/LoveIt
+echo "theme = 'LoveIt'" >> config.toml
+hugo serve --source=themes/LoveIt/exampleSite
+```
+
+- To search for Font Awesome icons: https://fontawesome.com/search
+- To modify theme colors: typically in `./theme/xxx/assets/css/_variables.css`

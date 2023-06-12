@@ -28,6 +28,7 @@ rabin2 -i classes.dex
 - Change CPU: `e asm.cpu=cortex`
 - Use *emulated assembly* `e asm.emu=true` then `aae` [see here](https://blog.superponible.com/2017/04/15/emulating-assembly-in-radare2/)
 - Do not show comments: `e asm.comments=false`
+- Change delimiter: ``e asm.cmt.token=#`
 - Go to a given function: `sf sym.xxx`
 - Add a function: af ...
 - Add a comment: `CC this is my comment @ addr`
@@ -61,6 +62,7 @@ rabin2 -i classes.dex
 - Seach flags (constants, functions, importants): `f~STRING`,
 - Search function names: `afl~STRING`
 - Search for bytes: `/x 04030201` (depending on endianness etc you might need to reverse bytes)
+- Search for instructions: `/ad mov`
 
 ### XOR
 
