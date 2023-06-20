@@ -123,3 +123,10 @@ sudo certbot renew
 ```
 
 - You should now be able to access https://YOUR_DOMAIN
+
+## Hugo
+
+```
+hugo new site mysite
+cd mysite/themes
+```
