@@ -488,6 +488,24 @@ Values not provided in Android P and Q:
 | ---------------------------------- | ------- |
 | `GLOBAL_ACTION_BACK`  | 1 |
 
+# Colander
+
+Connect the PiRogue (user profile page):
+
+```
+sudo apt update
+sudo apt install -y pirogue-colander-connector
+pirogue-colander config -u "https://beta.colander.defensive-lab.agency" -k "xxx"
+```
+
+Launch the app:
+
+1. Use a rooted phone and install the app on it. Plug the phone to PiRogue USB port.
+2. `sudo pirogue-intercept-gated -o outputdir`
+3. `pirogue-colander collect-experiment -c "xxx" outputdir`
+
+
+
 # Misc
 
 ## Xposed Framework
