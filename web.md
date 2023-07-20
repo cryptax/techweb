@@ -126,6 +126,10 @@ sudo certbot renew
 
 ## Hugo
 
+```
+hugo new site mysite
+cd mysite/themes
+```
 Starting matters:
 
 ```
@@ -137,3 +141,4 @@ hugo serve --source=themes/LoveIt/exampleSite
 
 - To search for Font Awesome icons: https://fontawesome.com/search
 - To modify theme colors: typically in `./theme/xxx/assets/css/_variables.css`
+
