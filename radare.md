@@ -52,6 +52,7 @@ rabin2 -i classes.dex
 - Print strings: `ps @ loc`
 - Print function: `pdf`
 - Print hexa: `px NUM @ loc` to display NUM bytes
+- Show Pico: `?EC yourmessagegoeshere`
 
 ### Search
 
