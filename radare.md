@@ -45,6 +45,7 @@ rabin2 -i classes.dex
 - Load predefined binary structure: `r2 -nn file`
 - Open a file in write mode: `oo+`
 - Save a session: `Ps filename`. By default, sessions are stored in `~/.config/radare2/projects`. To reload a session: `Po filename`
+- Pretty print: `~{}`
 
 ### Print
 
@@ -85,6 +86,10 @@ V then press p to switch between virtual modes
 - Enter visual mode: `V`
 - Leave visual mode: `q`
 
+# r2pm
+
+- `r2pm -U`
+- `r2pm -i rlang-python`
 
 # References
 

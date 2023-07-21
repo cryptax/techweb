@@ -146,6 +146,28 @@ You can now use these tools from [/home/axelle/softs/genymotion]:
 
 When you run `genymotion`, choose the type of license you want. 
 
+## ARM64 Android Emulator
+
+*Note: this works on Azure ARM64 Ubuntu images, but not on Google instances Debian 12 ARM64 because the required kernel modules for REDroid are difficult to install*
+
+Pre-requisities:
+
+- Use an **ARM64** remote host
+- Install Docker onto it
+
+On the remote host:
+
+- [Get a Docker image from REDroid](https://github.com/remote-android/redroid-doc)
+- Install `android-tools-adb`
+- Check you can connect to the emulator's shell: `adb connect 127.0.0.1:5555` and `adb devices`
+
+On the local host:
+
+- Create a SSH tunnel with the remote host's 5555 port: `ssh -L 5555:127.0.0.1:5555 remoteuser@remotehost`
+- Install ADB
+- Check you can connect the the emulator's shell
+- [Install scrcpy](https://github.com/Genymobile/scrcpy): `scrcpy -s 127.0.0.1:5555`
+
 
 
 # Android SDK Tools
