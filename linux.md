@@ -100,7 +100,15 @@ keycode  108 = Mode_switch
 
 Alternatively, it is possible to use the "English US International with dead letters" keyboard and then use composition: ` + e gives è. See [here](https://www.ellendhel.net/article.php?ref=2011+09+12-0).
 
+# GRUB
 
+To update the menu image of Grub, edit /etc/default/grub:
+
+```
+export GRUB_MENU_PICTURE="/home/xxx.png"
+```
+
+Then do `sudo update-grub`
 
 # System
 
