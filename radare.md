@@ -28,6 +28,7 @@ rabin2 -i classes.dex
 - Change CPU: `e asm.cpu=cortex`
 - Use *emulated assembly* `e asm.emu=true` then `aae` [see here](https://blog.superponible.com/2017/04/15/emulating-assembly-in-radare2/)
 - Do not show comments: `e asm.comments=false`
+- Change delimiter: ``e asm.cmt.token=#`
 - Go to a given function: `sf sym.xxx`
 - Add a function: af ...
 - Add a comment: `CC this is my comment @ addr`
@@ -35,6 +36,8 @@ rabin2 -i classes.dex
 - Remove a comment: `CC-`
 - Rename a function: `afn new-func-name`
 - Rename a local argument: `afvn old-name new-name`
+- Define a function: go to the function beginning then `af`
+- Go to the beginning of a function: s `afi.` or `sf.`
 - List entry points: `ie`
 - Write to a file: `wtf filename size @ position`
 - Shell commands work: `s 0x65; pD 32`
@@ -42,12 +45,14 @@ rabin2 -i classes.dex
 - Load predefined binary structure: `r2 -nn file`
 - Open a file in write mode: `oo+`
 - Save a session: `Ps filename`. By default, sessions are stored in `~/.config/radare2/projects`. To reload a session: `Po filename`
+- Pretty print: `~{}`
 
 ### Print
 
 - Print strings: `ps @ loc`
 - Print function: `pdf`
 - Print hexa: `px NUM @ loc` to display NUM bytes
+- Show Pico: `?EC yourmessagegoeshere`
 
 ### Search
 
@@ -59,6 +64,7 @@ rabin2 -i classes.dex
 - Seach flags (constants, functions, importants): `f~STRING`,
 - Search function names: `afl~STRING`
 - Search for bytes: `/x 04030201` (depending on endianness etc you might need to reverse bytes)
+- Search for instructions: `/ad mov`
 
 ### XOR
 
@@ -81,6 +87,10 @@ V then press p to switch between virtual modes
 - Enter visual mode: `V`
 - Leave visual mode: `q`
 
+# r2pm
+
+- `r2pm -U`
+- `r2pm -i rlang-python`
 
 # References
 

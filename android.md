@@ -146,6 +146,28 @@ You can now use these tools from [/home/axelle/softs/genymotion]:
 
 When you run `genymotion`, choose the type of license you want. 
 
+## ARM64 Android Emulator
+
+*Note: this works on Azure ARM64 Ubuntu images, but not on Google instances Debian 12 ARM64 because the required kernel modules for REDroid are difficult to install*
+
+Pre-requisities:
+
+- Use an **ARM64** remote host
+- Install Docker onto it
+
+On the remote host:
+
+- [Get a Docker image from REDroid](https://github.com/remote-android/redroid-doc)
+- Install `android-tools-adb`
+- Check you can connect to the emulator's shell: `adb connect 127.0.0.1:5555` and `adb devices`
+
+On the local host:
+
+- Create a SSH tunnel with the remote host's 5555 port: `ssh -L 5555:127.0.0.1:5555 remoteuser@remotehost`
+- Install ADB
+- Check you can connect the the emulator's shell
+- [Install scrcpy](https://github.com/Genymobile/scrcpy): `scrcpy -s 127.0.0.1:5555`
+
 
 
 # Android SDK Tools
@@ -487,6 +509,39 @@ Values not provided in Android P and Q:
 | Meaning                           | Value |
 | ---------------------------------- | ------- |
 | `GLOBAL_ACTION_BACK`  | 1 |
+
+# Flutter
+
+- [Install it manually](https://docs.flutter.dev/get-started/install/linux)
+- `export PATH="$PATH:`pwd`/flutter/bin"`
+- Personal Homedir: `~/softs/flutter`
+- Upgrade: `flutter upgrade`. 
+
+Check status with `flutter doctor`:
+
+- Complains about **ninja-build**? I had to install manually and create a link in `/usr/local/bin/ninja`
+- Complains about **clang**? `sudo apt install clang`
+- Complains about *Unable to find bundled Java version* of Android Studio? In Android Studio dir, create a symlink: `ln -s ./jbr ./jre`
+- No Chrome browser? `export CHROME_EXECUTABLE=/usr/bin/opera` works fine :)
+
+
+# Colander
+
+Connect the PiRogue (user profile page):
+
+```
+sudo apt update
+sudo apt install -y pirogue-colander-connector
+pirogue-colander config -u "https://beta.colander.defensive-lab.agency" -k "xxx"
+```
+
+Launch the app:
+
+1. Use a rooted phone and install the app on it. Plug the phone to PiRogue USB port.
+2. `sudo pirogue-intercept-gated -o outputdir`
+3. `pirogue-colander collect-experiment -c "xxx" outputdir`
+
+
 
 # Misc
 

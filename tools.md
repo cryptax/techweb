@@ -342,6 +342,11 @@ services:
 
 To backup Redmine, I use Docker volumes for persistance, and basically only need to backup the corresponding directories, i.e `/opt/redmine/files` (for file attachments) and `/opt/redmine/db` for the database.
 
+# VirtualBox
+
+- [How to install VirtualBox on Linux Mint 21](https://www.linuxcapable.com/install-virtualbox-on-linux-mint/)
+- Installing the Extension pack: `sudo VBoxManage extpack install Oracle_VM_VirtualBox_Extension_Pack*.vbox-extpack`
+
 
 # Timewarrior
 
