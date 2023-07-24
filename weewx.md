@@ -280,6 +280,7 @@ cm_per_hour', or 'mm_per_hour'
 
 For time format, see ` [[TimeFormats]]`
 
+
 #### Customized labels
 
 ```
@@ -411,7 +412,16 @@ cons/*, smartphone/custom.js
 
 
 
+### Humidex
 
+Humidex can be read from the weather station if it provides it, or computed from temperature and humidty:
+
+```
+[StdWXCalculate]
+    [[Calculations]]
+	heatindex = prefer_hardware
+
+```
 
 ## Operating 
 
