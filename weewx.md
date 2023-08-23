@@ -534,6 +534,12 @@ CREATE TABLE archive_day_rain (dateTime INTEGER NOT NULL UNIQUE PRIMARY KEY, min
 ```
 
 
+To show date time:
+
+```
+sqlite> select datetime(dateTime,'unixepoch', 'localtime'),... from archive where XYZ;
+```
+
 ## Troubleshooting
 
 [User group](http://groups.google.com/group/weewx-user)
