@@ -449,7 +449,9 @@ To redirect to another location, create a file in /etc/rsyslog.d, for example we
 
 You need to restart rsyslog: service rsyslog restart.
 
-## Twitter
+## Twitter 
+
+*Since 2023, This extension requires paid access to Twitter APIs.*
 
 ### Install the tweeting extension
 
@@ -519,7 +521,17 @@ In  `/usr/share/weewx/user/twitter.py`, modify to only send tweets at given time
 Go to https://apps.twitter.com/app/new, and login if necessary.
 Manage the app and generate/regenerate/revoke tokens
 
+### Uninstall 
 
+```
+$ sudo wee_extension --uninstall twitter
+Request to remove extension 'twitter'
+Finished removing extension 'twitter'
+```
+
+## Mastodon
+
+Get the extension from https://github.com/glennmckechnie/weewx-mastodon
 
 ## Database tweeks
 
