@@ -449,24 +449,20 @@ To redirect to another location, create a file in /etc/rsyslog.d, for example we
 
 You need to restart rsyslog: service rsyslog restart.
 
-## Twitter 
+## Mastodon / Twitter
 
-*Since 2023, This extension requires paid access to Twitter APIs.*
+It's possible to have the weather station automatically toot values, but for Twitter this now requires a paid subscription to access Twitter APIs.
 
-### Install the tweeting extension
+- [Weewx Twitter extension](https://github.com/matthewwall/weewx-twitter)
+- [Weewx Mastodon extension](https://github.com/glennmckechnie/weewx-mastodon)
 
-Download the [extension](https://github.com/matthewwall/weewx-twitter) (in particular `./bin/user/twitter.py`) and follow the configuration steps. In particular,
+The installation/update/uninstall is expected to be done using `wee_extension`:
 
-```
-sudo apt-get install python-setuptools
-sudo easy_install pip
-sudo pip install twython
-sudo setup.py install --extension weewx-twitter.x.y.tgz
-```
+`sudo ./wee_extension --install ~/weewx-twitter-0.12.tgz `
 
-In `weewx.conf`,
+Then, you need to configure `weewx.conf` and specify your API tokens:
 
-- configure **Twitter service**:
+### Twitter config
 
 ```
 [StdRESTful]
@@ -482,7 +478,7 @@ In `weewx.conf`,
 	post_interval = 3600 
 ```
 
-- add twitter as a **RESTful service**:
+Add twitter as a **RESTful service**:
 
 ```
 [Engines]
@@ -491,18 +487,6 @@ In `weewx.conf`,
     
     [[WxEngine]]
     restful_services = weewx.restx.StdStationRegistry, weewx.restx.StdWunderground, weewx.restx.StdPWSweather, weewx.restx.StdCWOP, weewx.restx.StdWOW, weewx.restx.StdAWEKAS, user.twitter.Twitter
-```
-
-### Update an existing version
-
-```
-$ cd /usr/share/weewx
-$ sudo ./wee_extension --install ~/weewx-twitter-0.12.tgz 
-Request to install 'HOME/weewx-twitter-0.12.tgz'
-Extracting from tar archive HOME/weewx-twitter-0.12.tgz
-Saving installer file to /usr/share/weewx/user/installer/twitter
-Saved configuration dictionary. Backup copy at /etc/weewx/weewx.conf.20180408142250
-Finished installing extension 'HOME/weewx-twitter-0.12.tgz'
 ```
 
 ### Modify the tweeting extension to tweet 3 times per day
@@ -516,22 +500,20 @@ In  `/usr/share/weewx/user/twitter.py`, modify to only send tweets at given time
             return
 ```
 
-### Creating OAuth tokens etc for Twitter
+### Mastodon config
 
-Go to https://apps.twitter.com/app/new, and login if necessary.
-Manage the app and generate/regenerate/revoke tokens
-
-### Uninstall 
+In `weewx.conf`
 
 ```
-$ sudo wee_extension --uninstall twitter
-Request to remove extension 'twitter'
-Finished removing extension 'twitter'
+[StdRESTful]
+    [[Mastodon]]
+	station = NAME OF YOUR STATION
+        # from your account under preferences/development/application
+        key_access_token =  PUT YOURS
+        server_url_mastodon = PUT YOURS
+        # Mastodon will rate limit when excessive requests are made
+        post_interval = 1000
 ```
-
-## Mastodon
-
-Get the extension from https://github.com/glennmckechnie/weewx-mastodon
 
 ## Database tweeks
 
