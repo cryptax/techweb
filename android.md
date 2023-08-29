@@ -510,6 +510,21 @@ Values not provided in Android P and Q:
 | ---------------------------------- | ------- |
 | `GLOBAL_ACTION_BACK`  | 1 |
 
+# Flutter
+
+- [Install it manually](https://docs.flutter.dev/get-started/install/linux)
+- `export PATH="$PATH:`pwd`/flutter/bin"`
+- Personal Homedir: `~/softs/flutter`
+- Upgrade: `flutter upgrade`. 
+
+Check status with `flutter doctor`:
+
+- Complains about **ninja-build**? I had to install manually and create a link in `/usr/local/bin/ninja`
+- Complains about **clang**? `sudo apt install clang`
+- Complains about *Unable to find bundled Java version* of Android Studio? In Android Studio dir, create a symlink: `ln -s ./jbr ./jre`
+- No Chrome browser? `export CHROME_EXECUTABLE=/usr/bin/opera` works fine :)
+
+
 # Colander
 
 Connect the PiRogue (user profile page):
