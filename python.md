@@ -104,7 +104,7 @@ syslog.syslog.openlog(logoption=syslog.LOG_PID, facility=syslog.LOG_USER)
 syslog.syslog(syslog.LOG_WARNING, "keyboard interrupt")
 ```
 
-## Virtual env
+# Virtual env
 
 https://www.pythoncentral.io/how-to-install-virtualenv-python/
 
@@ -172,3 +172,9 @@ include conf/*.conf
 # Pip
 
 - Show files in a package: `pip3 show --files package`
+
+# Pyenv
+
+- Install a new Python: `pyenv install 3.8`
+- Listing current version `pyenv versions`
+- Switch to a new environment: `pyenv global 3.8`
