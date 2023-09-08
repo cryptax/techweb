@@ -280,6 +280,7 @@ cm_per_hour', or 'mm_per_hour'
 
 For time format, see ` [[TimeFormats]]`
 
+
 #### Customized labels
 
 ```
@@ -411,7 +412,16 @@ cons/*, smartphone/custom.js
 
 
 
+### Humidex
 
+Humidex can be read from the weather station if it provides it, or computed from temperature and humidty:
+
+```
+[StdWXCalculate]
+    [[Calculations]]
+	heatindex = prefer_hardware
+
+```
 
 ## Operating 
 
@@ -439,22 +449,20 @@ To redirect to another location, create a file in /etc/rsyslog.d, for example we
 
 You need to restart rsyslog: service rsyslog restart.
 
-## Twitter
+## Mastodon / Twitter
 
-### Install the tweeting extension
+It's possible to have the weather station automatically toot values, but for Twitter this now requires a paid subscription to access Twitter APIs.
 
-Download the [extension](https://github.com/matthewwall/weewx-twitter) (in particular `./bin/user/twitter.py`) and follow the configuration steps. In particular,
+- [Weewx Twitter extension](https://github.com/matthewwall/weewx-twitter)
+- [Weewx Mastodon extension](https://github.com/glennmckechnie/weewx-mastodon)
 
-```
-sudo apt-get install python-setuptools
-sudo easy_install pip
-sudo pip install twython
-sudo setup.py install --extension weewx-twitter.x.y.tgz
-```
+The installation/update/uninstall is expected to be done using `wee_extension`:
 
-In `weewx.conf`,
+`sudo ./wee_extension --install ~/weewx-twitter-0.12.tgz `
 
-- configure **Twitter service**:
+Then, you need to configure `weewx.conf` and specify your API tokens:
+
+### Twitter config
 
 ```
 [StdRESTful]
@@ -470,7 +478,7 @@ In `weewx.conf`,
 	post_interval = 3600 
 ```
 
-- add twitter as a **RESTful service**:
+Add twitter as a **RESTful service**:
 
 ```
 [Engines]
@@ -479,18 +487,6 @@ In `weewx.conf`,
     
     [[WxEngine]]
     restful_services = weewx.restx.StdStationRegistry, weewx.restx.StdWunderground, weewx.restx.StdPWSweather, weewx.restx.StdCWOP, weewx.restx.StdWOW, weewx.restx.StdAWEKAS, user.twitter.Twitter
-```
-
-### Update an existing version
-
-```
-$ cd /usr/share/weewx
-$ sudo ./wee_extension --install ~/weewx-twitter-0.12.tgz 
-Request to install 'HOME/weewx-twitter-0.12.tgz'
-Extracting from tar archive HOME/weewx-twitter-0.12.tgz
-Saving installer file to /usr/share/weewx/user/installer/twitter
-Saved configuration dictionary. Backup copy at /etc/weewx/weewx.conf.20180408142250
-Finished installing extension 'HOME/weewx-twitter-0.12.tgz'
 ```
 
 ### Modify the tweeting extension to tweet 3 times per day
@@ -504,10 +500,81 @@ In  `/usr/share/weewx/user/twitter.py`, modify to only send tweets at given time
             return
 ```
 
-### Creating OAuth tokens etc for Twitter
+### Mastodon config
 
-Go to https://apps.twitter.com/app/new, and login if necessary.
-Manage the app and generate/regenerate/revoke tokens
+In `weewx.conf`
+
+```
+[StdRESTful]
+    [[Mastodon]]
+	station = NAME OF YOUR STATION
+        # from your account under preferences/development/application
+        key_access_token =  PUT YOURS
+        server_url_mastodon = PUT YOURS
+        # Mastodon will rate limit when excessive requests are made
+        post_interval = 1000
+```
+
+To post images, add the following:
+
+```
+image_directory = '/home/weewx/external_html'
+images = daytempdew.png,dayrain.png,dayuv.png
+```
+
+The images must be in the same directory (`/home/weewx/external_html`). The image names are in `images`. They must be separated by a comma. 
+
+Do **not** put the following. It would be considered as a *single* filename!
+
+```
+images = 'daytempdew.png,dayrain.png,dayuv.png'
+```
+
+To post default messages to Mastodon, you can use the `simple` or `full` option.
+
+```
+format_choice = simple
+```
+
+For a more configurable layout, use `template` and specify where the populated template will be.
+
+```
+template_file = '/home/weewx/external_html/mastodon.txt'
+format_choice = template
+```
+
+This means that my Weewx skin will generate `/home/weewx/external_html/mastodon.txt`. For this to happen, you need to configure your skin `/home/weewx/skins/NAME/skin.conf`:
+
+```
+    [[ToDate]]
+		[[[mastodon]]]
+			template = mastodon.txt.tmpl
+			encoding = strict_ascii
+```
+
+`mastodon.txt.tmpl` is a template *text* file to be created in the skin directory. So, for example, in `/home/weewx/skins/NAME/mastodon.txt.tmpl`:
+
+```
+#errorCatcher Echo
+## Template file for providing data to weewx-mastodon
+## https://github.com/glennmckechnie/weewx-mastodon
+##
+## Tag information at...
+## https://weewx.com/docs/customizing.htm#Tags
+Temperature: $current.outTemp (min: $day.outTemp.min, max: $day.outTemp.max)
+Humidex   : $current.heatindex (min: $day.heatindex.min, max: $day.heatindex.max)
+Humidite  : $current.outHumidity (min: $day.outHumidity.min, max: $day.outHumidity.max)
+Pression  : $current.barometer
+Pluie
+- Aujourd'hui: $day.rain.sum
+- Annee: $year.rain.sum
+Vent:
+- Direction: $current.windDir.ordinal_compass ($current.windDir deg)
+- Vitesse: $current.windSpeed (moyenne), $current.windGust (rafale)
+$current.dateTime.format("%d-%b-%Y %H:%M")
+```
+
+This is a template *text* file, so it understands `\n`, but it does *not* understand `<br>` (html).
 
 
 
@@ -523,6 +590,12 @@ sqlite> .schema archive_day_rain
 CREATE TABLE archive_day_rain (dateTime INTEGER NOT NULL UNIQUE PRIMARY KEY, min REAL, mintime INTEGER, max REAL, maxtime INTEGER, sum REAL, count INTEGER, wsum REAL, sumtime INTEGER);
 ```
 
+
+To show date time:
+
+```
+sqlite> select datetime(dateTime,'unixepoch', 'localtime'),... from archive where XYZ;
+```
 
 ## Troubleshooting
 
