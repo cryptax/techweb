@@ -151,6 +151,15 @@ Mask:
 - Configure Output
 - Render Animation
 
+# Inkscape
+
+To curve text:
+
+1. Create a path with a Bezier line with the form that you wish
+2. Write your text
+3. Select both and go to "Text - Put on Path"
+4. Customize the size and shape as desired
+
 # Emacs
 
 ## Markdown Mode

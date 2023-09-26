@@ -515,6 +515,69 @@ In `weewx.conf`
         post_interval = 1000
 ```
 
+To post images, add the following:
+
+```
+image_directory = '/home/weewx/external_html'
+images = daytempdew.png,dayrain.png,dayuv.png
+```
+
+The images must be in the same directory (`/home/weewx/external_html`). The image names are in `images`. They must be separated by a comma. 
+
+Do **not** put the following. It would be considered as a *single* filename!
+
+```
+images = 'daytempdew.png,dayrain.png,dayuv.png'
+```
+
+To post default messages to Mastodon, you can use the `simple` or `full` option.
+
+```
+format_choice = simple
+```
+
+For a more configurable layout, use `template` and specify where the populated template will be.
+
+```
+template_file = '/home/weewx/external_html/mastodon.txt'
+format_choice = template
+```
+
+This means that my Weewx skin will generate `/home/weewx/external_html/mastodon.txt`. For this to happen, you need to configure your skin `/home/weewx/skins/NAME/skin.conf`:
+
+```
+    [[ToDate]]
+		[[[mastodon]]]
+			template = mastodon.txt.tmpl
+			encoding = strict_ascii
+```
+
+`mastodon.txt.tmpl` is a template *text* file to be created in the skin directory. So, for example, in `/home/weewx/skins/NAME/mastodon.txt.tmpl`:
+
+```
+#errorCatcher Echo
+## Template file for providing data to weewx-mastodon
+## https://github.com/glennmckechnie/weewx-mastodon
+##
+## Tag information at...
+## https://weewx.com/docs/customizing.htm#Tags
+Temperature: $current.outTemp (min: $day.outTemp.min, max: $day.outTemp.max)
+Humidex   : $current.heatindex (min: $day.heatindex.min, max: $day.heatindex.max)
+Humidite  : $current.outHumidity (min: $day.outHumidity.min, max: $day.outHumidity.max)
+Pression  : $current.barometer
+Pluie
+- Aujourd'hui: $day.rain.sum
+- Annee: $year.rain.sum
+Vent:
+- Direction: $current.windDir.ordinal_compass ($current.windDir deg)
+- Vitesse: $current.windSpeed (moyenne), $current.windGust (rafale)
+$current.dateTime.format("%d-%b-%Y %H:%M")
+```
+
+This is a template *text* file, so it understands `\n`, but it does *not* understand `<br>` (html).
+
+
+
 ## Database tweeks
 
 The database that holds data is `archive/weewx.sdb` (unless you changed the name in the configuration file).
