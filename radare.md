@@ -28,6 +28,7 @@ rabin2 -i classes.dex
 - Change CPU: `e asm.cpu=cortex`
 - Use *emulated assembly* `e asm.emu=true` then `aae` [see here](https://blog.superponible.com/2017/04/15/emulating-assembly-in-radare2/)
 - Do not show comments: `e asm.comments=false`
+- Show only the instructions of a given function to copy paste it: `pif`
 - Change delimiter: ``e asm.cmt.token=#`
 - Go to a given function: `sf sym.xxx`
 - Add a function: af ...

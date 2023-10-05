@@ -141,3 +141,26 @@ In Arduino:
 
 
 If you get the error "board d1 unknown" see [solution here](https://arduino-esp8266.readthedocs.io/en/latest/faq/a04-board-generic-is-unknown.html)
+
+## Download a firmware
+
+- Get [Esptool](https://github.com/espressif/esptool/releases)
+
+Identify the chip:
+
+```
+$ python3 esptool.py -b 115200 --port /dev/ttyACM0 flash_id
+esptool.py v4.1
+Serial port /dev/ttyACM0
+Connecting....
+Detecting chip type... Unsupported detection protocol, switching and trying again...
+Connecting....
+Detecting chip type... ESP32
+Chip is ESP32-PICO-D4 (revision 1)
+...
+```
+
+Read the firmware:
+```
+$ python3 esptool.py -b 115200 --port /dev/ttyACM0 read_flash 0x00000 0x400000 flash_4M.bin
+```
