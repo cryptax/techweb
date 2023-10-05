@@ -1,93 +1,47 @@
 # Weewx
 
-## USB Connection
-
-[You mustn't use usbhid, so it needs to be blacklisted](http://iadetout.free.fr/joomla/index.php?option=com_content&view=article&id=76:wview-sur-ubuntu-1204&catid=4:ubuntu)
-
-In `/etc/modprobe.d/wmr200.conf`
-
-```
-options usbhid quirks=0x0fde:0xca01:0x4
-```
-
-Then restart modprobe:
-```
-sudo modprobe -r usbhid
-sudo modprobe usbhid
-```
-
-```
-$ lsusb
-...
-Bus 001 Device 032: ID 0fde:ca01 
-```
-
 ## Install
 
-Use the [Debian package](http://www.weewx.com/docs/usersguide.htm)
+- Use the [Debian package](http://www.weewx.com/docs/usersguide.htm)
+- To upgrade, see [doc](http://www.weewx.com/docs/upgrading.htm#Upgrading_using_setup.py)
 
-The default configuration file will be located in `/etc/weewx`
+By default, the configuration file will be located in `/etc/weewx/weewx.conf`
 
-## Upgrading
-
-See [doc](http://www.weewx.com/docs/upgrading.htm#Upgrading_using_setup.py)
-
-## Configuration
-
-This is important to set to test your configuration and generate debug information: `debug = 1`
-
-The root path of weewx is essential
+The root path of weewx, `WEEWX_ROOT`, is essential, because this is where the rest of the configuration will be done.
 ```
 # Root directory of the weewx data file hierarchy for this station.
 WEEWX_ROOT = /home/weewx/
 ```
 
-Set up information about your weather station:
+To test your configuration and generate debug information: 
 
 ```
-[Station]
-    # This section is for information about your station
-    
-    # Description of the station location.
-    location = Bla bla
-    
-    # Latitude, longitude in decimal degrees
-    latitude = 41.10
-    longitude = 7.07611
-    
-    # Altitude of the station, with unit it is in. This is downloaded from
-    # from the station if the hardware supports it.
-    altitude = 100, meter    # Choose 'foot' or 'meter' for unit
+debug = 1
 ```
 
-The location, latitude, longitude, altitude will then be available in HTML templates as $station.location, $station.latitude, $station.longitude and $station.altitude.
+## Configuration
 
+
+### Initial Station setup
+
+In `weewx.conf`, you'll want to setup in the `[Station]` section:
+
+- location: description of the station location, like the name of your town
+- coordinates of your station: `latitude = 41.1`, `longitude = 7.07611`
+- `altitude = 100, meter # Choose 'foot' or 'meter' for unit`
+
+The location, latitude, longitude, altitude will then be available in HTML templates as `$station.location, $station.latitude, $station.longitude and $station.altitude`.
+
+- `station_url = http://www.example.com` to specify the beginning of the weather station's website.
 Specify the URL for your weather station's website:
 
-```
-    # If you have a website, you may optionally specify an URL for
-    # its HTML server.
-    #station_url = http://www.example.com
-```
+- `stationc_type = xxx`: this is an important parameter where you specify the **driver** for your weather station. E.g WMR200, or Interceptor. Your `weewx.conf` will then have a dedicated section for that driver.
 
-Specify the type of weather station:
+### WMR200 stations
 
-```
-    # Set to type of station hardware.  Supported stations include:
-    #  Vantage   FineOffsetUSB  Ultimeter
-    #  WMR100    WS28xx         WS1
-    #  WMR200    WS23xx         CC3000
-    #  WMR9x8    TE923          Simulator
-    station_type = WMR200
-```
+WMR200 weather stations are no longer natively supported. Their support has been shifted to [an extension)(https://github.com/weewx/weewx-wmr200). Follow installation of this extension [here](https://github.com/weewx/weewx-wmr200)
 
-Recently, WMR200 weather stations are no longer natively supported. Their support has been shifted to an extension: https://github.com/weewx/weewx-wmr200
-
-Follow installation of this extension [here](https://github.com/weewx/weewx-wmr200)
-
-
-Basically, you will get new extension files and a WMR200 section in the configuration file:
-
+Basically, you'll get additional extension files, and then you'll need to add a `[WMR200]` section to `weewx.conf`:
 
 ```
 [WMR200]
@@ -110,32 +64,25 @@ Basically, you will get new extension files and a WMR200 section in the configur
 
 ```
 
-### Sending information remotely to AWEKAS, CWOP etc
+### EcoWitt stations
 
-Information can be sent to external websites that use RESTful protocols.
-
-```
-[StdRESTful]
-    # This section is for uploading data to sites using RESTful protocols.
-    
-    [[StationRegistry]]
-        # To register this weather station, set this to True:
-        register_this_station = False
-```
-
-[To register the station on Weewx](http://weewx.com/stations.html) (optional)
-
-Also, if your weather station is not published on websites such as AWEKAS, CWOP, you can disable those services:
-
-```
-  [[AWEKAS]]
-  enable = false
-  ...
-```
 
 ### Generating websites
 
-Websites are known as 'reports'. You can set up several websites.
+Websites where you send weather data to are known as *reports*. 
+You can set up several websites, choose what you want to send to each of those, have different templates etc.
+
+In `weewx.conf`, you list all reports to generate in the `[StdReport]` section.
+Each report is a sub-section. 
+A report is configured from its *skin* directory (`SKIN_ROOT`).
+When the report is generated, it is written to `HTML_ROOT`.
+
+In the configuration below, we have 2 reports: Standard Report and External.
+
+The standard report is defined in the default `WEEWX_ROOT/skins/Standard` (in particular by `skin.conf`), and the generated report will be generated in `WEEWX_ROOT/public_html`.
+
+The external report is defined in `WEEWX_ROOT/skins/External` and is generated into `WEEWX_ROOT/external_html`. It uses bigger images.
+
 
 ```
 [StdReport]
@@ -161,12 +108,56 @@ Websites are known as 'reports'. You can set up several websites.
 	     image_height = 360
 ```
 
-In the configuration above, I am creating two websites:
 
-1. One goes in public_html.
-2. And the other one, with bigger images, goes in external_html.
+### Sending information remotely to AWEKAS, CWOP etc
 
-The look of the website is configured in `skin.conf`.
+Information can be sent to external websites that use RESTful protocols.
+
+```
+[StdRESTful]
+    # This section is for uploading data to sites using RESTful protocols.
+    
+    [[StationRegistry]]
+        # To register this weather station, set this to True:
+        register_this_station = False
+```
+
+[To register the station on Weewx](http://weewx.com/stations.html) (optional)
+
+Also, if your weather station is not published on websites such as AWEKAS, CWOP, you can disable those services:
+
+```
+  [[AWEKAS]]
+  enable = false
+  ...
+```
+
+
+## USB Connection
+
+[You must not use usbhid, so it needs to be blacklisted](http://iadetout.free.fr/joomla/index.php?option=com_content&view=article&id=76:wview-sur-ubuntu-1204&catid=4:ubuntu)
+
+In `/etc/modprobe.d/wmr200.conf`
+
+```
+options usbhid quirks=0x0fde:0xca01:0x4
+```
+
+Then restart modprobe:
+```
+sudo modprobe -r usbhid
+sudo modprobe usbhid
+```
+
+```
+$ lsusb
+...
+Bus 001 Device 032: ID 0fde:ca01 
+```
+
+
+
+
 
 
 ### Uploading pages via FTP
