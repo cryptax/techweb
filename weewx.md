@@ -37,6 +37,34 @@ Specify the URL for your weather station's website:
 
 - `stationc_type = xxx`: this is an important parameter where you specify the **driver** for your weather station. E.g WMR200, or Interceptor. Your `weewx.conf` will then have a dedicated section for that driver.
 
+
+To use **Metric** units:
+
+```
+[StdConvert]
+    target_unit = METRIC    # Options are 'US', 'METRICWX', or 'METRIC'
+```
+
+To specify units to use for given labels, do that in `weewx.conf` `Unit` section. Do not do it in the skins (unless you have a reason to).
+
+```
+[Units]
+    # This section is for managing the selection and formatting of units.
+    
+    [[Groups]]
+    ...
+    group_rain         = mm                 # Options are 'inch', 'cm', or '
+mm'
+    group_rainrate     = mm_per_hour        # Options are 'inch_per_hour', '
+cm_per_hour', or 'mm_per_hour'
+    group_speed        = km_per_hour        # Options are 'mile_per_hour', '
+```
+
+For time format, see ` [[TimeFormats]]`
+
+
+
+
 ### WMR200 stations
 
 WMR200 weather stations are no longer natively supported. Their support has been shifted to [an extension)(https://github.com/weewx/weewx-wmr200). Follow installation of this extension [here](https://github.com/weewx/weewx-wmr200)
@@ -65,6 +93,7 @@ Basically, you'll get additional extension files, and then you'll need to add a 
 ```
 
 ### EcoWitt stations
+
 
 
 ### Generating websites
@@ -108,58 +137,6 @@ The external report is defined in `WEEWX_ROOT/skins/External` and is generated i
 	     image_height = 360
 ```
 
-
-### Sending information remotely to AWEKAS, CWOP etc
-
-Information can be sent to external websites that use RESTful protocols.
-
-```
-[StdRESTful]
-    # This section is for uploading data to sites using RESTful protocols.
-    
-    [[StationRegistry]]
-        # To register this weather station, set this to True:
-        register_this_station = False
-```
-
-[To register the station on Weewx](http://weewx.com/stations.html) (optional)
-
-Also, if your weather station is not published on websites such as AWEKAS, CWOP, you can disable those services:
-
-```
-  [[AWEKAS]]
-  enable = false
-  ...
-```
-
-
-## USB Connection
-
-[You must not use usbhid, so it needs to be blacklisted](http://iadetout.free.fr/joomla/index.php?option=com_content&view=article&id=76:wview-sur-ubuntu-1204&catid=4:ubuntu)
-
-In `/etc/modprobe.d/wmr200.conf`
-
-```
-options usbhid quirks=0x0fde:0xca01:0x4
-```
-
-Then restart modprobe:
-```
-sudo modprobe -r usbhid
-sudo modprobe usbhid
-```
-
-```
-$ lsusb
-...
-Bus 001 Device 032: ID 0fde:ca01 
-```
-
-
-
-
-
-
 ### Uploading pages via FTP
 
 Uploading generated pages and images can be done via FTP, and this is yet another 'special' report.
@@ -196,12 +173,11 @@ Uploading generated pages and images can be done via FTP, and this is yet anothe
         secure_ftp = False
 ```
 
-
 ### Rsyncing directories
 
-It is possible to rsync report directories from one host to another. For example, if you want to copy a weewx website to another host.
+It is possible to *rsync* report directories from one host to another. For example, if you want to copy a weewx website to another host.
 
-Typically, weewx daemon runs as root (unless this has been changed). You must then ensure that root is able to SSH to the host to Rsync to with a public key (see SSH authorized_keys and known_hosts).
+Typically, weewx daemon runs as root (unless this has been changed). *You must then ensure that root is able to SSH to the host to Rsync to with a public key* (see SSH authorized_keys and known_hosts).
 
 
 ```
@@ -211,68 +187,40 @@ Typically, weewx daemon runs as root (unless this has been changed). You must th
         # rsync'ing the results to a webserver is treated as just another
         # report, much like the FTP report.
         #
-        # If you wish to use rsync, you must configure passwordless ssh using
-        # public/private key authentication from the user account that weewx
-        # runs as to the user account on the remote machine where the files
-        # will be copied.
-        #
-        # The following configure what system and remote path the files are
-        # sent to:
         server = 192.168.0.9
-	path = /home/weewx/public_html
+		path = /home/weewx/public_html
         user = weewx
         
         # Rsync can be configured to remove files from the remote server if
-        # they don't exist under HTML_ROOT locally.  USE WITH CAUTION: if you
-        # make a mistake in the remote path, you could could unintentionally
-        # cause unrelated files to be deleted. Set to 1 to enable remote file
-        # deletion, zero to allow files to accumulate remotely.
         delete = 0
 ```	
 
 
-### Metric units
+
+### Sending information remotely to AWEKAS, CWOP etc
+
+Information can be sent to external websites that use RESTful protocols.
 
 ```
-[StdConvert]
-
-    # should use US since that is what the wview database contains.
+[StdRESTful]
+    # This section is for uploading data to sites using RESTful protocols.
     
-    # DO NOT MODIFY THIS VALUE UNLESS YOU KNOW WHAT YOU ARE DOING!
-    target_unit = METRIC    # Options are 'US', 'METRICWX', or 'METRIC'
+    [[StationRegistry]]
+        # To register this weather station, set this to True:
+        register_this_station = False
 ```
 
-### Skins (look of websites)
+[To register the station on Weewx](http://weewx.com/stations.html) (optional)
 
-In `skin.conf`:
-
-```
-[Extras]
-  radar_img = http://www.infoclimat.fr/api/AH4EMQcrAzhVYQQtVWdXNFw2BXhQOAEpDm0PZAc1AC8AYQIzVGcHNFFlVWIFNAdjAW9RM1EzBzNWNg5n/radar/sud_est?c6efb45b781de49d57c2c0aa20e8057c
-  storm_img = http://www.meteorologic.net/map/radar/your_radar.php?lat=43.37
-  radar_url = http://www.infoclimat.fr
+Also, if your weather station is not published on websites such as AWEKAS, CWOP, you can disable those services:
 
 ```
-
-#### Specifying Units
-
-```
-[Units]
-    # This section is for managing the selection and formatting of units.
-    
-    [[Groups]]
-    ...
-    group_rain         = mm                 # Options are 'inch', 'cm', or '
-mm'
-    group_rainrate     = mm_per_hour        # Options are 'inch_per_hour', '
-cm_per_hour', or 'mm_per_hour'
-    group_speed        = km_per_hour        # Options are 'mile_per_hour', '
+  [[AWEKAS]]
+  enable = false
+  ...
 ```
 
-For time format, see ` [[TimeFormats]]`
-
-
-#### Customized labels
+### Customized or Localized labels
 
 ```
   [[Generic]]
@@ -306,7 +254,31 @@ For time format, see ` [[TimeFormats]]`
     moon_phases = Nouvelle, Premier croissant, Premier quartier, Gibbeuse croissante, Pleine, Gibbeuse decroissante, Dernier quartier, Dernier croissant
 ```
 
-#### HTML files to generate
+### Humidex: computing it or getting it from the weather station?
+
+Humidex can be read from the weather station if it provides it, or computed from temperature and humidty:
+
+```
+[StdWXCalculate]
+    [[Calculations]]
+	heatindex = prefer_hardware
+
+```
+
+
+### Skins (look of websites)
+
+In `skin.conf`:
+
+```
+[Extras]
+  radar_img = http://www.infoclimat.fr/api/AH4EMQcrAzhVYQQtVWdXNFw2BXhQOAEpDm0PZAc1AC8AYQIzVGcHNFFlVWIFNAdjAW9RM1EzBzNWNg5n/radar/sud_est?c6efb45b781de49d57c2c0aa20e8057c
+  storm_img = http://www.meteorologic.net/map/radar/your_radar.php?lat=43.37
+  radar_url = http://www.infoclimat.fr
+
+```
+
+In the skins, you'll also specify the HTML templates of files to generate. Those files should be located in the *same directory as the skin*.
 
 ```
    [[ToDate]]
@@ -319,8 +291,7 @@ For time format, see ` [[TimeFormats]]`
 	    template = almanac.html.tmpl
 ```
 
-The HTML templates are to be located in the same directory as the skin.
-For example, to display the UV  index:
+The templates understand a few conditions and loops:
 
 ```html
 #if $day.UV.has_data
@@ -329,22 +300,7 @@ For example, to display the UV  index:
     <td>$current.UV</td>
     </tr>
 #end if
-```
 
-To display particular values, you can use variables such as:
-
-- $current.inTemp
-- $current.outTemp
-- $current.windSpeed
-- $day.inTemp.max
-- `$day.inTemp.maxtime.format("%H:%M")`
-- $yesterday.inTemp.avg
-- `$span($hour_delta=24).rain.sum`
-- `$month($months_ago=1).rain.sum`
-
-Or even some form of logic:
-
-```
 #for $month in $year.months
   <tr>
     <td>$month.dateTime.format("%B")</td>
@@ -354,47 +310,53 @@ Or even some form of logic:
    </tr>
   </tr>
 #end for
+
 ```
 
+To display particular values, you can use variables such as:
 
-#### Charts to generate
+- `$current.inTemp`
+- `$day.outTemp.maxtime.format("%H:%M")`
+- `$yesterday.inTemp.avg`
+- `$span($hour_delta=24).rain.sum`
+- `$month($months_ago=1).rain.sum`
+
+To generate **charts** in a given skins, you specify it in the `skin.conf` section `[ImageGenerator]`
 
 ```
 	[[[dayhumidity]]]
             [[[[outHumidity]]]]
-```
 
-or
-
-```
-[[[dayinouttemp]]]
+	[[[dayinouttemp]]]
             [[[[outTemp]]]]
             [[[[inTemp]]]]
+			
+	[[day_images]]
+		    [[[dayuv]]]
+				yscale = 0, 16, 1
+				[[[[UV]]]]		
+			
+	[[week_images]]
+        x_label_format = %d
+        bottom_label_format = %d-%b-%Y %X
+        time_length = 604800    # == 7 days
+        aggregate_type = avg
+        aggregate_interval = 3600
+        
+        [[[weekbarometer]]]
+            [[[[barometer]]]]	
 ```
 
-
-Be sure to put the appropriate number of brackets.
-
-To generate a UV graph, in `skin.conf`:
-```
-[[day_images]]
- [[[dayuv]]]
-            yscale = 0, 16, 1
-            [[[[UV]]]]
-```
-
-and in the HTML template:
+Be sure to put the appropriate number of brackets :)
+This generates an image named as in the section, e.g `dayuv.png` or `dayhumidity.png`.
+The image can then be included in the HTML template:
 
 ```html
 <a href="dayuv.png"><img src="dayuv.png" alt="UV index" title="UV index" width="30%" />
 ```
 
-
-
-#### Optimization
-
-To optimize uploads to an external website, some resources need not be copied at each upload.
-This is handled by the copy_once directive in skin.conf:
+To **optimize uploads** to an external website, some resources need not be copied at each upload.
+This is handled by the copy_once directive in `skin.conf`:
 
 ```
 copy_once = backgrounds/*, weewx.css, mobile.css, favicon.ico, smartphone/i\
@@ -403,16 +365,8 @@ cons/*, smartphone/custom.js
 
 
 
-### Humidex
 
-Humidex can be read from the weather station if it provides it, or computed from temperature and humidty:
 
-```
-[StdWXCalculate]
-    [[Calculations]]
-	heatindex = prefer_hardware
-
-```
 
 ## Operating 
 
@@ -569,7 +523,7 @@ This is a template *text* file, so it understands `\n`, but it does *not* unders
 
 
 
-## Database tweeks
+## Database tweaks
 
 The database that holds data is `archive/weewx.sdb` (unless you changed the name in the configuration file).
 To retrieve the format of the archive database:
@@ -593,6 +547,29 @@ sqlite> select datetime(dateTime,'unixepoch', 'localtime'),... from archive wher
 [User group](http://groups.google.com/group/weewx-user)
 
 Viewing the interesting part of the logs (in /var/tmp/log for example): `tail -f weewx.log | grep -v genLoop | grep -v Queuing`
+
+### USB Connection
+
+[You must not use usbhid, so it needs to be blacklisted](http://iadetout.free.fr/joomla/index.php?option=com_content&view=article&id=76:wview-sur-ubuntu-1204&catid=4:ubuntu)
+
+In `/etc/modprobe.d/wmr200.conf`
+
+```
+options usbhid quirks=0x0fde:0xca01:0x4
+```
+
+Then restart modprobe:
+```
+sudo modprobe -r usbhid
+sudo modprobe usbhid
+```
+
+```
+$ lsusb
+...
+Bus 001 Device 032: ID 0fde:ca01 
+```
+
 
 ### Fixing an incorrect value in the database
 
