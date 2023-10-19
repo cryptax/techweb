@@ -579,6 +579,10 @@ Bus 001 Device 032: ID 0fde:ca01
 ```
 update archive set rain=0.02 where dateTime=XXX;
 ```
+
+Note that the rain value is in cm. So, if you have 17.3 mm, you should set `rain=1.73`.
+
+
 - [drop the daily summaries](http://www.weewx.com/docs/utilities.htm#Action_--drop-daily)
 ```
 wee_database --drop-daily
