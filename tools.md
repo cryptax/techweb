@@ -405,3 +405,24 @@ Using totals:
 $ timew totals
 ```
 
+# Oathtool
+
+This is a [command-line TOTP](https://www.nongnu.org/oath-toolkit/index.html)
+
+You have a shared key/code. Protect it with GPG:
+
+```
+echo -n "XXX" | gpg --armor --encrypt -r youridentity > ~/.gnupg/2fa.asc
+```
+
+Then, use `oathtool` to generate the OTP:
+
+```
+gpg --decrypt --quiet ~/.gnupg/2fa.asc | oathtool --totp -
+```
+
+If you get this error: "oathtool: hex decoding of secret key failed", add `--base32` will generally solve the problem.
+
+```
+gpg --decrypt --quiet ~/.gnupg/2fa.asc | oathtool --totp --base32 -
+```
