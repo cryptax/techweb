@@ -492,7 +492,14 @@ To launch a hook at startup:
 
 `python fridump.py -U packagename -o ./dump`
 
-# JEB Debugging
+# JEB
+
+## Troubleshooting
+
+- Decompilation timeout: Action, Decompile with Options, untick Exception Parsing
+- String decompilation error: Ctrl-Tab (Re-decomp), disable DecryptSupport
+
+## Debugging
 
 - Start activity with option -D (to enable debugging) and -W (to wait for a debugger): `am start -D -W packagename`
 - Then attach your app with JEB, make sure to keep the threads suspended.
