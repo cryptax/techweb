@@ -108,3 +108,10 @@ for f in *.txt; do
     mv -- "$f" "${f%.txt}.text"
 done
 ```
+## Tar
+
+Untar selectively:
+
+```
+tar -xzf lotsofdata.tar.gz --wildcards --no-anchored '*contract*'
+```

@@ -142,3 +142,9 @@ hugo serve --source=themes/LoveIt/exampleSite
 - To search for Font Awesome icons: https://fontawesome.com/search
 - To modify theme colors: typically in `./theme/xxx/assets/css/_variables.css`
 
+## MkDocs
+
+```
+mkdocs new my-project
+cd my-project
+```

@@ -1,47 +1,41 @@
-% Linux 
+# Linux notes
 
-# Hardware
+## Hardware
 
-## Know your hardware
+### Know your hardware
 
  Before you struggle opening the box or finding the adequate screwdriver, you can try out the following:
 
-
-List hardware: `lshw` or `inxi -Fxz`
-For example:
+1. **lshw**
 
 - Network: `lshw -C network`
 - Hard disks: `lshw -C disk`
 
-Product model:
-```
-$ inxi -M
-Machine:   System: xxx product: xxx v: 01
-           Mobo: xxx v: x Bios: xx v: xx date: xx/xx/xxxx
-```
-    or
-```
-sudo dmidecode -t baseboard | grep -i 'Product'
-```
+2. **inxi**
+
+- List all: `inxi -Fxz`
+- Product model: `inxi -M`
+- Graphic card: `inxi -G`
+- Audio: `inxi -A`
+
+3. **dmidecode**
+
+- Product: `sudo dmidecode -t baseboard | grep -i 'Product'`
+- List RAM: `sudo dmidecode -t memory`
+
+4. **lspci**
+
+- Video card: `lspci -vnn | grep VGA -A 12`
+- Audio: `lspci -v | grep -A7 Audio`
+
+5. `lsusb`, list block devices: `lsblk`, list SCSI devices (e.g SATA disks): `cat /proc/scsi/scsi` or `lsscsi`
+
+6. Hard disk info: `sudo hdparm -i /dev/sda`
+
+7. Audio: `sudo aplay -l`
 
 
-List RAM: `sudo dmidecode -t memory`
-
-List PCI devices: `lspci`.
-For example, get the video card:
-```
-$ lspci -vnn | grep VGA -A 12
-```
-
-- list USB devices: lsusb
-- list block devices: lsblk
-- list SCSI devices (useful for SATA disks): `cat /proc/scsi/scsi` or `lsscsi`
-
-## Get hard disk info
-
-`sudo hdparm -i /dev/sda`
-
-## Monitor luminosity
+### Control monitor luminosity
 
 Get name of device:
 
@@ -52,24 +46,19 @@ eDP-1
 
 Then set luminosity: `xrandr --output eDP-1 --brightness 0.7`
 
-
-## Kernel
-
-To list unused kernels:
-
-```
-kernelver=$(uname -r | sed -r 's/-[a-z]+//')
-dpkg -l linux-{image,headers}-"[0-9]*" | awk '/ii/{print $2}' | grep -ve $kernelver
-```
-
-And then, uninstall these images with `sudo apt-get purge linux-image-xxxx`
-
-
-## Setting keyboard layout
+### Keyboard layout CLI
 
 `setxkbmap -layout fr`
 
-## Using accents with a QWERTY layout
+To have the correct keyboard in **MDM**, at the end of `/etc/mdm/Init/Default`, insert:
+
+```
+/usr/bin/setxkbmap fr
+```
+
+- Specify keyboard bindings in `mate-control-center`
+
+Using accents with a QWERTY layout:
 
 Put this in `.profile`: `xmodmap ~/.xmodmaprc` where your `.xmodmaprc` defines your keyboard tricks:
 
@@ -100,19 +89,50 @@ keycode  108 = Mode_switch
 
 Alternatively, it is possible to use the "English US International with dead letters" keyboard and then use composition: ` + e gives è. See [here](https://www.ellendhel.net/article.php?ref=2011+09+12-0).
 
-# GRUB
+## Sound 
 
-To update the menu image of Grub, edit /etc/default/grub:
+- To set the volume from a terminal: `alsamixer`
+- To play from the terminal: `paplay file`
+
+- To test speakers: `speaker-test -Dplug:front -c2`
+- Play a test sound: `aplay /usr/share/sounds/alsa/Front_Center.wav`
+- See http://mreen.epizy.com/SoundFixTips.html?i=3
+
+
+
+## Kernel
+
+To list unused kernels:
 
 ```
-export GRUB_MENU_PICTURE="/home/xxx.png"
+kernelver=$(uname -r | sed -r 's/-[a-z]+//')
+dpkg -l linux-{image,headers}-"[0-9]*" | awk '/ii/{print $2}' | grep -ve $kernelver
 ```
 
-Then do `sudo update-grub`
+And then, uninstall these images with `sudo apt-get purge linux-image-xxxx`
 
-# System
+To solve [this error](https://forums.debian.net/viewtopic.php?t=152806), add to `/etc/modprob.d/blacklist.conf`, and then 
+`update-initramfs -u`
 
-## Services
+```
+blacklist btrfs
+blacklist mdraid
+blacklist raid6_pq
+```
+
+
+## GRUB
+
+**NB.** All edits to `/etc/default/grub` must be "committed" afterwards with `sudo update-grub` to take them in account.
+
+- Update the menu image of Grub, `export GRUB_MENU_PICTURE="/home/xxx.png`
+- See boot logs: remove `quiet splash` from `GRUB_CMDLINE_LINUX_DEFAULT`
+- Fix ACPI boot error "ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PCI0.GP17.VGA.LCD._BCM.AFN7], AE_NOT_FOUND=": add `acpi_backlight=vendor` to `GRUB_CMDLINE_LINUX_DEFAULT`
+
+
+## Systemd / systemctl
+
+### Create a service
 
 [Create a service with Systemd](https://doc.ubuntu-fr.org/creer_un_service_avec_systemd)
 
@@ -203,6 +223,7 @@ WantedBy=multi-user.target
 - Dump to a file: `journalctl -x -u service > file`
 - Wrap long lines: `journalctl -u service | less` or `journalctl -u service --no-pager`
 - After bug `journalctl -xb`
+- List boot logs: `journalctl -b`
 
 
 ## Network
@@ -231,7 +252,7 @@ ip route add default via 10.20.30.1
 
 #### List DNS servers
 
-With Linux Mint, to view current DNS server: `nmcli dev show |grep DNS`
+With Linux Mint, to view current DNS server: `nmcli dev show | grep DNS`
 
 #### Test name resolution
 
@@ -315,9 +336,6 @@ in `/etc/resolvconf/resolv.conf.d/head`.
 Once this is done, you need to update name resolution with the command `resolvconf -u`.
 
 
-
-
-
 ### Troubleshooting
 
 I had issues with my Ethernet link. In my case, it was solved by commenting out dns=dnsmasq in NetworkManager:
@@ -378,6 +396,8 @@ To access a Samba share from a NAS:
 
 ### Firewall
 
+#### ufw
+
 `sudo apt install ufw` will install a basic firewall. It won't enable it by default.
 
 - To open port for SSH and HTTPS:
@@ -394,100 +414,7 @@ ufw allow 'Nginx HTTPS'
 - To get the ports of a given profile: `sudo ufw app info PROFILE`
 
 
-
-## Locale
-
-```
-export LANGUAGE=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-locale-gen en_US.UTF-8
-sudo dpkg-reconfigure locales
-```
-
-`localectl set-locale LANG=en_US.utf8`
-
-## Package management
-
-To re-install a package:
-
-```bash
-$ sudo apt-get --reinstall install package
-```
-
-### Snap
-
-To restart a service installed via snap:
-
-`sudo snap restart PACKAGE`
-
-## NTP
-
-To list NTP servers I use:
-
-```
-$ ntpq -p
-     remote           refid      st t when poll reach   delay   offset  jitter
-==============================================================================
-*ks3352891.kimsu 138.96.64.10     2 u   99  128  377   37.876   31.229  24.093
-...
-```
-
-Configure servers to use in `/etc/ntp.conf`
-
-```
-# pool: <http://www.pool.ntp.org/join.html>
-server ntp.obspm.fr
-server ntp.kamino.fr
-server ntp2.belbone.be
-server 0.fr.pool.ntp.org iburst dynamic
-server 1.fr.pool.ntp.org iburst dynamic
-server 2.fr.pool.ntp.org iburst dynamic
-server 3.fr.pool.ntp.org iburst dynamic
-```
-
-
-To sollicit time: `sudo ntpd -gq`
-
-Or set it manually:
-
-`sudo date -s "3 dec 2017 22:21"`
-
-
-## SSH
-
-```
-ssh-keygen -t rsa -b 4096
-ssh-keyscan -H 192.168.0.9 >> known_hosts
-```
-
-## SFTP
-
-SFTP comes with SSH! 
-I added a `sftp` group, and a `username` user in that group.
-Then, in `/etc/ssh/sshd_config`, you need to redirect logins and chroot them to the appropriate dir:
-
-```
-Match Group sftp
-        ChrootDirectory /var/www/%u
-        ForceCommand internal-sftp
-```
-
-And strangely, `/var/www/%u` must be owned by *root* not by `biotmeteo`. See [here](https://unix.stackexchange.com/questions/598520/client-loop-send-disconnect-broken-pipe-for-chroot-sftp-user-with-correct-p)
-
-## ZFS
-
-### Install ZFS
-
-On Linux Mint 19:
-
-```bash
-sudo apt-get install zfs-dkms zfsutils-linux
-```
-
-Then, to import a pool: `zpool import POOLNAME`
-
-## Firewall
+#### iptables
 
 ```bash
 $ iptables -t nat -F ==> flush the NAT table
@@ -511,7 +438,6 @@ Here OUTPUT refers to the part of iptables to work on
 sudo iptables -t nat -v -L PREROUTING -n --line-number
 sudo iptables -t nat --delete PREROUTING 4
 ```
-
 
 ## LVM
 
@@ -579,6 +505,42 @@ References:
 - https://www.computernetworkingnotes.com/rhce-study-guide/learn-how-to-configure-lvm-in-linux-step-by-step.html
 - http://www.lerrigatto.com/move-var-to-a-new-partition-with-lvm/
 
+## Adding udev rules without rebooting
+
+```bash
+sudo udevadm control --reload-rules
+sudo service udev restart
+sudo udevadm trigger
+```
+
+## Locale
+
+```
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+locale-gen en_US.UTF-8
+sudo dpkg-reconfigure locales
+```
+
+`localectl set-locale LANG=en_US.utf8`
+
+## Package management
+
+To re-install a package:
+
+```bash
+$ sudo apt-get --reinstall install package
+```
+
+- To remove a repository: `add-apt-repository --remove <repository_name>`
+
+### Snap
+
+To restart a service installed via snap:
+
+`sudo snap restart PACKAGE`
+
 ## Consoles
 
 Switch to other consoles with Ctrl-Alt-F1 to F6, and Ctrl-Alt-F7 is graphical.
@@ -586,7 +548,7 @@ On a laptop, you often have to add the "Fn" key to get F1 to work, so it would b
 
 ## User management 
 
-### Adding user to group and take into account immediately
+Adding user to group and take into account immediately
 
 1. Add user to new group B.
 2. Get the current group of the user:
@@ -603,78 +565,76 @@ $ newgrp B
 $ newgrp A
 ```
 
-## Adding udev rules without rebooting
 
-```bash
-sudo udevadm control --reload-rules
-sudo service udev restart
-sudo udevadm trigger
-```
+## Window Manager
 
-## Cinnamon
+- To stop: `sudo init 3` (alternative: `sudo killall /usr/bin/X`)
+- To resume: `sudo init 5`
+
+
+**Cinnamon**
 
 
 - Configure sound levels: `cinnamon-settings sound`
 - Lock screen: `cinnamon-screensaver-command --lock`
+- To set the login window: `sudo lightdm-settings `
 
 
-## Mate
+## Apps
 
-Specify keyboard bindings in `mate-control-center`
+- [PasswordSafe](https://sourceforge.net/projects/passwordsafe/)
 
-## MDM
+If no bluetooth on the motherboard: `sudo apt-get remove --auto-remove pulseaudio-module-bluetooth`
 
-To have the correct keyboard in MDM, at the end of `/etc/mdm/Init/Default`, insert:
-
-```
-/usr/bin/setxkbmap fr
-```
-
-
-# Sound
-
-## Listing devices
-
-```bash
-$ sudo aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: PCH [HDA Intel PCH], device 0: ALC269VB Analog [ALC269VB Analog]
-  Subdevices: 0/1
-  Subdevice #0: subdevice #0
-card 1: J20 [Jabra EVOLVE 20], device 0: USB Audio [USB Audio]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-```
-
-or `lspci -v | grep -A7 Audio` or `inxi -A`
+### Emacs
 
 ```
-$ inxi -A
-Audio:
-  Device-1: Intel 7 Series/C216 Family High Definition Audio driver: snd_hda_intel 
-  Device-2: AMD Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] 
-  driver: snd_hda_intel 
-  Sound Server: ALSA v: k5.4.0-148-generic
-```  
+sudo apt install elpa-imenu-list
+M-x package-refresh-contents followed by M-x package-install RET elpy RET.
+sudo apt install elpa-py-autopep8
+```
 
-
-## Volume
-
-To set the volume from a terminal: `alsamixer`
-To play from the terminal: `paplay file`
-
-## Test
-
-- To test speakers: `speaker-test -Dplug:front -c2`
-- Play a test sound: `aplay /usr/share/sounds/alsa/Front_Center.wav`
-- See http://mreen.epizy.com/SoundFixTips.html?i=3
-
-# Apps
-
-## Mail
+### Mail
 
 d * removes all email
 q
+
+### NTP
+
+To list NTP servers I use:
+
+```
+$ ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+*ks3352891.kimsu 138.96.64.10     2 u   99  128  377   37.876   31.229  24.093
+...
+```
+
+Configure servers to use in `/etc/ntp.conf`
+
+```
+# pool: <http://www.pool.ntp.org/join.html>
+server ntp.obspm.fr
+server ntp.kamino.fr
+server ntp2.belbone.be
+server 0.fr.pool.ntp.org iburst dynamic
+server 1.fr.pool.ntp.org iburst dynamic
+server 2.fr.pool.ntp.org iburst dynamic
+server 3.fr.pool.ntp.org iburst dynamic
+```
+
+
+To sollicit time: `sudo ntpd -gq`
+
+Or set it manually:
+
+`sudo date -s "3 dec 2017 22:21"`
+
+### Oathtool
+
+`gpg --quiet --decrypt your.secret.totp.asc | oathtool --base32 --totp -`
+
 
 ## Recording desktop
 
@@ -685,22 +645,30 @@ $ gtk-recordmydesktop
 To stop: Ctrl-Mod-s
 
 
-## Bluez
 
-```bash 
-$ wget http://www.kernel.org/pub/linux/bluetooth/bluez-5.20.tar.xz
-$ tar -xvf bluez-5.20.tar.xz
-$ cd bluez-5.20/
-$ sudo apt-get install libudev-dev libical-dev libreadline-dev
-$ ./configure –enable-library –disable-systemd
-$ make
-$ make check
-$ sudo make install
-$ sudo cp attrib/gatttool /usr/bin/
-$sudo cp tools/btmgmt /usr/bin/
+### SSH
+
+```
+ssh-keygen -t rsa -b 4096
+ssh-keyscan -H 192.168.0.9 >> known_hosts
 ```
 
-## Piwigo
+### SFTP
+
+SFTP comes with SSH! 
+I added a `sftp` group, and a `username` user in that group.
+Then, in `/etc/ssh/sshd_config`, you need to redirect logins and chroot them to the appropriate dir:
+
+```
+Match Group sftp
+        ChrootDirectory /var/www/%u
+        ForceCommand internal-sftp
+```
+
+And strangely, `/var/www/%u` must be owned by *root* not by `biotmeteo`. See [here](https://unix.stackexchange.com/questions/598520/client-loop-send-disconnect-broken-pipe-for-chroot-sftp-user-with-correct-p)
+
+
+### Piwigo
 
 [Piwigo gallery on nginx with debian](https://www.howtoforge.com/install-piwigo-gallery-on-nginx-with-debian-wheezy)
 
@@ -708,7 +676,7 @@ $sudo cp tools/btmgmt /usr/bin/
 create database gallery01; grant all on gallery01.* to 'gallery'@'localhost' identified by 'PASSWORD'; flush privileges; \q;
 ```
 
-## Yubikey
+### Yubikey
 
 To use the Yubikey for Linux login: [see YouTube](https://www.youtube.com/watch?v=INi-xKpYjbE)
 
@@ -747,7 +715,7 @@ Generate a key: `ssh-keygen -t ed25519-sk -C "myyubikey" `
 
 Then copy it to the server: `ssh-copy-id -i ~/.ssh/id_yubikey.pub user@host`
 
-## Certbot
+### Certbot
 
 ```
 sudo apt install snapd
@@ -761,7 +729,7 @@ sudo certbot --nginx
 
 - [Renewing](https://tecadmin.net/auto-renew-lets-encrypt-certificates/): `sudo certbot renew --dry-run`  then `sudo certbot renew`. You might need to allow HTTP.
 
-## Owncloud 
+### Owncloud 
 
 Install pre-requisistes:
 
@@ -808,7 +776,7 @@ If you get an untrusted domain warning, in `config.php`, put the correct IP addr
 ```
 
 
-## Useful packages (at some point...)
+### Useful packages (at some point...)
 
 - To install glib2:
 ```

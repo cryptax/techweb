@@ -426,3 +426,8 @@ If you get this error: "oathtool: hex decoding of secret key failed", add `--bas
 ```
 gpg --decrypt --quiet ~/.gnupg/2fa.asc | oathtool --totp --base32 -
 ```
+
+## Siril
+
+- Conversion: **do not forget to select Debayer**
+- Image Processing: Histogram Transformation: Autostretch algorithm
