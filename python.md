@@ -183,5 +183,6 @@ sudo apt-get update; sudo apt-get install --no-install-recommends make build-ess
 - Install a new Python: `pyenv install 3.8`
 - Listing current version `pyenv versions`
 - Create a virtual environment: `pyenv virtualenv 3.10 mkdocs-venv`
+- Activate a virtual environment: `pyenv activate name` and `pyenv deactivate` to deactivate
 - List virtual environments: `pyenv virtualenvs`
 - Switch to a new environment: `pyenv global 3.8`
