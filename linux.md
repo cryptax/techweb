@@ -214,7 +214,7 @@ WantedBy=multi-user.target
 
 ### Commands for Services
 
-- Listing the service config file: `systemctl show SERVICENAME`
+- Listing the service config file: `systemctl show SERVICENAME` ou `systemctl cat SERVICENAME`
 - Editing a unit configuration file: `sudo systemctl edit --full SERVICENAME`, then do `sudo systemctl daemon-reload` and finally `sudo systemctl restart SERVICENAME` (see [here](https://www.2daygeek.com/linux-modifying-existing-systemd-unit-file/))
 - List failed services: `sudo systemctl list-units --failed`
 

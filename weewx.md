@@ -3,7 +3,7 @@
 ## Install
 
 - Use the [Debian package](http://www.weewx.com/docs/usersguide.htm)
-- To upgrade, see [doc](http://www.weewx.com/docs/upgrading.htm#Upgrading_using_setup.py)
+- To upgrade, see [doc](http://www.weewx.com/docs/upgrading.htm#Upgrading_using_setup.py) 
 
 By default, the configuration file will be located in `/etc/weewx/weewx.conf`
 
@@ -17,6 +17,19 @@ To test your configuration and generate debug information:
 
 ```
 debug = 1
+```
+
+## Upgrade
+
+Import the key:
+```
+curl -sSf 'https://weewx.com/keys.html' | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/weewx.gpg --yes
+```
+
+In `/etc/apt/sources.list.d/weewx.list`:
+
+```
+deb [arch=all] http://weewx.com/apt/python3 buster main
 ```
 
 ## Configuration
@@ -535,12 +548,44 @@ sqlite> .schema archive_day_rain
 CREATE TABLE archive_day_rain (dateTime INTEGER NOT NULL UNIQUE PRIMARY KEY, min REAL, mintime INTEGER, max REAL, maxtime INTEGER, sum REAL, count INTEGER, wsum REAL, sumtime INTEGER);
 ```
 
-
 To show date time:
 
 ```
 sqlite> select datetime(dateTime,'unixepoch', 'localtime'),... from archive where XYZ;
 ```
+
+**Fixing an incorrect value in the database:**
+
+- view the database rows: `select datetime(dateTime,'unixepoch', 'localtime'),... from archive where XYZ;`
+- stop weewx: `sudo service weewx stop`
+- backup weewx.sdb (just in case, but safe!
+- update the rows as desired:
+```
+update archive set rain=0.02 where dateTime=XXX;
+```
+
+Note that the rain value is in cm. So, if you have 17.3 mm, you should set `rain=1.73`.
+
+
+- [drop the daily summaries](http://www.weewx.com/docs/utilities.htm#Action_--drop-daily):
+```
+wee_database --drop-daily
+wee_database --rebuild-daily
+```
+
+Rebuilding the daily summaries of an entire database case be quite long. So, if you just need to rebuild part of it, you can use `--from` and `--to`.
+
+```
+sudo wee_database --rebuild-daily --from=2024-03-02
+```
+https://github.com/bellrichm/WeeWX-MQTTSubscribe/archive/refs/tags/v2.3.1.zip
+- If necessary, delete the NOAA for the affected month and year (in public_html/NOAA/)
+- The rows will rebuild correctly when weewx is restarted. If you don't want to wait, you can do it offline:
+```
+wee_database weewx.conf --backfill-daily
+```
+- restart weewx: `sudo service weewx start. `
+
 
 ## Troubleshooting
 
@@ -571,29 +616,6 @@ Bus 001 Device 032: ID 0fde:ca01
 ```
 
 
-### Fixing an incorrect value in the database
-
-- stop weewx: `sudo service weewx stop`
-- backup weewx.sdb (just in case, but safe!
-- update the rows as desired:
-```
-update archive set rain=0.02 where dateTime=XXX;
-```
-
-Note that the rain value is in cm. So, if you have 17.3 mm, you should set `rain=1.73`.
-
-
-- [drop the daily summaries](http://www.weewx.com/docs/utilities.htm#Action_--drop-daily)
-```
-wee_database --drop-daily
-wee_database --rebuild-daily
-```
-- If necessary, delete the NOAA for the affected month and year (in public_html/NOAA/)
-- The rows will rebuild correctly when weewx is restarted. If you don't want to wait, you can do it offline:
-```
-wee_database weewx.conf --backfill-daily
-```
-- restart weewx: `sudo service weewx start. `
 
 
 
