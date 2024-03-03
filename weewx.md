@@ -32,6 +32,20 @@ In `/etc/apt/sources.list.d/weewx.list`:
 deb [arch=all] http://weewx.com/apt/python3 buster main
 ```
 
+[Upgrading to v5](https://www.weewx.com/docs/5.0/upgrade/#sqlite_root-is-now-relative-to-weewx_root) introduces lots a difference I haven't yet covered in this manual. Currently, I have downgraded back to v4.10.2 until I  have time to cope with the new changes: 
+
+```
+sudo apt install weewx=4.10.2-1
+sudo apt-mark hold weewx
+```
+
+In particular, pay attention to directories:
+
+- /etc/weewx
+- /etc/default/weewx
+- /usr/share/weewx
+- /home/weewx
+
 ## Configuration
 
 
