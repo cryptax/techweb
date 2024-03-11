@@ -32,7 +32,9 @@ In `/etc/apt/sources.list.d/weewx.list`:
 deb [arch=all] http://weewx.com/apt/python3 buster main
 ```
 
-[Upgrading to v5](https://www.weewx.com/docs/5.0/upgrade/#sqlite_root-is-now-relative-to-weewx_root) introduces lots a difference I haven't yet covered in this manual. Currently, I have downgraded back to v4.10.2 until I  have time to cope with the new changes: 
+[Upgrading to v5](https://www.weewx.com/docs/5.0/upgrade/#sqlite_root-is-now-relative-to-weewx_root) introduces lots a difference I haven't yet covered in this manual. For example, there is a unique tool named `weectl`, instead of `wee_extension` and others.
+
+Currently, I have downgraded back to v4.10.2 until I  have time to cope with the new changes: 
 
 ```
 sudo apt install weewx=4.10.2-1
@@ -391,10 +393,6 @@ cons/*, smartphone/custom.js
 ```
 
 
-
-
-
-
 ## Operating 
 
 To start / stop, use `service weewx start` or stop.
@@ -415,18 +413,68 @@ By default, weewx logs are in /var/log/syslog.
 To redirect to another location, create a file in /etc/rsyslog.d, for example weewxlog.conf.
 
 ```
-:programname,isequal,"weewx" /var/tmp/log/weewx.log
-:programname,isequal,"weewx" ~
+:programname,isequal,"weewxd" /var/tmp/log/weewx.log
+:programname,isequal,"weewxd" ~
 ```
 
 You need to restart rsyslog: service rsyslog restart.
+
+## MQTT Subscribe
+
+The [MQTT Subscribe](https://github.com/bellrichm/WeeWX-MQTTSubscribe) plugin retrieves MQTT messages and maps them to values of Weewx like `extraTemp1`.
+
+Install in v4 with `sudo ./wee_extension --install ~/v2.3.1.zip`
+
+Add the service as a **data** service in `weewx.conf`
+
+```
+[Engine]
+    # The following section specifies which services should be run and in what order.
+    [[Services]]
+    ...
+    data_services = user.MQTTSubscribe.MQTTSubscribeService,
+```
+
+Configure the mapping in `/etc/weewx/weewx.conf`
+
+```
+[MQTTSubscribeService]
+    # This section is for the MQTTSubscribe service.
+    
+    # Turn the service on and off.
+    # Default is: true
+    # Only used by the service.
+    enable = true
+    
+    # The MQTT server.
+    # Default is localhost.
+    host = YOURMQTTSERVER
+    
+    # The port to connect to.
+    # Default is 1883.
+    port = 1883
+    ...
+    [topics]]
+        # Units for MQTT payloads without unit value.
+        # Valid values: US, METRIC, METRICWX
+        # Default is: US
+        unit_system = METRIC
+        use_topic_as_fieldname = true
+        
+        [[[YOURMQTTMSG]]]
+            name = extraTemp1
+            ignore = False
+            contains_total = False
+            conversion_type = float
+            units = degree_C
+```
 
 ## Mastodon / Twitter
 
 It's possible to have the weather station automatically toot values, but for Twitter this now requires a paid subscription to access Twitter APIs.
 
 - [Weewx Twitter extension](https://github.com/matthewwall/weewx-twitter)
-- [Weewx Mastodon extension](https://github.com/glennmckechnie/weewx-mastodon)
+- [Weewx Mastodon extension](https://github.com/glennmckechnie/weewx-mastodon), also known as wxtoot.
 
 The installation/update/uninstall is expected to be done using `wee_extension`:
 
@@ -485,6 +533,12 @@ In `weewx.conf`
         server_url_mastodon = PUT YOURS
         # Mastodon will rate limit when excessive requests are made
         post_interval = 1000
+...
+[Engine]
+    # The following section specifies which services should be run and in what order.
+    [[Services]]
+	...
+        restful_services = user.wxtoot.Toot
 ```
 
 To post images, add the following:
@@ -599,6 +653,15 @@ https://github.com/bellrichm/WeeWX-MQTTSubscribe/archive/refs/tags/v2.3.1.zip
 wee_database weewx.conf --backfill-daily
 ```
 - restart weewx: `sudo service weewx start. `
+
+To add a new column, like extraHumid3:
+
+1. Stop weewx and backup the database
+2. wee_database --add-column=extraHumid3 --type=REAL
+3. Rebuild: wee_database --rebuild_daily --from=YYYY-MM-DD
+4. Restart weewx
+
+On v5 `weectl database add-column`
 
 
 ## Troubleshooting
