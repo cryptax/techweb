@@ -775,6 +775,135 @@ If you get an untrusted domain warning, in `config.php`, put the correct IP addr
   ),
 ```
 
+### Nut
+
+[Nut](https://networkupstools.org) controls UPS devices and hosts which depend on the UPS device for its power.
+
+You need [different components whether your host is *physically* attached to the UPS, or if it just needs the UPS for its power](https://networkupstools.org/docs/user-manual.chunked/Configuration_notes.html#UPS_shutdown). 
+
+Therefore, we are going to install *NUT* `sudo apt install nut` on several hosts: those attached to a UPS, and those which needs the power of the UPS, and sometimes both. This is configured by the *NUT mode*:
+
+- standalone is used for a host which is attached to a UPS + needs it for its power.
+- netmonitor is used for a host which just needs the UPS for its power.
+
+
+#### Hardware
+
+Plug the UPS device on USB. It should be immediately visible to `dmesg` and `lsusb`.
+
+```
+$ lsusb | grep UPS
+Bus 001 Device 005: ID 0463:ffff MGE UPS Systems UPS
+```
+
+#### Configuration
+
+
+- **NUT mode** is specified in `/etc/nut/nut.conf`. Use the `standalone` mode for the host onto which the UPS is physically attached (and `netmonitor` for one which just needs power from the UPS). As the documentation says "this implies to start the 3 NUT layers (driver, upsd and upsmon) and the matching configuration files.
+
+```
+MODE=standalone
+```
+
+
+- **Driver**. The driver is started/stopped by `upsdrvctl`
+
+```
+$ sudo upsdrvctl start
+Network UPS Tools - UPS driver controller 2.7.4
+Network UPS Tools - Generic HID driver 0.41 (2.7.4)
+USB communication driver 0.33
+Using subdriver: MGE HID 1.39
+```
+
+Driver is configured in `/etc/nut/ups.conf`, add the **driver** to your UPS. One section per UPS.  For example:
+
+```
+[myups]
+ 	driver = mydriver
+	port = /dev/ttyS1
+	cable = 1234
+	desc = "Something descriptive"
+```  
+
+- **Udev**. In `/etc/udev/rules.d/90-ups.rules`, adjust *idVendor* and *idProduct* depending on what `lsusb` reports for the UPS device. Then restart udev: `sudo service udev restart`
+
+```
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0463", ATTR{idProduct}=="ffff", MODE="0660", GROUP="nut"
+```
+
+- **UPS information server**. The server is responsible for serving the data from the drivers to the clients.  It is started by the service `nut-server` and concerns binary ·`upsd`.
+
+```
+$ sudo systemctl restart nut-server 
+```
+
+Or simply to reload configuration file: `sudo upsd -c reload`
+
+UPS server configuration is in `/etc/nut/upsd.conf`. The most basic configuration consists in adding the IP address and port: `LISTEN 127.0.0.1 3493`. Access configuration is in `/etc/nut/upsd.users`, create accounts for the UPS server:
+
+
+```
+[username]
+password = "PASSWORD"
+actions = SET
+actions = FSD
+instcmds = ALL
+upsmon master
+```
+
+- **UPS monitoring configuration**. It is controlled by the `nut-monitor` service and concerns `upsmon` binary. In `/etc/nut/upsmon.conf`. In particular, when the UPS reaches a Low Battery event, the primary `upsmon` (ie. the one on the host attached to the UPS) sets a FSD (= Forced ShutDown) flag to tell all slave systems that it will soon power down the load. [The full cycle is detailed here](https://networkupstools.org/docs/user-manual.chunked/Configuration_notes.html#UPS_shutdown).
+
+```
+POWERDOWNFLAG /etc/killpower
+MONITOR eaton@localhost 1 <username> <password> <master|slave>
+MINSUPPLIES 1
+SHUTDOWNCMD "/sbin/shutdown -h +0"
+```
+
+Note that it is normal to get an "Login on UPS [myups] failed - got [ERR ACCESS-DENIED]" for nut-monitor on the host which has the nut server (can't both listen and connect).
+
+
+
+#### Commands
+
+A few administration tools are supplied:
+
+- **upsc**: lightweight UPS client.
+- **upscmd**: UPS administration program for *instant commands*
+- **upsrw**: UPS variable administration tool
+
+Examples: 
+
+- To list configuration of the UPS unit: `upsc myups`, or `upsrw myups`
+- To list clients connected to a UPS unit: `upsc -c myups`
+- To list UPS units configured on the system: `upsc -L`
+- To list instant commands supported on a UPS: `upscmd -l myups`
+- To check a given instant command: `upscmd myups ups.beeper.status`
+- Get the status of a given UPS: 
+
+```
+upsc eaton ups.status
+OL
+```
+
+Status meaning:
+
+- OL: online
+- LB: low battery
+
+Troubleshooting or testing:
+
+- Test shutdown sequence *without shutting down*: `sudo upsdrvctl -t shutdown`
+
+#### UPS references
+
+- https://gist.github.com/dieechtenilente/b8823ce10479d63b6ecab1ef2c7ebc8f
+- https://srackham.wordpress.com/2013/02/27/configuring-nut-for-the-eaton-3s-ups-on-ubuntu-linux/
+- https://www.ipfire.org/docs/addons/nut/detailed
+- [Disable UPS beeps under Linux](https://linux-tips.com/t/disabling-ups-beep-under-linux/592)
+- [Status values](https://www.ullright.org/ullWiki/show/ubuntu-nut-ups-with-eaton-3s)
+
 
 ### Useful packages (at some point...)
 
