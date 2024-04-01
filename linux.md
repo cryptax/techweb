@@ -129,6 +129,9 @@ blacklist raid6_pq
 - See boot logs: remove `quiet splash` from `GRUB_CMDLINE_LINUX_DEFAULT`
 - Fix ACPI boot error "ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PCI0.GP17.VGA.LCD._BCM.AFN7], AE_NOT_FOUND=": add `acpi_backlight=vendor` to `GRUB_CMDLINE_LINUX_DEFAULT`
 
+## Boot
+
+- See boot logs: `dmesg` or `/var/log/boot.log`, or `journalctl -b`
 
 ## Systemd / systemctl
 
