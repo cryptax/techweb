@@ -40,6 +40,13 @@ rabin2 -i classes.dex
 - Define a function: go to the function beginning then `af`
 - Go to the beginning of a function: s `afi.` or `sf.`
 - List entry points: `ie`
+- List functions: `afl`. The output is:
+
+1. Address of function
+2. The number of basic blocks in the function
+3. The size of the function (in bytes)
+4. The function's name
+
 - Write to a file: `wtf filename size @ position`
 - Shell commands work: `s 0x65; pD 32`
 - Cross references: `axf` or `axt`. Function references: `afx`
