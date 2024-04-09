@@ -1,47 +1,41 @@
-% Linux 
+# Linux notes
 
-# Hardware
+## Hardware
 
-## Know your hardware
+### Know your hardware
 
  Before you struggle opening the box or finding the adequate screwdriver, you can try out the following:
 
-
-List hardware: `lshw` or `inxi -Fxz`
-For example:
+1. **lshw**
 
 - Network: `lshw -C network`
 - Hard disks: `lshw -C disk`
 
-Product model:
-```
-$ inxi -M
-Machine:   System: xxx product: xxx v: 01
-           Mobo: xxx v: x Bios: xx v: xx date: xx/xx/xxxx
-```
-    or
-```
-sudo dmidecode -t baseboard | grep -i 'Product'
-```
+2. **inxi**
+
+- List all: `inxi -Fxz`
+- Product model: `inxi -M`
+- Graphic card: `inxi -G`
+- Audio: `inxi -A`
+
+3. **dmidecode**
+
+- Product: `sudo dmidecode -t baseboard | grep -i 'Product'`
+- List RAM: `sudo dmidecode -t memory`
+
+4. **lspci**
+
+- Video card: `lspci -vnn | grep VGA -A 12`
+- Audio: `lspci -v | grep -A7 Audio`
+
+5. `lsusb`, list block devices: `lsblk`, list SCSI devices (e.g SATA disks): `cat /proc/scsi/scsi` or `lsscsi`
+
+6. Hard disk info: `sudo hdparm -i /dev/sda`
+
+7. Audio: `sudo aplay -l`
 
 
-List RAM: `sudo dmidecode -t memory`
-
-List PCI devices: `lspci`.
-For example, get the video card:
-```
-$ lspci -vnn | grep VGA -A 12
-```
-
-- list USB devices: lsusb
-- list block devices: lsblk
-- list SCSI devices (useful for SATA disks): `cat /proc/scsi/scsi` or `lsscsi`
-
-## Get hard disk info
-
-`sudo hdparm -i /dev/sda`
-
-## Monitor luminosity
+### Control monitor luminosity
 
 Get name of device:
 
@@ -52,24 +46,19 @@ eDP-1
 
 Then set luminosity: `xrandr --output eDP-1 --brightness 0.7`
 
-
-## Kernel
-
-To list unused kernels:
-
-```
-kernelver=$(uname -r | sed -r 's/-[a-z]+//')
-dpkg -l linux-{image,headers}-"[0-9]*" | awk '/ii/{print $2}' | grep -ve $kernelver
-```
-
-And then, uninstall these images with `sudo apt-get purge linux-image-xxxx`
-
-
-## Setting keyboard layout
+### Keyboard layout CLI
 
 `setxkbmap -layout fr`
 
-## Using accents with a QWERTY layout
+To have the correct keyboard in **MDM**, at the end of `/etc/mdm/Init/Default`, insert:
+
+```
+/usr/bin/setxkbmap fr
+```
+
+- Specify keyboard bindings in `mate-control-center`
+
+Using accents with a QWERTY layout:
 
 Put this in `.profile`: `xmodmap ~/.xmodmaprc` where your `.xmodmaprc` defines your keyboard tricks:
 
@@ -100,19 +89,53 @@ keycode  108 = Mode_switch
 
 Alternatively, it is possible to use the "English US International with dead letters" keyboard and then use composition: ` + e gives è. See [here](https://www.ellendhel.net/article.php?ref=2011+09+12-0).
 
-# GRUB
+## Sound 
 
-To update the menu image of Grub, edit /etc/default/grub:
+- To set the volume from a terminal: `alsamixer`
+- To play from the terminal: `paplay file`
+
+- To test speakers: `speaker-test -Dplug:front -c2`
+- Play a test sound: `aplay /usr/share/sounds/alsa/Front_Center.wav`
+- See http://mreen.epizy.com/SoundFixTips.html?i=3
+
+
+
+## Kernel
+
+To list unused kernels:
 
 ```
-export GRUB_MENU_PICTURE="/home/xxx.png"
+kernelver=$(uname -r | sed -r 's/-[a-z]+//')
+dpkg -l linux-{image,headers}-"[0-9]*" | awk '/ii/{print $2}' | grep -ve $kernelver
 ```
 
-Then do `sudo update-grub`
+And then, uninstall these images with `sudo apt-get purge linux-image-xxxx`
 
-# System
+To solve [this error](https://forums.debian.net/viewtopic.php?t=152806), add to `/etc/modprob.d/blacklist.conf`, and then 
+`update-initramfs -u`
 
-## Services
+```
+blacklist btrfs
+blacklist mdraid
+blacklist raid6_pq
+```
+
+
+## GRUB
+
+**NB.** All edits to `/etc/default/grub` must be "committed" afterwards with `sudo update-grub` to take them in account.
+
+- Update the menu image of Grub, `export GRUB_MENU_PICTURE="/home/xxx.png`
+- See boot logs: remove `quiet splash` from `GRUB_CMDLINE_LINUX_DEFAULT`
+- Fix ACPI boot error "ACPI BIOS Error (bug): Could not resolve symbol [\_SB.PCI0.GP17.VGA.LCD._BCM.AFN7], AE_NOT_FOUND=": add `acpi_backlight=vendor` to `GRUB_CMDLINE_LINUX_DEFAULT`
+
+## Boot
+
+- See boot logs: `dmesg` or `/var/log/boot.log`, or `journalctl -b`
+
+## Systemd / systemctl
+
+### Create a service
 
 [Create a service with Systemd](https://doc.ubuntu-fr.org/creer_un_service_avec_systemd)
 
@@ -194,7 +217,7 @@ WantedBy=multi-user.target
 
 ### Commands for Services
 
-- Listing the service config file: `systemctl show SERVICENAME`
+- Listing the service config file: `systemctl show SERVICENAME` ou `systemctl cat SERVICENAME`
 - Editing a unit configuration file: `sudo systemctl edit --full SERVICENAME`, then do `sudo systemctl daemon-reload` and finally `sudo systemctl restart SERVICENAME` (see [here](https://www.2daygeek.com/linux-modifying-existing-systemd-unit-file/))
 - List failed services: `sudo systemctl list-units --failed`
 
@@ -203,6 +226,7 @@ WantedBy=multi-user.target
 - Dump to a file: `journalctl -x -u service > file`
 - Wrap long lines: `journalctl -u service | less` or `journalctl -u service --no-pager`
 - After bug `journalctl -xb`
+- List boot logs: `journalctl -b`
 
 
 ## Network
@@ -231,7 +255,7 @@ ip route add default via 10.20.30.1
 
 #### List DNS servers
 
-With Linux Mint, to view current DNS server: `nmcli dev show |grep DNS`
+With Linux Mint, to view current DNS server: `nmcli dev show | grep DNS`
 
 #### Test name resolution
 
@@ -315,9 +339,6 @@ in `/etc/resolvconf/resolv.conf.d/head`.
 Once this is done, you need to update name resolution with the command `resolvconf -u`.
 
 
-
-
-
 ### Troubleshooting
 
 I had issues with my Ethernet link. In my case, it was solved by commenting out dns=dnsmasq in NetworkManager:
@@ -378,6 +399,8 @@ To access a Samba share from a NAS:
 
 ### Firewall
 
+#### ufw
+
 `sudo apt install ufw` will install a basic firewall. It won't enable it by default.
 
 - To open port for SSH and HTTPS:
@@ -394,100 +417,7 @@ ufw allow 'Nginx HTTPS'
 - To get the ports of a given profile: `sudo ufw app info PROFILE`
 
 
-
-## Locale
-
-```
-export LANGUAGE=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-locale-gen en_US.UTF-8
-sudo dpkg-reconfigure locales
-```
-
-`localectl set-locale LANG=en_US.utf8`
-
-## Package management
-
-To re-install a package:
-
-```bash
-$ sudo apt-get --reinstall install package
-```
-
-### Snap
-
-To restart a service installed via snap:
-
-`sudo snap restart PACKAGE`
-
-## NTP
-
-To list NTP servers I use:
-
-```
-$ ntpq -p
-     remote           refid      st t when poll reach   delay   offset  jitter
-==============================================================================
-*ks3352891.kimsu 138.96.64.10     2 u   99  128  377   37.876   31.229  24.093
-...
-```
-
-Configure servers to use in `/etc/ntp.conf`
-
-```
-# pool: <http://www.pool.ntp.org/join.html>
-server ntp.obspm.fr
-server ntp.kamino.fr
-server ntp2.belbone.be
-server 0.fr.pool.ntp.org iburst dynamic
-server 1.fr.pool.ntp.org iburst dynamic
-server 2.fr.pool.ntp.org iburst dynamic
-server 3.fr.pool.ntp.org iburst dynamic
-```
-
-
-To sollicit time: `sudo ntpd -gq`
-
-Or set it manually:
-
-`sudo date -s "3 dec 2017 22:21"`
-
-
-## SSH
-
-```
-ssh-keygen -t rsa -b 4096
-ssh-keyscan -H 192.168.0.9 >> known_hosts
-```
-
-## SFTP
-
-SFTP comes with SSH! 
-I added a `sftp` group, and a `username` user in that group.
-Then, in `/etc/ssh/sshd_config`, you need to redirect logins and chroot them to the appropriate dir:
-
-```
-Match Group sftp
-        ChrootDirectory /var/www/%u
-        ForceCommand internal-sftp
-```
-
-And strangely, `/var/www/%u` must be owned by *root* not by `biotmeteo`. See [here](https://unix.stackexchange.com/questions/598520/client-loop-send-disconnect-broken-pipe-for-chroot-sftp-user-with-correct-p)
-
-## ZFS
-
-### Install ZFS
-
-On Linux Mint 19:
-
-```bash
-sudo apt-get install zfs-dkms zfsutils-linux
-```
-
-Then, to import a pool: `zpool import POOLNAME`
-
-## Firewall
+#### iptables
 
 ```bash
 $ iptables -t nat -F ==> flush the NAT table
@@ -511,7 +441,6 @@ Here OUTPUT refers to the part of iptables to work on
 sudo iptables -t nat -v -L PREROUTING -n --line-number
 sudo iptables -t nat --delete PREROUTING 4
 ```
-
 
 ## LVM
 
@@ -579,6 +508,42 @@ References:
 - https://www.computernetworkingnotes.com/rhce-study-guide/learn-how-to-configure-lvm-in-linux-step-by-step.html
 - http://www.lerrigatto.com/move-var-to-a-new-partition-with-lvm/
 
+## Adding udev rules without rebooting
+
+```bash
+sudo udevadm control --reload-rules
+sudo service udev restart
+sudo udevadm trigger
+```
+
+## Locale
+
+```
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+locale-gen en_US.UTF-8
+sudo dpkg-reconfigure locales
+```
+
+`localectl set-locale LANG=en_US.utf8`
+
+## Package management
+
+To re-install a package:
+
+```bash
+$ sudo apt-get --reinstall install package
+```
+
+- To remove a repository: `add-apt-repository --remove <repository_name>`
+
+### Snap
+
+To restart a service installed via snap:
+
+`sudo snap restart PACKAGE`
+
 ## Consoles
 
 Switch to other consoles with Ctrl-Alt-F1 to F6, and Ctrl-Alt-F7 is graphical.
@@ -586,7 +551,7 @@ On a laptop, you often have to add the "Fn" key to get F1 to work, so it would b
 
 ## User management 
 
-### Adding user to group and take into account immediately
+Adding user to group and take into account immediately
 
 1. Add user to new group B.
 2. Get the current group of the user:
@@ -603,78 +568,76 @@ $ newgrp B
 $ newgrp A
 ```
 
-## Adding udev rules without rebooting
 
-```bash
-sudo udevadm control --reload-rules
-sudo service udev restart
-sudo udevadm trigger
-```
+## Window Manager
 
-## Cinnamon
+- To stop: `sudo init 3` (alternative: `sudo killall /usr/bin/X`)
+- To resume: `sudo init 5`
+
+
+**Cinnamon**
 
 
 - Configure sound levels: `cinnamon-settings sound`
 - Lock screen: `cinnamon-screensaver-command --lock`
+- To set the login window: `sudo lightdm-settings `
 
 
-## Mate
+## Apps
 
-Specify keyboard bindings in `mate-control-center`
+- [PasswordSafe](https://sourceforge.net/projects/passwordsafe/)
 
-## MDM
+If no bluetooth on the motherboard: `sudo apt-get remove --auto-remove pulseaudio-module-bluetooth`
 
-To have the correct keyboard in MDM, at the end of `/etc/mdm/Init/Default`, insert:
-
-```
-/usr/bin/setxkbmap fr
-```
-
-
-# Sound
-
-## Listing devices
-
-```bash
-$ sudo aplay -l
-**** List of PLAYBACK Hardware Devices ****
-card 0: PCH [HDA Intel PCH], device 0: ALC269VB Analog [ALC269VB Analog]
-  Subdevices: 0/1
-  Subdevice #0: subdevice #0
-card 1: J20 [Jabra EVOLVE 20], device 0: USB Audio [USB Audio]
-  Subdevices: 1/1
-  Subdevice #0: subdevice #0
-```
-
-or `lspci -v | grep -A7 Audio` or `inxi -A`
+### Emacs
 
 ```
-$ inxi -A
-Audio:
-  Device-1: Intel 7 Series/C216 Family High Definition Audio driver: snd_hda_intel 
-  Device-2: AMD Ellesmere HDMI Audio [Radeon RX 470/480 / 570/580/590] 
-  driver: snd_hda_intel 
-  Sound Server: ALSA v: k5.4.0-148-generic
-```  
+sudo apt install elpa-imenu-list
+M-x package-refresh-contents followed by M-x package-install RET elpy RET.
+sudo apt install elpa-py-autopep8
+```
 
-
-## Volume
-
-To set the volume from a terminal: `alsamixer`
-To play from the terminal: `paplay file`
-
-## Test
-
-- To test speakers: `speaker-test -Dplug:front -c2`
-- Play a test sound: `aplay /usr/share/sounds/alsa/Front_Center.wav`
-- See http://mreen.epizy.com/SoundFixTips.html?i=3
-
-# Apps
-
-## Mail
+### Mail
 
 d * removes all email
 q
+
+### NTP
+
+To list NTP servers I use:
+
+```
+$ ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+*ks3352891.kimsu 138.96.64.10     2 u   99  128  377   37.876   31.229  24.093
+...
+```
+
+Configure servers to use in `/etc/ntp.conf`
+
+```
+# pool: <http://www.pool.ntp.org/join.html>
+server ntp.obspm.fr
+server ntp.kamino.fr
+server ntp2.belbone.be
+server 0.fr.pool.ntp.org iburst dynamic
+server 1.fr.pool.ntp.org iburst dynamic
+server 2.fr.pool.ntp.org iburst dynamic
+server 3.fr.pool.ntp.org iburst dynamic
+```
+
+
+To sollicit time: `sudo ntpd -gq`
+
+Or set it manually:
+
+`sudo date -s "3 dec 2017 22:21"`
+
+### Oathtool
+
+`gpg --quiet --decrypt your.secret.totp.asc | oathtool --base32 --totp -`
+
 
 ## Recording desktop
 
@@ -685,22 +648,30 @@ $ gtk-recordmydesktop
 To stop: Ctrl-Mod-s
 
 
-## Bluez
 
-```bash 
-$ wget http://www.kernel.org/pub/linux/bluetooth/bluez-5.20.tar.xz
-$ tar -xvf bluez-5.20.tar.xz
-$ cd bluez-5.20/
-$ sudo apt-get install libudev-dev libical-dev libreadline-dev
-$ ./configure –enable-library –disable-systemd
-$ make
-$ make check
-$ sudo make install
-$ sudo cp attrib/gatttool /usr/bin/
-$sudo cp tools/btmgmt /usr/bin/
+### SSH
+
+```
+ssh-keygen -t rsa -b 4096
+ssh-keyscan -H 192.168.0.9 >> known_hosts
 ```
 
-## Piwigo
+### SFTP
+
+SFTP comes with SSH! 
+I added a `sftp` group, and a `username` user in that group.
+Then, in `/etc/ssh/sshd_config`, you need to redirect logins and chroot them to the appropriate dir:
+
+```
+Match Group sftp
+        ChrootDirectory /var/www/%u
+        ForceCommand internal-sftp
+```
+
+And strangely, `/var/www/%u` must be owned by *root* not by `biotmeteo`. See [here](https://unix.stackexchange.com/questions/598520/client-loop-send-disconnect-broken-pipe-for-chroot-sftp-user-with-correct-p)
+
+
+### Piwigo
 
 [Piwigo gallery on nginx with debian](https://www.howtoforge.com/install-piwigo-gallery-on-nginx-with-debian-wheezy)
 
@@ -708,7 +679,7 @@ $sudo cp tools/btmgmt /usr/bin/
 create database gallery01; grant all on gallery01.* to 'gallery'@'localhost' identified by 'PASSWORD'; flush privileges; \q;
 ```
 
-## Yubikey
+### Yubikey
 
 To use the Yubikey for Linux login: [see YouTube](https://www.youtube.com/watch?v=INi-xKpYjbE)
 
@@ -747,7 +718,7 @@ Generate a key: `ssh-keygen -t ed25519-sk -C "myyubikey" `
 
 Then copy it to the server: `ssh-copy-id -i ~/.ssh/id_yubikey.pub user@host`
 
-## Certbot
+### Certbot
 
 ```
 sudo apt install snapd
@@ -761,7 +732,7 @@ sudo certbot --nginx
 
 - [Renewing](https://tecadmin.net/auto-renew-lets-encrypt-certificates/): `sudo certbot renew --dry-run`  then `sudo certbot renew`. You might need to allow HTTP.
 
-## Owncloud 
+### Owncloud 
 
 Install pre-requisistes:
 
@@ -807,8 +778,137 @@ If you get an untrusted domain warning, in `config.php`, put the correct IP addr
   ),
 ```
 
+### Nut
 
-## Useful packages (at some point...)
+[Nut](https://networkupstools.org) controls UPS devices and hosts which depend on the UPS device for its power.
+
+You need [different components whether your host is *physically* attached to the UPS, or if it just needs the UPS for its power](https://networkupstools.org/docs/user-manual.chunked/Configuration_notes.html#UPS_shutdown). 
+
+Therefore, we are going to install *NUT* `sudo apt install nut` on several hosts: those attached to a UPS, and those which needs the power of the UPS, and sometimes both. This is configured by the *NUT mode*:
+
+- standalone is used for a host which is attached to a UPS + needs it for its power.
+- netmonitor is used for a host which just needs the UPS for its power.
+
+
+#### Hardware
+
+Plug the UPS device on USB. It should be immediately visible to `dmesg` and `lsusb`.
+
+```
+$ lsusb | grep UPS
+Bus 001 Device 005: ID 0463:ffff MGE UPS Systems UPS
+```
+
+#### Configuration
+
+
+- **NUT mode** is specified in `/etc/nut/nut.conf`. Use the `standalone` mode for the host onto which the UPS is physically attached (and `netmonitor` for one which just needs power from the UPS). As the documentation says "this implies to start the 3 NUT layers (driver, upsd and upsmon) and the matching configuration files.
+
+```
+MODE=standalone
+```
+
+
+- **Driver**. The driver is started/stopped by `upsdrvctl`
+
+```
+$ sudo upsdrvctl start
+Network UPS Tools - UPS driver controller 2.7.4
+Network UPS Tools - Generic HID driver 0.41 (2.7.4)
+USB communication driver 0.33
+Using subdriver: MGE HID 1.39
+```
+
+Driver is configured in `/etc/nut/ups.conf`, add the **driver** to your UPS. One section per UPS.  For example:
+
+```
+[myups]
+ 	driver = mydriver
+	port = /dev/ttyS1
+	cable = 1234
+	desc = "Something descriptive"
+```  
+
+- **Udev**. In `/etc/udev/rules.d/90-ups.rules`, adjust *idVendor* and *idProduct* depending on what `lsusb` reports for the UPS device. Then restart udev: `sudo service udev restart`
+
+```
+ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0463", ATTR{idProduct}=="ffff", MODE="0660", GROUP="nut"
+```
+
+- **UPS information server**. The server is responsible for serving the data from the drivers to the clients.  It is started by the service `nut-server` and concerns binary ·`upsd`.
+
+```
+$ sudo systemctl restart nut-server 
+```
+
+Or simply to reload configuration file: `sudo upsd -c reload`
+
+UPS server configuration is in `/etc/nut/upsd.conf`. The most basic configuration consists in adding the IP address and port: `LISTEN 127.0.0.1 3493`. Access configuration is in `/etc/nut/upsd.users`, create accounts for the UPS server:
+
+
+```
+[username]
+password = "PASSWORD"
+actions = SET
+actions = FSD
+instcmds = ALL
+upsmon master
+```
+
+- **UPS monitoring configuration**. It is controlled by the `nut-monitor` service and concerns `upsmon` binary. In `/etc/nut/upsmon.conf`. In particular, when the UPS reaches a Low Battery event, the primary `upsmon` (ie. the one on the host attached to the UPS) sets a FSD (= Forced ShutDown) flag to tell all slave systems that it will soon power down the load. [The full cycle is detailed here](https://networkupstools.org/docs/user-manual.chunked/Configuration_notes.html#UPS_shutdown).
+
+```
+POWERDOWNFLAG /etc/killpower
+MONITOR eaton@localhost 1 <username> <password> <master|slave>
+MINSUPPLIES 1
+SHUTDOWNCMD "/sbin/shutdown -h +0"
+```
+
+Note that it is normal to get an "Login on UPS [myups] failed - got [ERR ACCESS-DENIED]" for nut-monitor on the host which has the nut server (can't both listen and connect).
+
+
+
+#### Commands
+
+A few administration tools are supplied:
+
+- **upsc**: lightweight UPS client.
+- **upscmd**: UPS administration program for *instant commands*
+- **upsrw**: UPS variable administration tool
+
+Examples: 
+
+- To list configuration of the UPS unit: `upsc myups`, or `upsrw myups`
+- To list clients connected to a UPS unit: `upsc -c myups`
+- To list UPS units configured on the system: `upsc -L`
+- To list instant commands supported on a UPS: `upscmd -l myups`
+- To check a given instant command: `upscmd myups ups.beeper.status`
+- Get the status of a given UPS: 
+
+```
+upsc eaton ups.status
+OL
+```
+
+Status meaning:
+
+- OL: online
+- LB: low battery
+
+Troubleshooting or testing:
+
+- Test shutdown sequence *without shutting down*: `sudo upsdrvctl -t shutdown`
+
+#### UPS references
+
+- https://gist.github.com/dieechtenilente/b8823ce10479d63b6ecab1ef2c7ebc8f
+- https://srackham.wordpress.com/2013/02/27/configuring-nut-for-the-eaton-3s-ups-on-ubuntu-linux/
+- https://www.ipfire.org/docs/addons/nut/detailed
+- [Disable UPS beeps under Linux](https://linux-tips.com/t/disabling-ups-beep-under-linux/592)
+- [Status values](https://www.ullright.org/ullWiki/show/ubuntu-nut-ups-with-eaton-3s)
+
+
+### Useful packages (at some point...)
 
 - To install glib2:
 ```

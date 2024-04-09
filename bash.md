@@ -48,8 +48,9 @@ $ echo -n "deadbeef" | xxd -p -r | od -tx1
 
 ## Date
 
-Epoch to date: `date -d @1234567890`
-Get epoch: `date "+%s"`
+- Epoch to date: `date -d @1234567890`
+- Get epoch: `date "+%s"`
+- Given date to epoch: `date -d '2024-03-03T06:00' +%s`
 
 
 ## Find
@@ -107,4 +108,11 @@ Renaming `.txt` extension files to `.text`:
 for f in *.txt; do 
     mv -- "$f" "${f%.txt}.text"
 done
+```
+## Tar
+
+Untar selectively:
+
+```
+tar -xzf lotsofdata.tar.gz --wildcards --no-anchored '*contract*'
 ```

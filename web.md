@@ -112,7 +112,37 @@ sudo snap install core
 sudo snap refresh core
 sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
+```
+
+Then in `/etc/nginx/conf.d/server.conf`
+
+```
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    server_name example.com www.example.com;
+}
+```
+
+Then we are ready to request a certificate
+
+```
 sudo certbot --nginx
+...
+Which names would you like to activate HTTPS for?
+We recommend selecting either all domains, or all domains in a VirtualHost/server block.
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+1: yourwebsite
+2: yourothersite
+...
+Certificate is saved at: /etc/letsencrypt/live/xxx/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/xxx/privkey.pem
+...
+Deploying certificate
+Successfully deployed certificate for xxxxxxx to /etc/nginx/conf.d/xxx.conf
+Congratulations! You have successfully enabled HTTPS on https://xxxx
+
 ```
 
 To renew a certificate:
@@ -142,3 +172,9 @@ hugo serve --source=themes/LoveIt/exampleSite
 - To search for Font Awesome icons: https://fontawesome.com/search
 - To modify theme colors: typically in `./theme/xxx/assets/css/_variables.css`
 
+## MkDocs
+
+```
+mkdocs new my-project
+cd my-project
+```

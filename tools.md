@@ -44,6 +44,14 @@ Shortcuts in the Edit Mode:
 - Separate a part of the mesh as an individual object: **P** then choose "Selection" from the menu.
 - Modify a form according to a circle influence: **G** then select axis (**Z**) and move the pointer, scroll to enlarge influence.
 
+To cut an object in 2 (or more) [Reference video](https://www.youtube.com/watch?v=ZYYkdNhfMhw):
+
+1. Edit Mode, Mesh > Bissect. And cut according to a plane. Use Ctrl to use a horizontal plane.
+2. Vertex > Rip Vertices to seperate the vertices
+3. Select > Select Linked > Linked: to seperate the upper part
+4. Mesh > Separate > By Loose Parts
+
+
 Sculpt Mode :
 
 - Shift R to see the size to remesh. Then Button Remesh, set the size and Remesh (Ctrl R).
@@ -426,3 +434,8 @@ If you get this error: "oathtool: hex decoding of secret key failed", add `--bas
 ```
 gpg --decrypt --quiet ~/.gnupg/2fa.asc | oathtool --totp --base32 -
 ```
+
+## Siril
+
+- Conversion: **do not forget to select Debayer**
+- Image Processing: Histogram Transformation: Autostretch algorithm

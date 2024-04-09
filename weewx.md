@@ -3,7 +3,7 @@
 ## Install
 
 - Use the [Debian package](http://www.weewx.com/docs/usersguide.htm)
-- To upgrade, see [doc](http://www.weewx.com/docs/upgrading.htm#Upgrading_using_setup.py)
+- To upgrade, see [doc](http://www.weewx.com/docs/upgrading.htm#Upgrading_using_setup.py) 
 
 By default, the configuration file will be located in `/etc/weewx/weewx.conf`
 
@@ -18,6 +18,35 @@ To test your configuration and generate debug information:
 ```
 debug = 1
 ```
+
+## Upgrade
+
+Import the key:
+```
+curl -sSf 'https://weewx.com/keys.html' | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/weewx.gpg --yes
+```
+
+In `/etc/apt/sources.list.d/weewx.list`:
+
+```
+deb [arch=all] http://weewx.com/apt/python3 buster main
+```
+
+[Upgrading to v5](https://www.weewx.com/docs/5.0/upgrade/#sqlite_root-is-now-relative-to-weewx_root) introduces lots a difference I haven't yet covered in this manual. For example, there is a unique tool named `weectl`, instead of `wee_extension` and others.
+
+Currently, I have downgraded back to v4.10.2 until I  have time to cope with the new changes: 
+
+```
+sudo apt install weewx=4.10.2-1
+sudo apt-mark hold weewx
+```
+
+In particular, pay attention to directories:
+
+- /etc/weewx
+- /etc/default/weewx
+- /usr/share/weewx
+- /home/weewx
 
 ## Configuration
 
@@ -364,10 +393,6 @@ cons/*, smartphone/custom.js
 ```
 
 
-
-
-
-
 ## Operating 
 
 To start / stop, use `service weewx start` or stop.
@@ -388,18 +413,68 @@ By default, weewx logs are in /var/log/syslog.
 To redirect to another location, create a file in /etc/rsyslog.d, for example weewxlog.conf.
 
 ```
-:programname,isequal,"weewx" /var/tmp/log/weewx.log
-:programname,isequal,"weewx" ~
+:programname,isequal,"weewxd" /var/tmp/log/weewx.log
+:programname,isequal,"weewxd" ~
 ```
 
 You need to restart rsyslog: service rsyslog restart.
+
+## MQTT Subscribe
+
+The [MQTT Subscribe](https://github.com/bellrichm/WeeWX-MQTTSubscribe) plugin retrieves MQTT messages and maps them to values of Weewx like `extraTemp1`.
+
+Install in v4 with `sudo ./wee_extension --install ~/v2.3.1.zip`
+
+Add the service as a **data** service in `weewx.conf`
+
+```
+[Engine]
+    # The following section specifies which services should be run and in what order.
+    [[Services]]
+    ...
+    data_services = user.MQTTSubscribe.MQTTSubscribeService,
+```
+
+Configure the mapping in `/etc/weewx/weewx.conf`
+
+```
+[MQTTSubscribeService]
+    # This section is for the MQTTSubscribe service.
+    
+    # Turn the service on and off.
+    # Default is: true
+    # Only used by the service.
+    enable = true
+    
+    # The MQTT server.
+    # Default is localhost.
+    host = YOURMQTTSERVER
+    
+    # The port to connect to.
+    # Default is 1883.
+    port = 1883
+    ...
+    [topics]]
+        # Units for MQTT payloads without unit value.
+        # Valid values: US, METRIC, METRICWX
+        # Default is: US
+        unit_system = METRIC
+        use_topic_as_fieldname = true
+        
+        [[[YOURMQTTMSG]]]
+            name = extraTemp1
+            ignore = False
+            contains_total = False
+            conversion_type = float
+            units = degree_C
+```
 
 ## Mastodon / Twitter
 
 It's possible to have the weather station automatically toot values, but for Twitter this now requires a paid subscription to access Twitter APIs.
 
 - [Weewx Twitter extension](https://github.com/matthewwall/weewx-twitter)
-- [Weewx Mastodon extension](https://github.com/glennmckechnie/weewx-mastodon)
+- [Weewx Mastodon extension](https://github.com/glennmckechnie/weewx-mastodon), also known as wxtoot.
 
 The installation/update/uninstall is expected to be done using `wee_extension`:
 
@@ -458,6 +533,12 @@ In `weewx.conf`
         server_url_mastodon = PUT YOURS
         # Mastodon will rate limit when excessive requests are made
         post_interval = 1000
+...
+[Engine]
+    # The following section specifies which services should be run and in what order.
+    [[Services]]
+	...
+        restful_services = user.wxtoot.Toot
 ```
 
 To post images, add the following:
@@ -535,12 +616,53 @@ sqlite> .schema archive_day_rain
 CREATE TABLE archive_day_rain (dateTime INTEGER NOT NULL UNIQUE PRIMARY KEY, min REAL, mintime INTEGER, max REAL, maxtime INTEGER, sum REAL, count INTEGER, wsum REAL, sumtime INTEGER);
 ```
 
-
 To show date time:
 
 ```
 sqlite> select datetime(dateTime,'unixepoch', 'localtime'),... from archive where XYZ;
 ```
+
+**Fixing an incorrect value in the database:**
+
+- view the database rows: `select datetime(dateTime,'unixepoch', 'localtime'),... from archive where XYZ;`
+- stop weewx: `sudo service weewx stop`
+- backup weewx.sdb (just in case, but safe!
+- update the rows as desired:
+```
+update archive set rain=0.02 where dateTime=XXX;
+```
+
+Note that the rain value is in cm. So, if you have 17.3 mm, you should set `rain=1.73`.
+
+
+- [drop the daily summaries](http://www.weewx.com/docs/utilities.htm#Action_--drop-daily):
+```
+wee_database --drop-daily
+wee_database --rebuild-daily
+```
+
+Rebuilding the daily summaries of an entire database case be quite long. So, if you just need to rebuild part of it, you can use `--from` and `--to`.
+
+```
+sudo wee_database --rebuild-daily --from=2024-03-02
+```
+https://github.com/bellrichm/WeeWX-MQTTSubscribe/archive/refs/tags/v2.3.1.zip
+- If necessary, delete the NOAA for the affected month and year (in public_html/NOAA/)
+- The rows will rebuild correctly when weewx is restarted. If you don't want to wait, you can do it offline:
+```
+wee_database weewx.conf --backfill-daily
+```
+- restart weewx: `sudo service weewx start. `
+
+To add a new column, like extraHumid3:
+
+1. Stop weewx and backup the database
+2. wee_database --add-column=extraHumid3 --type=REAL
+3. Rebuild: wee_database --rebuild_daily --from=YYYY-MM-DD
+4. Restart weewx
+
+On v5 `weectl database add-column`
+
 
 ## Troubleshooting
 
@@ -571,29 +693,6 @@ Bus 001 Device 032: ID 0fde:ca01
 ```
 
 
-### Fixing an incorrect value in the database
-
-- stop weewx: `sudo service weewx stop`
-- backup weewx.sdb (just in case, but safe!
-- update the rows as desired:
-```
-update archive set rain=0.02 where dateTime=XXX;
-```
-
-Note that the rain value is in cm. So, if you have 17.3 mm, you should set `rain=1.73`.
-
-
-- [drop the daily summaries](http://www.weewx.com/docs/utilities.htm#Action_--drop-daily)
-```
-wee_database --drop-daily
-wee_database --rebuild-daily
-```
-- If necessary, delete the NOAA for the affected month and year (in public_html/NOAA/)
-- The rows will rebuild correctly when weewx is restarted. If you don't want to wait, you can do it offline:
-```
-wee_database weewx.conf --backfill-daily
-```
-- restart weewx: `sudo service weewx start. `
 
 
 
