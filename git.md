@@ -62,6 +62,17 @@ git branch -a
 
 To switch to a branch: `git checkout branchname`
 
+```
+$ git config --global --list
+credential.helper=store
+```
+
+### Debug
+
+```
+$ git config --global --list
+core.sshcommand=ssh -vvv
+```
 
 ## Gogs
 
