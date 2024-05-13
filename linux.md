@@ -131,7 +131,13 @@ blacklist raid6_pq
 
 ## Boot
 
-- See boot logs: `dmesg` or `/var/log/boot.log`, or `journalctl -b`
+- See boot logs: `dmesg -T` or `/var/log/boot.log`, or `journalctl -b`
+- Investigate slow boot:
+
+```
+systemd-analyze blame
+systemd-analyze critical-chain
+```
 
 ## Systemd / systemctl
 
@@ -515,6 +521,20 @@ sudo udevadm control --reload-rules
 sudo service udev restart
 sudo udevadm trigger
 ```
+
+To disable card readers for example, add `/etc/udev/rules.d/99-disable-card-readers.rules`. Precisely, this adds the tag `UDISKS_IGNORE` to the readers.
+
+```
+SUBSYSTEM=="block",ENV{ID_MODEL}=="CF_Card_CF", ENV{UDISKS_IGNORE}="1"
+SUBSYSTEM=="block",ENV{ID_MODEL}=="MS_Card_MS", ENV{UDISKS_IGNORE}="1"
+SUBSYSTEM=="block",ENV{ID_MODEL}=="SM_XD_Card_SM", ENV{UDISKS_IGNORE}="1"
+SUBSYSTEM=="block",ENV{ID_MODEL}=="SD_Card_MMC_SD", ENV{UDISKS_IGNORE}="1"
+```
+
+Use `sudo udevadm info -n /dev/sdf` to find the `ID_MODEL` of the devices to disable. Then, they can still be mounted with `mount /dev/sdX ...`. Note that ID_MODEL cannot be used with a rule < 50.
+
+- `udevadm info -e` to see all devices and all environment variables
+
 
 ## Locale
 
