@@ -55,6 +55,16 @@ rabin2 -i classes.dex
 - Save a session: `Ps filename`. By default, sessions are stored in `~/.config/radare2/projects`. To reload a session: `Po filename`
 - Pretty print: `~{}`
 
+- Generate zignatures: `zg` (do `aa` before)
+- Save zignatures to a file: `zos zigz.z`
+- Load zignatures: `zo zigz.z`
+
+### Info
+
+- Know if a binary is stripped: `i~strip`
+
+
+
 ### Print
 
 - Print strings: `ps @ loc`
