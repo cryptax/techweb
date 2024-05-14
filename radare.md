@@ -47,6 +47,8 @@ rabin2 -i classes.dex
 3. The size of the function (in bytes)
 4. The function's name
 
+- To sort the output and prioritize functions with most references: `afl,xref/sort/dec,1/head/15` (thx to @ApkUnpacker)
+
 - Write to a file: `wtf filename size @ position`
 - Shell commands work: `s 0x65; pD 32`
 - Cross references: `axf` or `axt`. Function references: `afx`
