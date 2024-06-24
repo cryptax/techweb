@@ -5,7 +5,7 @@
 
 - Chain commands: `;` for example `pd 10; px 3`
 - Grep: `~`
-- Evaluate an expression: `?`
+- Evaluate an expression: `?`. For example, to convert 0x61 to decimal: `? 0x61` will tell you it's 97 and also character `a` etc.
 - Here: `$$`
 - Relative offsets: `@ $$+x` for example `pd 10 @ $$+4`
 - Loop: `@BEGIN!END`: `wox 0x90 @10!20` performs XOR with 0x90 from offset 10 to 20.
