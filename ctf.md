@@ -59,12 +59,24 @@ def choice(number):
     p.sendline(str(number))
 ```
 
+## Pcap
+
+- Output as JSON
+- Process pcap with `dpkt` in Python.
+
+```python
+import dpkt
+with open("capture.pcap", "rb") as file:
+    pcap = dpkt.pcap.Reader(file)
+```	
+
 ## Stegano
 
 - Stegsnow: `apt install stegsnow`
 - Steghide: steghide.sourceforge.net
 - PNG Check and Repair Tool: https://github.com/sherlly/PCRT
 - Vigenere Solver: https://www.guballa.de/vigenere-solver
+- Drawing with Python: PIL, Image and ImageDraw
 
 
 ## Write-ups
