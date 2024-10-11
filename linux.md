@@ -821,6 +821,13 @@ Bus 001 Device 005: ID 0463:ffff MGE UPS Systems UPS
 
 #### Configuration
 
+| Service | Binary  | Configuration file | Comments |
+| ------- | ------- | ------------------ | -------- |
+| nut-server |      | /etc/nut/nut.conf | |
+|         | `upsdrvctl` | `/etc/nut/ups.conf` | UPS driver |
+|         | `upsd` | `/etc/nut/upsd.conf` | UPS information server |
+| nut-monitor | `upsmon` | `/etc/nut/upsmon.conf` | UPS monitoring |
+
 
 - **NUT mode** is specified in `/etc/nut/nut.conf`. Use the `standalone` mode for the host onto which the UPS is physically attached (and `netmonitor` for one which just needs power from the UPS). As the documentation says "this implies to start the 3 NUT layers (driver, upsd and upsmon) and the matching configuration files.
 
@@ -855,13 +862,7 @@ Driver is configured in `/etc/nut/ups.conf`, add the **driver** to your UPS. One
 ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="0463", ATTR{idProduct}=="ffff", MODE="0660", GROUP="nut"
 ```
 
-- **UPS information server**. The server is responsible for serving the data from the drivers to the clients.  It is started by the service `nut-server` and concerns binary ·`upsd`.
-
-```
-$ sudo systemctl restart nut-server 
-```
-
-Or simply to reload configuration file: `sudo upsd -c reload`
+- **UPS information server**. The server is responsible for serving the data from the drivers to the clients.  It is started by the service `nut-server` and concerns binary `upsd`.
 
 UPS server configuration is in `/etc/nut/upsd.conf`. The most basic configuration consists in adding the IP address and port: `LISTEN 127.0.0.1 3493`. Access configuration is in `/etc/nut/upsd.users`, create accounts for the UPS server:
 
@@ -887,6 +888,17 @@ SHUTDOWNCMD "/sbin/shutdown -h +0"
 Note that it is normal to get an "Login on UPS [myups] failed - got [ERR ACCESS-DENIED]" for nut-monitor on the host which has the nut server (can't both listen and connect).
 
 
+#### Starting NUT
+
+```
+$ sudo systemctl restart nut-server 
+```
+
+Or simply to reload configuration file: `sudo upsd -c reload`
+
+
+
+
 
 #### Commands
 
@@ -898,11 +910,11 @@ A few administration tools are supplied:
 
 Examples: 
 
-- To list configuration of the UPS unit: `upsc myups`, or `upsrw myups`
-- To list clients connected to a UPS unit: `upsc -c myups`
 - To list UPS units configured on the system: `upsc -L`
-- To list instant commands supported on a UPS: `upscmd -l myups`
-- To check a given instant command: `upscmd myups ups.beeper.status`
+- To list configuration of the UPS unit: `upsc <MYUPS>`, or `upsrw <MYUPS>`
+- To list clients connected to a UPS unit: `upsc -c <MYUPS>`
+- To list instant commands supported on a UPS: `upscmd -l <MYUPS>`
+- To check a given instant command: `upsc <MYUPS> ups.beeper.status`. 
 - Get the status of a given UPS: 
 
 ```
@@ -914,6 +926,8 @@ Status meaning:
 
 - OL: online
 - LB: low battery
+
+Note that if the UPS server is remote, <MYUPS> should be in format `myups@host`
 
 Troubleshooting or testing:
 
