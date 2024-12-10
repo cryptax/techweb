@@ -56,6 +56,7 @@
 - Search for bytes with a pattern: `/x abcdef:ff00ff` does the same as above. The second string is the mask for the pattern.
 - Search for instructions: `/ad mov`
 - Repeat search: `//`
+- Search reference using emulation: `/re`. Ex: search reference using emulation to the current address `/re $$`
 
 Command to run for each hit, to be set with `e cmd.hit`.
 For example: `e cmd.hit=px`
