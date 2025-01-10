@@ -197,6 +197,12 @@ Advanced:
 
 - `wox 6 @4!10`: XOR from offset 4 to 10 with value 6
 
+## Cryptography
+
+- `poE`/`poD`: encrypt / decrypt with a given algo and key (does not change the binary)
+- `/ca algo`: search for magic indicating using of a given algo
+- `pFa` (or `pFx`): show decoded ASN.1 / DER certificate
+
 ## Session
 
 - Save a session: `Ps filename`. By default, sessions are stored in `~/.config/radare2/projects`. 
