@@ -175,6 +175,7 @@ To remove hits: `f- hit*`
 - `pcp`: transform the given bytes in a Python array (choose language with `pc?`)
 - `p6es text`: base64 encode. `p6ds` to decode
 - Show Pico: `?EC yourmessagegoeshere`
+- `e scr.pager=more` to get things page by page.
 
 ## Zignatures 
 
@@ -183,6 +184,11 @@ Zignatures are recognizable patterns
 - Generate zignatures: `zg` (do `aa` before)
 - Save zignatures to a file: `zos zigz.z`
 - Load zignatures: `zo zigz.z`
+
+## Running ...
+
+- `#!pipe python` to run a Python program with r2
+- `? cmd` to evaluate e.g `? 2+3`
 
 ## Writing
 
