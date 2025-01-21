@@ -20,7 +20,7 @@
 - Loop: `@BEGIN!END`: `wox 0x90 @10!20` performs XOR with 0x90 from offset 10 to 20.
 - `@@f` iterate over all functions
 - Iterations: `@@` for example, write ff at offsets 10, 20, 30 with `wx ff @@10 20 30`
-
+- Get the output of a command to use it: e.g `pdf @ ``iM~[1]```
 
 
 ## Configuration properties
