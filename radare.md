@@ -1,18 +1,26 @@
 # Radare2
 
+## Launch commands
+
+- `-w`: open binary in read/write mode
+- `-a arm`: specify architecture (`asm.arch`)
+- `-b 32`: specify bits (`asm.bits`)
+- `-i file`: run script file
+- `-m 0x000`: map file at specified address
+
 
 ## Command syntax
 
 - Chain commands: `;` for example `pd 10; px 3`
 - Grep: `~`
+- Get the first 10 lines of an output: `yourcmd~:0..10`
 - Evaluate an expression: `?`. For example, to convert 0x61 to decimal: `? 0x61` will tell you it's 97 and also character `a` etc.
 - Here: `$$`
 - Relative offsets: `@ $$+x` for example `pd 10 @ $$+4`
 - Loop: `@BEGIN!END`: `wox 0x90 @10!20` performs XOR with 0x90 from offset 10 to 20.
 - `@@f` iterate over all functions
 - Iterations: `@@` for example, write ff at offsets 10, 20, 30 with `wx ff @@10 20 30`
-
-
+- Get the output of a command to use it: e.g `pdf @ ``iM~[1]```
 
 
 ## Configuration properties
@@ -71,7 +79,12 @@ For example: `e cmd.hit=px`
 3. The size of the function (in bytes)
 4. The function's name
 
-*Advanced*: to sort the output and prioritize functions with most references: `afl,xref/sort/dec,1/head/15` (thx to @ApkUnpacker)
+*Advanced*: 
+
+- to sort the output and prioritize functions with most references: `afl,xref/sort/dec,1/head/15` (thx to @ApkUnpacker)
+- list function tab separated: `afl, :tsv`
+
+
 
 - `afn`: Rename function
 - `afvn`: Rename local variable
@@ -87,6 +100,7 @@ For example: `e cmd.hit=px`
 
 - `iz`: strings in the data section
 - `izz`: strings in the *whole* binary
+- `/az`: search for strings and possibly reconstruct the assembly when they are split
 
 ## Sections
 
@@ -158,8 +172,10 @@ To remove hits: `f- hit*`
 - `pif`: Show only the instructions of a given function (helpful to copy/paste a function)
 - `pD n @ offset`: print n bytes disassembled
 - Pretty print: `~{}`
-
+- `pcp`: transform the given bytes in a Python array (choose language with `pc?`)
+- `p6es text`: base64 encode. `p6ds` to decode
 - Show Pico: `?EC yourmessagegoeshere`
+- `e scr.pager=more` to get things page by page.
 
 ## Zignatures 
 
@@ -169,6 +185,11 @@ Zignatures are recognizable patterns
 - Save zignatures to a file: `zos zigz.z`
 - Load zignatures: `zo zigz.z`
 
+## Running ...
+
+- `#!pipe python` to run a Python program with r2
+- `? cmd` to evaluate e.g `? 2+3`
+
 ## Writing
 
 - Write to a file: `wtf filename size @ position`
@@ -176,10 +197,17 @@ Zignatures are recognizable patterns
 - `wx hex @ offset`: write hex values
 - `wa bl 0x20204`: write assembly
 - `wox byte`: XOR current block with byte and write it.
+- `wox key @ offset length`: XORs length bytes at offset with the key. For the values to be written, you need to enable writing: `e io.cache=true` (or launch `r2` with `-w`)
 
 Advanced:
 
 - `wox 6 @4!10`: XOR from offset 4 to 10 with value 6
+
+## Cryptography
+
+- `poE`/`poD`: encrypt / decrypt with a given algo and key (does not change the binary)
+- `/ca algo`: search for magic indicating using of a given algo
+- `pFa` (or `pFx`): show decoded ASN.1 / DER certificate
 
 ## Session
 
@@ -197,8 +225,8 @@ V then press p to switch between virtual modes
 
 # Radare2 Package Manager: r2pm
 
-- Initialize package control with `r2pm init`
-- Update: `r2pm update`
+- Update: `r2pm update` (or `-U`)
+- List all known packages: `r2pm -s`
 
 Install packages:
 

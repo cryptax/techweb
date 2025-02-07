@@ -124,6 +124,13 @@ adb remount
 - [Andy](http://andyroid.net/)
 - BuilDroid
 
+## Android Studio Emulators
+
+- You **cannot** run an ARM64 emulator on an x86-64 platform above [API 27](https://stackoverflow.com/questions/74760054/panic-avds-cpu-architecture-arm64-is-not-supported-by-the-qemu2-emulator-on)
+- It is possible to specify the architecture for an Android 11+ AVD using `-avd-arch arm64-v8a`, however this does *not* create a fully arm64 image... (Frida hook addresses won't be correct).
+- List existing AVD: `~/Android/Sdk/emulator/emulator -list-avds`
+
+
 ## Genymotion
 
 There are several versions of Genymotion:
@@ -135,10 +142,10 @@ There are several versions of Genymotion:
 In all cases, you [download the installer](https://www.genymotion.com/download/). Make it executable and run it:
 
 ```
-$ ./genymotion-2.12.0-linux_x64.bin --destination /home/axelle/softs
+$ ./genymotion-2.12.0-linux_x64.bin --destination ~/softs
 ...
 
-You can now use these tools from [/home/axelle/softs/genymotion]:
+You can now use these tools from [~/genymotion]:
  - genymotion
  - genymotion-shell
  - gmtool
@@ -726,3 +733,6 @@ To synchronize with Owncloud calendars:
 
 1. Install DAVx5 (from FDroid). Configure accounts to access the CalDAV calendar. Synchronize.
 2. Open the regular calendar application. Refresh.
+
+
+To display what's on the phone: [use scrcpy](https://github.com/Genymobile/scrcpy)
