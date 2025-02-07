@@ -887,6 +887,22 @@ SHUTDOWNCMD "/sbin/shutdown -h +0"
 
 Note that it is normal to get an "Login on UPS [myups] failed - got [ERR ACCESS-DENIED]" for nut-monitor on the host which has the nut server (can't both listen and connect).
 
+To my understanding, to log UPS events, add this to `upsmon.conf`
+
+```
+NOTIFYFLAG ONLINE	SYSLOG+WALL
+NOTIFYFLAG ONBATT	SYSLOG+WALL
+NOTIFYFLAG LOWBATT	SYSLOG+WALL
+NOTIFYFLAG FSD	SYSLOG+WALL
+NOTIFYFLAG COMMOK	SYSLOG+WALL
+NOTIFYFLAG COMMBAD	SYSLOG+WALL
+NOTIFYFLAG SHUTDOWN	SYSLOG+WALL
+NOTIFYFLAG REPLBATT	SYSLOG+WALL
+NOTIFYFLAG NOCOMM	SYSLOG+WALL
+```
+
+Log file: `/var/log/daemon.log`
+
 
 #### Starting NUT
 
