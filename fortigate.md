@@ -50,6 +50,15 @@ Get IPv6 sessions: `diag sys session6 list`
 
 (or `exec ping`)
 
+Ping fortiguard servers: 
+
+```
+execute ping service.fortiguard.net
+execute ping update.fortiguard.net
+execute ping guard.fortinet.net
+```
+
+
 
 ## Trace packets
 
@@ -70,7 +79,43 @@ for example:
 
 [KB Fortinet](http://kb.fortinet.com/kb/viewContent.do?externalId=11186)
 
+## DNS
 
+`show system dns`, or to edit: `config system dns`
+
+```
+# show system dns
+config system dns
+    set primary 96.45.45.45
+    set secondary 96.45.46.46
+    set protocol dot
+    set server-hostname "globalsdns.fortinet.net"
+end
+
+```
+
+## Debug
+
+```
+diagnose debug enable
+diagnose debug disable
+```
+
+## Update
+
+`execute update-now`
+
+
+## List files on the filesystem
+
+```
+# fnsysctl ls -l /etc/cert/factory
+-rw-r--r--    1 0        0       Thu Sep 19 11:47:49 2024             5174 root_Fortinet_Factory.cer
+-rw-r--r--    1 0        0       Sat Feb  8 12:05:04 2025             1854 KEY-FILE
+-rw-r--r--    1 0        0       Thu Sep 19 11:47:49 2024             4285 root_Fortinet_Factory_Backup.cer
+-rw-r--r--    1 0        0       Sat Feb  8 12:05:04 2025             1854 root_Fortinet_Factory_Backup.key
+
+```
 
 ## See IP addresses and MAC addresses
 
@@ -110,6 +155,8 @@ append allowaccess ssh
 ...
 end
 ```
+
+
 
 ### Wifi
 
