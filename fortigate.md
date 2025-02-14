@@ -97,6 +97,7 @@ end
 ## Debug
 
 ```
+diagnose debug application update -1
 diagnose debug enable
 diagnose debug disable
 ```
@@ -104,6 +105,23 @@ diagnose debug disable
 ## Update
 
 `execute update-now`
+
+To debug an issue with update:
+
+```
+diagnose debug application update -1
+diagnose debug enable
+execute update-now
+```
+
+wait for the update to happen, check logs, and then `diagnose debug disable`
+
+## Regenerate local certificates
+
+1. Backup configuration
+2. In the configuration file, look for the section `config certificate local`
+3. Erase completely the section.
+4. Restore the config. The fortigate will re-generate all missing certificates.
 
 
 ## List files on the filesystem
