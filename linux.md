@@ -235,6 +235,23 @@ WantedBy=multi-user.target
 - List boot logs: `journalctl -b`
 
 
+## Autofs
+
+To automatically mount a filesystem, use autofs.
+For example, here I am automatically mounting in `/mnt/ticot`:
+
+/etc/auto.master:
+
+```
+/mnt /etc/auto.ticot --timeout=120
+```
+
+/etc/auto.ticot:
+
+```
+ticot -fstype=cifs,rw,guest, ://IP ADDRESS/Data
+```
+
 ## Network
 
 ### Interfaces
