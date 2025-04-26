@@ -154,6 +154,8 @@ sudo certbot renew
 
 - You should now be able to access https://YOUR_DOMAIN
 
+To see  your certificates: `sudo certbot certificates`
+
 ## Hugo
 
 ```
