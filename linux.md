@@ -465,6 +465,16 @@ sudo iptables -t nat -v -L PREROUTING -n --line-number
 sudo iptables -t nat --delete PREROUTING 4
 ```
 
+#### Reverse SSH, RDP, xxx
+
+If a firewall on your network blocks ports you need or multiplexes an IP address, you might want to use **reverse** x/y. Such services are offered by some hosts like [serveo](https://serveo.net).
+
+- On the server: `ssh -R myalias:22:localhost:22 serveo.net`. Change myalias with something you want.
+- On another host, access the SSH server with `ssh -J serveo.net user@myalias`. Note that `-J` means "Connect to the target host by first making a ssh connection to the jump host described by the destination and then establishing a TCP forwarding to the ultimate destination from there."
+
+
+
+
 ## LVM
 
 We have:
