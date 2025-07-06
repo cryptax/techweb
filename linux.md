@@ -227,6 +227,10 @@ WantedBy=multi-user.target
 - Editing a unit configuration file: `sudo systemctl edit --full SERVICENAME`, then do `sudo systemctl daemon-reload` and finally `sudo systemctl restart SERVICENAME` (see [here](https://www.2daygeek.com/linux-modifying-existing-systemd-unit-file/))
 - List failed services: `sudo systemctl list-units --failed`
 
+On peut également créer des services "utilisateurs" qui sont stockés dans `~/.config/systemd/user`. Ensuite, on peut utiliser les commandes `systemctl` et `journalctl` avec l'option `--user`, et sans sudo.
+
+Exemple: `systemctl --user status mega-cmd-server`
+
 ### Journal for Services
 
 - Dump to a file: `journalctl -x -u service > file`
@@ -240,17 +244,18 @@ WantedBy=multi-user.target
 To automatically mount a filesystem, use autofs.
 For example, here I am automatically mounting in `/mnt/ticot`:
 
-/etc/auto.master:
+`/etc/auto.master`:
 
 ```
 /mnt /etc/auto.ticot --timeout=120
 ```
 
-/etc/auto.ticot:
+`/etc/auto.ticot`:
 
 ```
 ticot -fstype=cifs,rw,guest, ://IP ADDRESS/Data
 ```
+
 
 ## Network
 
@@ -418,6 +423,24 @@ To access a remote Apple Timecapsule:
 To access a Samba share from a NAS:
 
 `sudo mount -t citfs -o rw,guest,uid=username //ip/share /mnt/point`
+
+### NFS v4
+
+Mount it:
+
+`sudo mount -t nfs4 IPADDR:PATH MNTPOINT`
+
+In `/etc/fstab`:
+
+-  `IPADDR:PATH DIRWHERETOMOUNT nfs rw,vers=4,soft,intr 0 0`
+
+
+
+To list possible export points:
+
+- `showmount -e IPADDR`
+
+
 
 
 ### Firewall

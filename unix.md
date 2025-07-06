@@ -34,8 +34,15 @@ To synchronize directories with Mega.io, there are several options :
 2. [MegaCMD](https://mega.io/cmd#download) or `apt install megacmd` which is a bunch of CLI commands. The sync is saved between reboots in `~/.megaCmd`
 
 
+- To login: `login email`
 - To add a new directory to sync: `mega-sync localdir remotemegadir`
 - View current status: `mega-sync`. Sync means it's scanning directories. Pending means transfers are potentially happening.
+
+Run states: Running, Pause, Stopped
+Status: Pending, Syncing
+
+- If you need to rescan: `mega-sync rescan PATH`
+- To remove a sync: `mega-sync remove ID`
 - View current transfers: `mega-transfers`
 - Switch debug level: `mega-log -sc info` sets command and SDK level to info
 
