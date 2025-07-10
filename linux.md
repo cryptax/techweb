@@ -654,6 +654,25 @@ Or set it manually:
 
 `sudo date -s "3 dec 2017 22:21"`
 
+
+To manually synchronize with time of a different server:
+
+```
+sudo timedatectl set-ntp false
+sudo ntpdate servername
+```
+
+To use NTP again and for sync:
+
+```
+sudo timedatectl set-ntp true,
+sudo systemctl restart systemd-timesyncd,
+sudo timedatectl timesync-status
+```
+
+
+
+
 ### Oathtool
 
 `gpg --quiet --decrypt your.secret.totp.asc | oathtool --base32 --totp -`
@@ -952,6 +971,8 @@ Status meaning:
 - LB: low battery
 
 Note that if the UPS server is remote, <MYUPS> should be in format `myups@host`
+
+- Check when there has been power cuts etc: `grep -i ups /var/log/daemon.log` (on each system)
 
 Troubleshooting or testing:
 
