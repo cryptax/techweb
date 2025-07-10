@@ -211,8 +211,8 @@ Advanced:
 
 ## Session
 
-- Save a session: `Ps filename`. By default, sessions are stored in `~/.config/radare2/projects`. 
-- To reload a session: `Po filename`
+- Save a session: `Ps filename`. By default, sessions are stored in `~/.local/share/radare2/projects`. 
+- To reload a session: `P filename`
 
 
 # Visual mode

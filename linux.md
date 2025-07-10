@@ -227,12 +227,34 @@ WantedBy=multi-user.target
 - Editing a unit configuration file: `sudo systemctl edit --full SERVICENAME`, then do `sudo systemctl daemon-reload` and finally `sudo systemctl restart SERVICENAME` (see [here](https://www.2daygeek.com/linux-modifying-existing-systemd-unit-file/))
 - List failed services: `sudo systemctl list-units --failed`
 
+On peut également créer des services "utilisateurs" qui sont stockés dans `~/.config/systemd/user`. Ensuite, on peut utiliser les commandes `systemctl` et `journalctl` avec l'option `--user`, et sans sudo.
+
+Exemple: `systemctl --user status mega-cmd-server`
+
 ### Journal for Services
 
 - Dump to a file: `journalctl -x -u service > file`
 - Wrap long lines: `journalctl -u service | less` or `journalctl -u service --no-pager`
 - After bug `journalctl -xb`
 - List boot logs: `journalctl -b`
+
+
+## Autofs
+
+To automatically mount a filesystem, use autofs.
+For example, here I am automatically mounting in `/mnt/ticot`:
+
+`/etc/auto.master`:
+
+```
+/mnt /etc/auto.ticot --timeout=120
+```
+
+`/etc/auto.ticot`:
+
+```
+ticot -fstype=cifs,rw,guest, ://IP ADDRESS/Data
+```
 
 
 ## Network
@@ -402,6 +424,24 @@ To access a Samba share from a NAS:
 
 `sudo mount -t citfs -o rw,guest,uid=username //ip/share /mnt/point`
 
+### NFS v4
+
+Mount it:
+
+`sudo mount -t nfs4 IPADDR:PATH MNTPOINT`
+
+In `/etc/fstab`:
+
+-  `IPADDR:PATH DIRWHERETOMOUNT nfs rw,vers=4,soft,intr 0 0`
+
+
+
+To list possible export points:
+
+- `showmount -e IPADDR`
+
+
+
 
 ### Firewall
 
@@ -447,6 +487,16 @@ Here OUTPUT refers to the part of iptables to work on
 sudo iptables -t nat -v -L PREROUTING -n --line-number
 sudo iptables -t nat --delete PREROUTING 4
 ```
+
+#### Reverse SSH, RDP, xxx
+
+If a firewall on your network blocks ports you need or multiplexes an IP address, you might want to use **reverse** x/y. Such services are offered by some hosts like [serveo](https://serveo.net).
+
+- On the server: `ssh -R myalias:22:localhost:22 serveo.net`. Change myalias with something you want.
+- On another host, access the SSH server with `ssh -J serveo.net user@myalias`. Note that `-J` means "Connect to the target host by first making a ssh connection to the jump host described by the destination and then establishing a TCP forwarding to the ultimate destination from there."
+
+
+
 
 ## LVM
 

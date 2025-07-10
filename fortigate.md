@@ -58,6 +58,19 @@ execute ping update.fortiguard.net
 execute ping guard.fortinet.net
 ```
 
+## Setting Transparent mode
+
+```
+config system settings
+    set opmode transparent
+    set inspection-mode flow
+    set manageip 192.168.0.99/255.255.255.0
+    set gui-ips enable
+    set gui-endpoint-control disable
+    set gui-dnsfilter disable
+end
+```
+
 
 
 ## Trace packets
@@ -213,7 +226,7 @@ WLAN: wifi
 
 Show interface info:
 
-```
+```bash
 # diagnose wireless-controller wlac -c vap
 
 bssid             ssid                 intf                 wtp-id               vfid:ip-port rId wId
@@ -228,18 +241,6 @@ diagnose wireless-controller wlac -d sta
 
 Disconnect a client: `diagnose wireless-controller wlac kickmac MACADDR`. This does not prevent the client from reconnecting ;)
 
-# Setting Transparent mode
-
-```
-config system settings
-    set opmode transparent
-    set inspection-mode flow
-    set manageip 192.168.0.99/255.255.255.0
-    set gui-ips enable
-    set gui-endpoint-control disable
-    set gui-dnsfilter disable
-end
-```
 
 # FortiAP with Fortigate in Transparent mode
 
