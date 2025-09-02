@@ -78,6 +78,81 @@ with open("capture.pcap", "rb") as file:
 - Vigenere Solver: https://www.guballa.de/vigenere-solver
 - Drawing with Python: PIL, Image and ImageDraw
 
+## Pwn
+
+### x86
+
+- RAX: return value of a function
+- RDI, RSI, RDX, RCD: arguments of a function
+- RSP: stack pointer - where to write on the stack
+- RBP: base pointer. Points to the "base" of the stack.
+- RIP: instruction pointer. Points to the next instruction. When a RET is executed, it pops the address from the stack in RIP.
+
+When you call a new function:
+
+1. Push the return address on the stack
+2. Jump to function entry
+
+```
+--------------
+Return address
+Top of new stack <--- RSP
+--------------
+```
+
+The beginning of the new function usually does:
+
+- save old base pointer
+- set new base pointer
+- allocate local variables
+
+```
+--------------
+Return address
+Save base pointer <--- RBP
+Local 1          <---- RSP
+--------------
+```
+
+When you return, 
+
+- free local variables
+- restore previous base pointer
+- pop saved return address in RIP
+
+```
+High addr
+| Saved ret addr | 
+|----------------|
+| Saved RBP      | 
+|----------------|
+| Local buffers  |
+Low addr
+```
+
+Stack alignment:
+
+- 16 bytes on x86-64
+- 4 bytes on x86-32
+
+
+### Gef
+
+- Gef: https://github.com/hugsy/gef
+- `checksec`: show protections of the binary
+- `pattern create 50`: generate a 50-byte pattern. Then `pattern search $rsp`
+- `info functions [keyword]`: list functions (matching the keyword)
+- `info variables`: list variables
+- `disassemble func`
+- `x/s addr`: examine string at this address
+- `x/20i $rip`: disassemble 20 instructions at RIP
+- `run < filename` or `run $(pattern create 200)`
+
+### Pwntools
+
+- https://github.com/Gallopsled/pwntools
+- p64(0x401146): write the correct byte string (for little endian). For big endian, use p64((0x401146, endian='big')
+- pwntools with gdb: https://halb.it/posts/pwntools-gdb/
 
 ## Write-ups
 
