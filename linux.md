@@ -35,7 +35,7 @@
 7. Audio: `sudo aplay -l`
 
 
-### Control monitor luminosity
+### Control monitor 
 
 Get name of device:
 
@@ -44,7 +44,8 @@ $ xrandr -q | grep ' connected' | head -n 1 | cut -d ' ' -f1
 eDP-1
 ```
 
-Then set luminosity: `xrandr --output eDP-1 --brightness 0.7`
+- Set the resolution: `xrandr --output DP-3-1 --mode 2560x1440`
+- Set luminosity: `xrandr --output eDP-1 --brightness 0.7`
 
 ### Keyboard layout CLI
 
