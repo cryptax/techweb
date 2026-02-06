@@ -991,7 +991,15 @@ $ sudo systemctl restart nut-server
 Or simply to reload configuration file: `sudo upsd -c reload`
 
 
+For NUT to restart after a crash/power off:
 
+```
+sudo systemctl edit nut-server
+...
+[Service]
+Restart=on-failure
+RestartSec=5
+```
 
 
 #### Commands
