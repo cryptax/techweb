@@ -771,6 +771,8 @@ create database gallery01; grant all on gallery01.* to 'gallery'@'localhost' ide
 
 ### Yubikey
 
+#### Yubikey for Linux login
+
 To use the Yubikey for Linux login: [see YouTube](https://www.youtube.com/watch?v=INi-xKpYjbE)
 
 ```
@@ -802,11 +804,27 @@ session    required   pam_env.so readenv=1 envfile=/etc/default/locale user_read
 auth required pam_u2f.so
 ```
 
+#### Yubikey for SSH
+
 To use Yubikey for SSH authentication: `sudo apt install libfido2-dev`
 
 Generate a key: `ssh-keygen -t ed25519-sk -C "myyubikey" `
 
 Then copy it to the server: `ssh-copy-id -i ~/.ssh/id_yubikey.pub user@host`
+
+
+#### Managing a Yubikey
+
+- `sudo apt install yubikey-manager`
+- View devices: `ykman list`
+- Info: `ykman info`
+
+Generate a new OATH account:
+
+- `ykman oath accounts add NAME SECRET --touch`
+- generate the code: `ykman oath accounts code NAME`
+- change password for oath: `ykman oath access change`
+
 
 ### Certbot
 
