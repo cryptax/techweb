@@ -48,6 +48,25 @@ select-attribute /org/bluez/hci0/dev_xxx/service000c/char0013
 write "0xAB 0xCF"
 ```
 
+### Connect a Lift Mac vertical mouse
+
+It requires the experimental mode in bluetooth in  `/etc/bluetooth/main.conf`:
+
+```
+[General]
+EnableExperimental = true
+```
+
+Then:
+
+```
+sudo systemctl restart bluetooth
+bluetoothctl
+scan on
+pair <MAC_ADDRESS>
+trust <MAC_ADDRESS>
+connect <MAC_ADDRESS>
+```
 
 
 

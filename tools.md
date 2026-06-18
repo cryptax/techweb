@@ -439,3 +439,63 @@ gpg --decrypt --quiet ~/.gnupg/2fa.asc | oathtool --totp --base32 -
 
 - Conversion: **do not forget to select Debayer**
 - Image Processing: Histogram Transformation: Autostretch algorithm
+
+## OpenCode
+
+- API keys in `~/.local/share/opencode/auth.json`
+
+```
+{
+  "vllm": {
+    "type": "api",
+    "key": "XXX"
+  },
+  "anthropic": {
+    "type": "api",
+    "key": "XXX"
+  },
+  ...
+```
+
+- Configure providers in `~/.config/opencode/opencode.json`:
+
+```json
+{
+    "$schema": "https://opencode.ai/config.json",
+    "permission": {
+	"*": "ask",
+	"r2mcp*": "allow",
+	"external_directory": {
+	    "**": "allow"
+	}
+    },
+    "provider": {
+	"lmstudio": {
+	    "npm": "@ai-sdk/openai-compatible",
+	    "name": "LM Studio (local)",
+	    "options": {
+		"baseURL": "http://localhost:1234/v1"
+	    },
+	    "models": {
+		"qwen/qwen36.-36b-a3b": {
+		    "name": "Qwen 3.6 36B"
+		}
+	    }
+	},
+	"openwebui": {
+	    "npm": "@ai-sdk/openai-compatible",
+	    "name": "XXX"
+	    "options": {
+		"baseURL": "URL"
+		"apiKey": "{env:OPENWEBUI_API_KEY}"
+	    },
+
+...
+"tools": {
+     "r2mcp*": true
+   }
+}
+```
+
+- Configure agents: `~/.config/opencode/agents`
+- Skills: `~/.config/opencode/skills/<NAME>/SKILL.md`

@@ -35,7 +35,7 @@
 7. Audio: `sudo aplay -l`
 
 
-### Control monitor luminosity
+### Control monitor 
 
 Get name of device:
 
@@ -44,7 +44,8 @@ $ xrandr -q | grep ' connected' | head -n 1 | cut -d ' ' -f1
 eDP-1
 ```
 
-Then set luminosity: `xrandr --output eDP-1 --brightness 0.7`
+- Set the resolution: `xrandr --output DP-3-1 --mode 2560x1440`
+- Set luminosity: `xrandr --output eDP-1 --brightness 0.7`
 
 ### Keyboard layout CLI
 
@@ -227,6 +228,10 @@ WantedBy=multi-user.target
 - Editing a unit configuration file: `sudo systemctl edit --full SERVICENAME`, then do `sudo systemctl daemon-reload` and finally `sudo systemctl restart SERVICENAME` (see [here](https://www.2daygeek.com/linux-modifying-existing-systemd-unit-file/))
 - List failed services: `sudo systemctl list-units --failed`
 
+On peut également créer des services "utilisateurs" qui sont stockés dans `~/.config/systemd/user`. Ensuite, on peut utiliser les commandes `systemctl` et `journalctl` avec l'option `--user`, et sans sudo.
+
+Exemple: `systemctl --user status mega-cmd-server`
+
 ### Journal for Services
 
 - Dump to a file: `journalctl -x -u service > file`
@@ -240,17 +245,18 @@ WantedBy=multi-user.target
 To automatically mount a filesystem, use autofs.
 For example, here I am automatically mounting in `/mnt/ticot`:
 
-/etc/auto.master:
+`/etc/auto.master`:
 
 ```
 /mnt /etc/auto.ticot --timeout=120
 ```
 
-/etc/auto.ticot:
+`/etc/auto.ticot`:
 
 ```
 ticot -fstype=cifs,rw,guest, ://IP ADDRESS/Data
 ```
+
 
 ## Network
 
@@ -418,6 +424,24 @@ To access a remote Apple Timecapsule:
 To access a Samba share from a NAS:
 
 `sudo mount -t citfs -o rw,guest,uid=username //ip/share /mnt/point`
+
+### NFS v4
+
+Mount it:
+
+`sudo mount -t nfs4 IPADDR:PATH MNTPOINT`
+
+In `/etc/fstab`:
+
+-  `IPADDR:PATH DIRWHERETOMOUNT nfs rw,vers=4,soft,intr 0 0`
+
+
+
+To list possible export points:
+
+- `showmount -e IPADDR`
+
+
 
 
 ### Firewall
@@ -681,6 +705,25 @@ Or set it manually:
 
 `sudo date -s "3 dec 2017 22:21"`
 
+
+To manually synchronize with time of a different server:
+
+```
+sudo timedatectl set-ntp false
+sudo ntpdate servername
+```
+
+To use NTP again and for sync:
+
+```
+sudo timedatectl set-ntp true,
+sudo systemctl restart systemd-timesyncd,
+sudo timedatectl timesync-status
+```
+
+
+
+
 ### Oathtool
 
 `gpg --quiet --decrypt your.secret.totp.asc | oathtool --base32 --totp -`
@@ -728,6 +771,8 @@ create database gallery01; grant all on gallery01.* to 'gallery'@'localhost' ide
 
 ### Yubikey
 
+#### Yubikey for Linux login
+
 To use the Yubikey for Linux login: [see YouTube](https://www.youtube.com/watch?v=INi-xKpYjbE)
 
 ```
@@ -759,11 +804,27 @@ session    required   pam_env.so readenv=1 envfile=/etc/default/locale user_read
 auth required pam_u2f.so
 ```
 
+#### Yubikey for SSH
+
 To use Yubikey for SSH authentication: `sudo apt install libfido2-dev`
 
 Generate a key: `ssh-keygen -t ed25519-sk -C "myyubikey" `
 
 Then copy it to the server: `ssh-copy-id -i ~/.ssh/id_yubikey.pub user@host`
+
+
+#### Managing a Yubikey
+
+- `sudo apt install yubikey-manager`
+- View devices: `ykman list`
+- Info: `ykman info`
+
+Generate a new OATH account:
+
+- `ykman oath accounts add NAME SECRET --touch`
+- generate the code: `ykman oath accounts code NAME`
+- change password for oath: `ykman oath access change`
+
 
 ### Certbot
 
@@ -948,7 +1009,15 @@ $ sudo systemctl restart nut-server
 Or simply to reload configuration file: `sudo upsd -c reload`
 
 
+For NUT to restart after a crash/power off:
 
+```
+sudo systemctl edit nut-server
+...
+[Service]
+Restart=on-failure
+RestartSec=5
+```
 
 
 #### Commands
@@ -979,6 +1048,8 @@ Status meaning:
 - LB: low battery
 
 Note that if the UPS server is remote, <MYUPS> should be in format `myups@host`
+
+- Check when there has been power cuts etc: `grep -i ups /var/log/daemon.log` (on each system)
 
 Troubleshooting or testing:
 

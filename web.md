@@ -180,3 +180,16 @@ hugo serve --source=themes/LoveIt/exampleSite
 mkdocs new my-project
 cd my-project
 ```
+
+## Lighttpd
+
+```
+sudo apt update
+sudo apt install lighttpd php-cgi php-common
+sudo lighty-enable-mod fastcgi
+sudo lighty-enable-mod fastcgi-php
+sudo systemctl reload lighttpd
+sudo chown -R www-data:www-data /var/www/html
+sudo lighty-enable-mod ssl
+```
+
