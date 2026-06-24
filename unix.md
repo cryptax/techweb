@@ -2,13 +2,16 @@
 
 ## Fail2ban
 
-`sudo fail2ban-client start`
+- `sudo fail2ban-client start`
+- If you changed the config: `sudo fail2ban-client reload`
 
 
 ### Status
 
 - Status of fail2ban service: `sudo systemctl status fail2ban`
-- Status of fail2ban: `sudo fail2ban-client status sshd`
+- Status of fail2ban for SSH: `sudo fail2ban-client status sshd`
+- Status of fail2ban for another service: `sudo fail2ban-client status NAME`
+
 
 ### Banned IP addresses
 
@@ -22,9 +25,7 @@ where:
 - `IPADDR` is the IP address to ban
 
 
-- List banned IP addressed: `sudo zgrep 'Ban' /var/log/fail2ban.log*` or `sudo fail2ban-client banned`
-
-- Get banned IP with time: `sudo fail2ban-client get sshd banip --with-time`
+- List banned IP addressed: `sudo fail2ban-client set signalu unbanip IP`
 
 ## Mega
 
